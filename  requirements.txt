@@ -1,0 +1,2 @@
+PySide6~=6.7.2
+PyPDFForm~=1.4.34
