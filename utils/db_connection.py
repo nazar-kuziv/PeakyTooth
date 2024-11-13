@@ -3,6 +3,7 @@ from supabase import create_client, Client
 from dotenv import load_dotenv
 
 from utils.exceptions.db_unable_to_connect import DBUnableToConnect
+from utils.exceptions.db_unable_to_get_data import DBUnableToGetData
 
 load_dotenv()
 
@@ -25,3 +26,9 @@ class DBConnection(metaclass=DBConnectionMeta):
             self.client: Client = create_client(url, key)
         except:
             raise DBUnableToConnect()
+
+    def get_user(self, login:str):
+        try:
+            return self.client.table("users").select("*").eq("login", login).execute()
+        except:
+            raise DBUnableToGetData()

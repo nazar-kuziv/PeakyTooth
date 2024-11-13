@@ -52,6 +52,7 @@ class MainWindow(QMainWindow):
         """)
 
 
+
         main_layout.addWidget(self.exit_button, alignment=Qt.AlignRight)
         main_layout.addStretch()
         main_layout.addLayout(button_layout)

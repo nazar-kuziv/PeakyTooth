@@ -1,9 +1,10 @@
 from PySide6.QtCore import QRegularExpression
 from PySide6.QtGui import QFont, Qt, QPixmap, QRegularExpressionValidator, QKeySequence, QShortcut
-from PySide6.QtWidgets import QWidget, QLineEdit, QVBoxLayout, QLabel, QMessageBox, QPushButton
+from PySide6.QtWidgets import QWidget, QLineEdit, QVBoxLayout, QLabel, QMessageBox
 
 from controller.controller_login import ControllerLogin
 from utils.environment import Environment
+from view.widget.button_base import ButtonBase
 
 
 class ScreenLogin(QWidget):
@@ -88,7 +89,7 @@ class ScreenLogin(QWidget):
         self.layout.addWidget(self.password_error)
 
     def set_login_button(self):
-        login_button = QPushButton('Login')
+        login_button = ButtonBase('Login')
         login_button.setFixedSize(200, 60)
         login_button.setDefault(True)
         login_button.clicked.connect(self.login)
@@ -108,7 +109,7 @@ class ScreenLogin(QWidget):
         if not self.username.hasAcceptableInput():
             self.password_error.setText('')
             self.password_error.setVisible(False)
-            self.username_error.setText('Uncorrect username')
+            self.username_error.setText('Username required')
             self.username_error.setVisible(True)
             return False
         else:
@@ -118,7 +119,7 @@ class ScreenLogin(QWidget):
 
     def validate_password(self):
         if not self.password.hasAcceptableInput():
-            self.password_error.setText('Uncorrect password')
+            self.password_error.setText('Password required')
             self.password_error.setVisible(True)
             return False
         else:
