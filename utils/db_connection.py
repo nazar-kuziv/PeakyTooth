@@ -27,8 +27,8 @@ class DBConnection(metaclass=DBConnectionMeta):
         except:
             raise DBUnableToConnect()
 
-    def get_user(self, login:str):
+    def get_user(self, login: str):
         try:
-            return self.client.table("users").select("*").eq("login", login).execute()
+            return self.client.table("users").select("*, organizations(*)").eq("login", login).execute()
         except:
             raise DBUnableToGetData()
