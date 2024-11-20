@@ -4,6 +4,7 @@ from PySide6.QtWidgets import QWidget, QLineEdit, QVBoxLayout, QLabel, QMessageB
 
 from controller.controller_login import ControllerLogin
 from utils.environment import Environment
+from view.screen_main import ScreenMain
 from view.widget.button_base import ButtonBase
 
 
@@ -130,13 +131,13 @@ class ScreenLogin(QWidget):
     def login(self):
         if not self.validate_username() or not self.validate_password():
             return
-        self.controller.login(self.username.text(), self.password.text())
+        if self.controller.login(self.username.text(), self.password.text()):
+            self.show_main_screen()
 
     def show_error(self, message):
         QMessageBox.critical(self, 'Error', message)
 
-    def show_primary_screen(self):
-        pass
-        # self.primary_screen = ScreenPrimary()
-        # self.primary_screen.show()
-        # self.close()
+    def show_main_screen(self):
+        self.main_screen = ScreenMain()
+        self.main_screen.show()
+        self.close()
