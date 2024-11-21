@@ -27,4 +27,5 @@ class ScreenMain(QMainWindow):
 
 
     def setCentralWidget(self, widget):
+        #TODO get rid of remeining widgets in memory
         super().setCentralWidget(widget)

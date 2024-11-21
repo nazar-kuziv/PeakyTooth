@@ -47,11 +47,9 @@ class DBConnection(metaclass=DBConnectionMeta):
 
         try:
             response = self.client.table('patients').insert(new_patient_data).execute()
-         #   print(response)
-            if response.status_code == 201:
-                return "Patient added successfully!"
+            print(response)
+            return "Patient added successfully!"
         except Exception as e:
             print(f"An error occurred while adding the patient: {str(e)}")
             return f"An error occurred while adding the patient: {str(e)}"
-        #TODO get rid of error after adding patinet APIResponse???
 
