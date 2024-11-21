@@ -64,4 +64,5 @@ class AdminMenu(QMainWindow):
                     color: white;
                 """)
 
+
         return super().eventFilter(source, event)
