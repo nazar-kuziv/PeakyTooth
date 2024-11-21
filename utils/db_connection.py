@@ -32,3 +32,26 @@ class DBConnection(metaclass=DBConnectionMeta):
             return self.client.table("users").select("*, organizations(*)").eq("login", login).execute()
         except:
             raise DBUnableToGetData()
+
+    def addNewPatient(self, name, surname, date_of_birth, sex, email, telephone, analgesics_allergy, organisation_id):
+        new_patient_data = {
+            "patient_name": name,
+            "patient_surname": surname,
+            "date_of_birth": date_of_birth,
+            "sex": sex,
+            "email": email,
+            "telephone": telephone,
+            "analgesics_allergy": analgesics_allergy,
+            "organization_id": organisation_id
+        }
+
+        try:
+            response = self.client.table('patients').insert(new_patient_data).execute()
+            print(response)
+            if response.status_code == 201:
+                return "Patient added successfully!"
+        except Exception as e:
+            print(f"An error occurred while adding the patient: {str(e)}")
+            return f"An error occurred while adding the patient: {str(e)}"
+        #TODO get rid of error after adding patinet APIResponse???
+

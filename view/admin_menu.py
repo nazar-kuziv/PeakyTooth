@@ -2,7 +2,7 @@ from PySide6.QtWidgets import QApplication, QMainWindow, QWidget, QPushButton, Q
 from PySide6.QtCore import Qt, QEvent
 import sys
 
-class MainWindow(QMainWindow):
+class AdminMenu(QMainWindow):
     def __init__(self):
         super().__init__()
         self.setWindowTitle("Admin Menu")
@@ -100,9 +100,3 @@ class MainWindow(QMainWindow):
                 """)
 
         return super().eventFilter(source, event)
-
-
-app = QApplication(sys.argv)
-window = MainWindow()
-window.show()
-sys.exit(app.exec())

@@ -24,3 +24,7 @@ class ScreenMain(QMainWindow):
 
         btn = ButtonBase('Logout')
         toolbar.addWidget(btn)
+
+
+    def setCentralWidget(self, widget):
+        super().setCentralWidget(widget)
