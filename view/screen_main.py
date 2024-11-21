@@ -24,3 +24,8 @@ class ScreenMain(QMainWindow):
 
         btn = ButtonBase('Logout')
         toolbar.addWidget(btn)
+
+
+    def setCentralWidget(self, widget):
+        #TODO get rid of remeining widgets in memory
+        super().setCentralWidget(widget)
