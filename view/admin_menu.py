@@ -1,6 +1,7 @@
 from PySide6.QtWidgets import QApplication, QMainWindow, QWidget, QPushButton, QVBoxLayout, QHBoxLayout
 from PySide6.QtCore import Qt, QEvent
 import sys
+from view.admin_patients_page import AdminPatientsPage
 
 class AdminMenu(QMainWindow):
     def __init__(self):
@@ -32,7 +33,7 @@ class AdminMenu(QMainWindow):
             border-radius: 10px;
             font-size: 16px;
         """)
-
+        self.patients_button.clicked.connect(self.open_patients_menu)
 
         button_layout.addStretch()
         button_layout.addWidget(self.doctors_button)
@@ -63,6 +64,15 @@ class AdminMenu(QMainWindow):
                     font-size: 16px;
                     color: white;
                 """)
-
+        elif event.type() == QEvent.Leave:
+            if source in (self.patients_button, self.doctors_button):
+                source.setStyleSheet("""
+                           background-color: #C0C0C0;
+                           border-radius: 10px;
+                           font-size: 16px;
+                       """)
 
         return super().eventFilter(source, event)
+
+    def open_patients_menu(self):
+        self.setCentralWidget(AdminPatientsPage())
