@@ -14,11 +14,9 @@ class ScreenMain(QMainWindow):
         toolbar = QToolBar()
         toolbar.setMovable(False)
         toolbar.setMinimumHeight(50)
-        # noinspection PyUnresolvedReferences
         self.addToolBar(Qt.TopToolBarArea, toolbar)
 
         spacer = QWidget()
-        # noinspection PyUnresolvedReferences
         spacer.setSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Preferred)
         toolbar.addWidget(spacer)
 
