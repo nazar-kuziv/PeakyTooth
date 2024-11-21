@@ -1,7 +1,10 @@
 from PySide6 import QtWidgets
 from PySide6.QtCore import Qt
-from PySide6.QtWidgets import QMainWindow, QToolBar, QWidget
+from PySide6.QtSvgWidgets import QSvgWidget
+from PySide6.QtWidgets import QMainWindow, QToolBar, QWidget, QHBoxLayout, QVBoxLayout, QLabel, QSizePolicy
 
+from controller.controller_main import ControllerMain
+from utils.environment import Environment
 from view.widget.button_base import ButtonBase
 
 
@@ -11,7 +14,7 @@ class ScreenMain(QMainWindow):
         self.controller = ControllerMain(self)
         self.set_tool_bar()
 
- def set_tool_bar(self):
+    def set_tool_bar(self):
         toolbar = QToolBar()
         toolbar.setMovable(False)
         toolbar.setMinimumHeight(50)
@@ -24,13 +27,13 @@ class ScreenMain(QMainWindow):
 
         widget_user_info.setObjectName('widget_user_info')
         widget_user_info.setStyleSheet("""
-            #widget_user_info {
-                border: 1px solid black;
-                border-radius: 10px;
-                padding: 10px;
-                margin-bottom: 5px;
-            }
-        """)
+                #widget_user_info {
+                    border: 1px solid black;
+                    border-radius: 10px;
+                    padding: 10px;
+                    margin-bottom: 5px;
+                }
+            """)
 
         layout_user_info = QHBoxLayout()
         # noinspection PyUnresolvedReferences
@@ -49,11 +52,11 @@ class ScreenMain(QMainWindow):
 
         label_username = QLabel(self.controller.get_user_name_and_surname())
         label_username.setStyleSheet("""
-            QLabel {
-                font-size: 16px;
-                font-weight: bold;
-            }
-        """)
+                QLabel {
+                    font-size: 16px;
+                    font-weight: bold;
+                }
+            """)
         # noinspection PyUnresolvedReferences
         label_username.setAlignment(Qt.AlignCenter)
         # noinspection PyUnresolvedReferences
@@ -62,11 +65,11 @@ class ScreenMain(QMainWindow):
 
         label_organization = QLabel(self.controller.get_user_organization())
         label_organization.setStyleSheet("""
-            QLabel {
-                font-size: 12px;
-                font-style: italic;
-            }
-        """)
+                QLabel {
+                    font-size: 12px;
+                    font-style: italic;
+                }
+            """)
         layout_username_and_organization.addWidget(label_organization)
 
         layout_username_and_organization.addSpacing(5)
@@ -85,5 +88,5 @@ class ScreenMain(QMainWindow):
         toolbar.addWidget(btn)
 
     def setCentralWidget(self, widget):
-        #TODO get rid of remeining widgets in memory
+        # TODO get rid of remeining widgets in memory
         super().setCentralWidget(widget)
