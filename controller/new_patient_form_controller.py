@@ -17,7 +17,9 @@ class NewPatientFormController:
             self.view.show_error(e)
 
     def add_new_patient(self, name, surname, date_of_birth, sex,  email, telephone, analgesics_allergy):
-        #TODO add checking for name, surname
+        if name == '' or surname == '':
+            self.view.show_message('Name and surname fields should not be empty')
+            return
         email_regex = r'^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$'
         if re.match(email_regex, email) is None:
             self.view.show_message('Invalid Email Address')
