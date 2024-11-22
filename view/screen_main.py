@@ -17,8 +17,8 @@ class ScreenMain(QMainWindow):
     def set_tool_bar(self):
         toolbar = QToolBar()
         toolbar.setMovable(False)
-        toolbar.setMinimumHeight(50)
-        toolbar.setMaximumHeight(75)
+        toolbar.setMinimumHeight(55)
+        toolbar.setMaximumHeight(65)
         # noinspection PyUnresolvedReferences
         self.addToolBar(Qt.TopToolBarArea, toolbar)
 
@@ -34,16 +34,21 @@ class ScreenMain(QMainWindow):
                     margin-bottom: 5px;
                 }
             """)
+        # noinspection PyUnresolvedReferences
+        widget_user_info.setSizePolicy(QSizePolicy.Minimum, QSizePolicy.Minimum)
 
         layout_user_info = QHBoxLayout()
         # noinspection PyUnresolvedReferences
-        layout_user_info.setAlignment(Qt.AlignCenter)
+        # layout_user_info.setAlignment(Qt.AlignCenter)
         widget_user_info.setLayout(layout_user_info)
 
         svg_img = QSvgWidget(Environment.resource_path(
             'static/images/logo_admin.svg')) if self.controller.get_user_role() == 'Admin' else QSvgWidget(
             Environment.resource_path('static/images/logo_dentist.svg'))
-        svg_img.setFixedSize(30, 30)
+        # noinspection PyUnresolvedReferences
+        svg_img.renderer().setAspectRatioMode(Qt.KeepAspectRatio)
+        svg_img.setMaximumWidth(75)
+
         layout_user_info.addWidget(svg_img)
 
         layout_username_and_organization = QVBoxLayout()
