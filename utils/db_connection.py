@@ -53,3 +53,22 @@ class DBConnection(metaclass=DBConnectionMeta):
             print(f"An error occurred while adding the patient: {str(e)}")
             return f"An error occurred while adding the patient: {str(e)}"
 
+
+
+    def addNewDoctor(self, name, surname, password, organisation_id):
+        new_doctor_data = {
+            "name": name,
+            "surname": surname,
+            "login": name+surname,
+            "password": password,
+            "role": "Dentist",
+            "organization_id": organisation_id
+        }
+
+        try:
+            response = self.client.table('users').insert(new_doctor_data).execute()
+            print(response)
+            return "Doctor added successfully!"
+        except Exception as e:
+            print(f"An error occurred while adding the doctor: {str(e)}")
+            return f"An error occurred while adding the doctor: {str(e)}"

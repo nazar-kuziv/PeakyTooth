@@ -2,6 +2,7 @@ from PySide6.QtWidgets import QApplication, QMainWindow, QWidget, QPushButton, Q
 from PySide6.QtCore import Qt, QEvent
 import sys
 from view.admin_patients_page import AdminPatientsPage
+from view.add_doctor_page import AddDoctorPage
 
 class AdminMenu(QMainWindow):
     def __init__(self):
@@ -35,12 +36,27 @@ class AdminMenu(QMainWindow):
         """)
         self.patients_button.clicked.connect(self.open_patients_menu)
 
+        self.add_doctor_button = QPushButton("Add Doctor")
+        self.add_doctor_button.setFixedSize(125, 200)
+        self.add_doctor_button.setStyleSheet("""
+                   background-color: #C0C0C0;
+                   border-radius: 10px;
+                   font-size: 16px;
+               """)
+        self.add_doctor_button.clicked.connect(self.add_doctor_form)
+
+
+
+
+
         button_layout.addStretch()
         button_layout.addWidget(self.doctors_button)
         button_layout.addSpacing(20)
         button_layout.addWidget(self.patients_button)
         button_layout.addStretch()
-
+        #button_layout.addSpacing(20)
+        button_layout.addWidget(self.add_doctor_button)
+        button_layout.addStretch()
 
         main_layout.addStretch()
         main_layout.addLayout(button_layout)
@@ -51,12 +67,12 @@ class AdminMenu(QMainWindow):
 
         self.doctors_button.installEventFilter(self)
         self.patients_button.installEventFilter(self)
-
+        self.add_doctor_button.installEventFilter(self)
 
     def eventFilter(self, source, event):
 
         if event.type() == QEvent.Enter:
-            if source in (self.doctors_button, self.patients_button):
+            if source in (self.doctors_button, self.patients_button,self.add_doctor_button):
 
                 source.setStyleSheet("""
                     background-color: #A9A9A9;
@@ -65,7 +81,7 @@ class AdminMenu(QMainWindow):
                     color: white;
                 """)
         elif event.type() == QEvent.Leave:
-            if source in (self.patients_button, self.doctors_button):
+            if source in (self.patients_button, self.doctors_button,self.add_doctor_button):
                 source.setStyleSheet("""
                            background-color: #C0C0C0;
                            border-radius: 10px;
@@ -76,3 +92,6 @@ class AdminMenu(QMainWindow):
 
     def open_patients_menu(self):
         self.setCentralWidget(AdminPatientsPage())
+
+    def add_doctor_form(self):
+        self.setCentralWidget(AddDoctorPage())
