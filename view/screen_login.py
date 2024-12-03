@@ -144,8 +144,8 @@ class ScreenLogin(QWidget):
         self.main_screen = ScreenMain()
         user_sesssion = UserSession()
         if user_sesssion.get_user_data()['role'] == 'Dentist':
-            self.main_screen.setCentralWidget(DentistMenu())
+            self.main_screen.setCentralWidget(DentistMenu(self.main_screen))
         elif user_sesssion.get_user_data()['role'] == 'Admin':
-            self.main_screen.setCentralWidget(AdminMenu())
+            self.main_screen.setCentralWidget(AdminMenu(self.main_screen))
         self.main_screen.show()
         self.close()

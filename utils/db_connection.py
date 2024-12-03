@@ -4,6 +4,7 @@ from dotenv import load_dotenv
 
 from utils.exceptions.db_unable_to_connect import DBUnableToConnect
 from utils.exceptions.db_unable_to_get_data import DBUnableToGetData
+from utils.user_session import UserSession
 
 load_dotenv()
 
@@ -52,4 +53,25 @@ class DBConnection(metaclass=DBConnectionMeta):
         except Exception as e:
             print(f"An error occurred while adding the patient: {str(e)}")
             return f"An error occurred while adding the patient: {str(e)}"
+
+    def find_patients(self, patient_id, name, surname, organization_id):
+        try:
+            query = self.client.table('patients') \
+                .select("*") \
+                .eq("organization_id", organization_id)
+
+            if patient_id :
+                query = query.eq("id", patient_id)
+            if name:
+                query = query.eq("patient_name", name)
+            if surname:
+                query = query.eq("patient_surname", surname)
+
+            response = query.execute()
+
+            return response.data
+
+        except Exception as e:
+            print(f"An error occurred while retrieving patients: {str(e)}")
+            raise DBUnableToGetData()
 

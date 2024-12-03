@@ -2,12 +2,16 @@ from PySide6.QtWidgets import QApplication, QMainWindow, QWidget, QPushButton, Q
 from PySide6.QtCore import Qt, QEvent
 import sys
 
+from controller.dentist_menu_controller import DentistMenuController
 from view.new_patient_form import NewPatientForm
+from view.patient_search import PatientSearchForm
 
 
 class DentistMenu(QMainWindow):
-    def __init__(self):
+    def __init__(self, main_screen):
         super().__init__()
+        self.controller = DentistMenuController(self)
+        self.main_screen = main_screen
         self.setWindowTitle("Dentist Menu")
         self.setFixedSize(800, 600)  # Increased window size
 
@@ -26,7 +30,7 @@ class DentistMenu(QMainWindow):
             border-radius: 10px;
             font-size: 16px;
         """)
-        self.add_patient_button.clicked.connect(self.open_add_patient_form)
+        self.add_patient_button.clicked.connect(self.controller.patients_button_clicked)
 
         self.find_patient_button = QPushButton("Find Patient")
         self.find_patient_button.setFixedSize(175, 200)  # Increased size to fit full text
@@ -35,6 +39,7 @@ class DentistMenu(QMainWindow):
             border-radius: 10px;
             font-size: 16px;
         """)
+        self.find_patient_button.clicked.connect(self.controller.patient_search_button_clicked)
 
         self.create_appointment_button = QPushButton("Create Appointment")
         self.create_appointment_button.setFixedSize(175, 200)  # Increased size to fit full text
@@ -100,7 +105,4 @@ class DentistMenu(QMainWindow):
                 """)
 
         return super().eventFilter(source, event)
-
-    def open_add_patient_form(self):
-         self.setCentralWidget(NewPatientForm())
 
