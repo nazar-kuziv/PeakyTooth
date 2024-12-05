@@ -7,9 +7,10 @@ class DentistMenuController:
         self.view = view
 
     def patients_button_clicked(self):
-        self.view.deleteLater()
         self.view.main_screen.setCentralWidget(NewPatientForm(self.view.main_screen))
+        self.view.deleteLater()
+
 
     def patient_search_button_clicked(self):
-        self.view.deleteLater()
         self.view.main_screen.setCentralWidget(PatientSearchForm(self.view.main_screen))
+        self.view.deleteLater()
