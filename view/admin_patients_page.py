@@ -6,7 +6,7 @@ class AdminPatientsPage(QMainWindow):
     def __init__(self):
         super().__init__()
         self.setWindowTitle("Admin Patiens Menu")
-        self.setFixedSize(600, 400)
+
 
         central_widget = QWidget()
         self.setCentralWidget(central_widget)

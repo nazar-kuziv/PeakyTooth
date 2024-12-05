@@ -10,6 +10,7 @@ from PySide6.QtWidgets import (
     QApplication,
     QWidget, QMessageBox,
 )
+import hashlib
 from PySide6.QtCore import Qt
 import sys
 
@@ -58,11 +59,15 @@ class AddDoctorPage(QWidget):
         msg.exec()
 
     def addDoctor(self):
+        hashed_password = hashlib.sha256(self.pass_field.text().encode()).hexdigest()
         self.controller.add_doctor(
             self.name_field.text(),
             self.surname_field.text(),
-            self.pass_field.text(),
+            hashed_password
+
+            #self.pass_field.text(),#TODO: hash password and UNHASH IT IN CONTROLLER
         )
+
 
 
 
