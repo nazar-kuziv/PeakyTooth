@@ -8,7 +8,7 @@ class AdminMenu(QMainWindow):
     def __init__(self):
         super().__init__()
         self.setWindowTitle("Admin Menu")
-        self.setFixedSize(500, 400)
+
 
 
         central_widget = QWidget()
