@@ -6,5 +6,5 @@ class AdminMenuController:
         self.view = view
 
     def patients_button_click(self):
-        self.view.deleteLater()
         self.view.main_screen.setCentralWidget(PatientSearchForm(self.view.main_screen))
+        self.view.deleteLater()
