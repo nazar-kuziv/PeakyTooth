@@ -1,9 +1,14 @@
 from PySide6.QtCore import QRegularExpression
 from PySide6.QtGui import QFont, Qt, QPixmap, QRegularExpressionValidator, QKeySequence, QShortcut
-from PySide6.QtWidgets import QWidget, QLineEdit, QVBoxLayout, QLabel, QMessageBox, QPushButton
+from PySide6.QtWidgets import QWidget, QLineEdit, QVBoxLayout, QLabel, QMessageBox
 
 from controller.controller_login import ControllerLogin
 from utils.environment import Environment
+from utils.user_session import UserSession
+from view.admin_menu import AdminMenu
+from view.dentist_menu import DentistMenu
+from view.screen_main import ScreenMain
+from view.widget.button_base import ButtonBase
 
 
 class ScreenLogin(QWidget):
@@ -88,7 +93,7 @@ class ScreenLogin(QWidget):
         self.layout.addWidget(self.password_error)
 
     def set_login_button(self):
-        login_button = QPushButton('Login')
+        login_button = ButtonBase('Login')
         login_button.setFixedSize(200, 60)
         login_button.setDefault(True)
         login_button.clicked.connect(self.login)
@@ -108,7 +113,7 @@ class ScreenLogin(QWidget):
         if not self.username.hasAcceptableInput():
             self.password_error.setText('')
             self.password_error.setVisible(False)
-            self.username_error.setText('Uncorrect username')
+            self.username_error.setText('Username required')
             self.username_error.setVisible(True)
             return False
         else:
@@ -118,7 +123,7 @@ class ScreenLogin(QWidget):
 
     def validate_password(self):
         if not self.password.hasAcceptableInput():
-            self.password_error.setText('Uncorrect password')
+            self.password_error.setText('Password required')
             self.password_error.setVisible(True)
             return False
         else:
@@ -129,13 +134,18 @@ class ScreenLogin(QWidget):
     def login(self):
         if not self.validate_username() or not self.validate_password():
             return
-        self.controller.login(self.username.text(), self.password.text())
+        if self.controller.login(self.username.text(), self.password.text()):
+            self.show_main_screen()
 
     def show_error(self, message):
         QMessageBox.critical(self, 'Error', message)
 
-    def show_primary_screen(self):
-        pass
-        # self.primary_screen = ScreenPrimary()
-        # self.primary_screen.show()
-        # self.close()
+    def show_main_screen(self):
+        self.main_screen = ScreenMain()
+        user_sesssion = UserSession()
+        if user_sesssion.get_user_data()['role'] == 'Dentist':
+            self.main_screen.setCentralWidget(DentistMenu(self.main_screen))
+        elif user_sesssion.get_user_data()['role'] == 'Admin':
+            self.main_screen.setCentralWidget(AdminMenu(self.main_screen))
+        self.main_screen.show()
+        self.close()
