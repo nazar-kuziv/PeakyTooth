@@ -4,9 +4,14 @@ import sys
 from view.admin_patients_page import AdminPatientsPage
 from view.add_doctor_page import AddDoctorPage
 
+from controller.admin_menu_controller import AdminMenuController
+
+
 class AdminMenu(QMainWindow):
-    def __init__(self):
+    def __init__(self, main_screen):
         super().__init__()
+        self.main_screen = main_screen
+        self.controller = AdminMenuController(self)
         self.setWindowTitle("Admin Menu")
 
 
@@ -54,9 +59,7 @@ class AdminMenu(QMainWindow):
         button_layout.addSpacing(20)
         button_layout.addWidget(self.patients_button)
         button_layout.addStretch()
-        #button_layout.addSpacing(20)
-        button_layout.addWidget(self.add_doctor_button)
-        button_layout.addStretch()
+
 
         main_layout.addStretch()
         main_layout.addLayout(button_layout)
@@ -67,12 +70,12 @@ class AdminMenu(QMainWindow):
 
         self.doctors_button.installEventFilter(self)
         self.patients_button.installEventFilter(self)
-        self.add_doctor_button.installEventFilter(self)
+
 
     def eventFilter(self, source, event):
 
         if event.type() == QEvent.Enter:
-            if source in (self.doctors_button, self.patients_button,self.add_doctor_button):
+            if source in (self.doctors_button, self.patients_button):
 
                 source.setStyleSheet("""
                     background-color: #A9A9A9;
@@ -80,18 +83,6 @@ class AdminMenu(QMainWindow):
                     font-size: 16px;
                     color: white;
                 """)
-        elif event.type() == QEvent.Leave:
-            if source in (self.patients_button, self.doctors_button,self.add_doctor_button):
-                source.setStyleSheet("""
-                           background-color: #C0C0C0;
-                           border-radius: 10px;
-                           font-size: 16px;
-                       """)
+
 
         return super().eventFilter(source, event)
-
-    def open_patients_menu(self):
-        self.setCentralWidget(AdminPatientsPage())
-
-    def add_doctor_form(self):
-        self.setCentralWidget(AddDoctorPage())

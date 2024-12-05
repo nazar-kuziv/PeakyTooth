@@ -18,7 +18,16 @@ class UserSession(metaclass=UserSessionMeta):
         self.role = role if role else ''
         self.organization_name = organization_name if organization_name else ''
         self.organization_id = organization_id
-
+        
+    def logout(self):
+        self.user_id = None
+        self.login = ''
+        self.name = ''
+        self.surname = ''
+        self.role = ''
+        self.organization_id = None
+        self.organization_name = ''
+        
     def get_user_data(self):
         return {
             "user_id": self.user_id,
