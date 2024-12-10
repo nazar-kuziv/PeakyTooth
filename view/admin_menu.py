@@ -2,9 +2,14 @@ from PySide6.QtWidgets import QApplication, QMainWindow, QWidget, QPushButton, Q
 from PySide6.QtCore import Qt, QEvent
 import sys
 
+from controller.admin_menu_controller import AdminMenuController
+
+
 class AdminMenu(QMainWindow):
-    def __init__(self):
+    def __init__(self, main_screen):
         super().__init__()
+        self.main_screen = main_screen
+        self.controller = AdminMenuController(self)
         self.setWindowTitle("Admin Menu")
         self.setFixedSize(500, 400)
 
@@ -32,6 +37,7 @@ class AdminMenu(QMainWindow):
             border-radius: 10px;
             font-size: 16px;
         """)
+        self.patients_button.clicked.connect(self.controller.patients_button_click)
 
 
         button_layout.addStretch()
