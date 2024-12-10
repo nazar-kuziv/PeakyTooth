@@ -62,7 +62,7 @@ class LayoutMouseVisualisation(QWidget):
         self.btn_layout.addWidget(self.purple_btn)
 
         self.eraser_btn = ButtonColor([255, 255, 255], self.controller.set_color, self.btn_layout)
-        self.eraser_btn.setIcon(QIcon('static/images/eraser.png'))
+        self.eraser_btn.setIcon(QIcon(Environment.resource_path('static/images/eraser.png')))
         self.eraser_btn.setIconSize(QSize(30, 30))
         self.btn_layout.addWidget(self.eraser_btn)
 
@@ -77,7 +77,6 @@ class LayoutMouseVisualisation(QWidget):
     def get_mouse_position(self, event):
         x = int(event.position().x())
         y = int(event.position().y())
-        print(f"x: {x}, y: {y}")
         self.update_img(self.controller.color_teeth(x, y, self.controller.current_color))
 
     def set_previous_image(self):
@@ -161,7 +160,7 @@ class ButtonColor(QPushButton):
         self.selected_style = f"""
             QPushButton {{
                 background-color: {color_css};
-                border: 3px solid #000000;  
+                border: 3px solid #EFEFEF;  
                 padding: 6px;  
                 border-radius: 5px;
                 font-weight: bold;
@@ -210,7 +209,7 @@ class ButtonUndo(QPushButton):
         super().__init__()
         self.clicked.connect(foo)
         self.setFixedSize(50, 50)
-        self.setIcon(QIcon('static/images/undo.png'))
+        self.setIcon(QIcon(Environment.resource_path('static/images/undo.png')))
         self.setIconSize(QSize(30, 30))
         self.setStyleSheet("""
             QPushButton {
@@ -233,7 +232,7 @@ class ButtonSave(QPushButton):
         super().__init__()
         self.clicked.connect(foo)
         self.setFixedSize(50, 50)
-        self.setIcon(QIcon('static/images/save.png'))
+        self.setIcon(QIcon(Environment.resource_path('static/images/save.png')))
         self.setIconSize(QSize(30, 30))
         self.setStyleSheet("""
             QPushButton {
