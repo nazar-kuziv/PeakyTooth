@@ -17,7 +17,8 @@ from controller.new_patient_form_controller import NewPatientFormController
 
 
 class NewPatientForm(QWidget):
-    def __init__(self):
+    def __init__(self, main_screen):
+        self.main_screen = main_screen
         super().__init__()
         self.setWindowTitle("New patient form")
         self.controller = NewPatientFormController(self)
@@ -54,7 +55,7 @@ class NewPatientForm(QWidget):
         self.form_layout.addRow("Allergic to Analgesics?", self.allergy_checkbox)
 
         self.submit_button = QPushButton("Submit")
-        self.submit_button.clicked.connect(self.add_new_patient)
+        self.submit_button.clicked.connect(self.controller.add_new_patient)
 
         main_layout = QVBoxLayout()
         main_layout.addLayout(self.form_layout)
@@ -67,12 +68,7 @@ class NewPatientForm(QWidget):
         msg = QMessageBox(self)
         msg.setIcon(QMessageBox.Information)  # You can use Information, Warning, or Critical
         msg.setText(message)
-
         msg.exec()
-
-    def add_new_patient(self):
-        self.controller.add_new_patient(self.name_field.text(), self.surname_field.text(),self.dob_field.text(),
-                                        self.sex_field.currentText(), self.email_field.text(), self.telephone_field.text(), self.allergy_checkbox.isChecked())
 
 
 
