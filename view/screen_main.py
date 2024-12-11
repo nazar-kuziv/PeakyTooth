@@ -12,10 +12,14 @@ class ScreenMain(QMainWindow):
     def __init__(self):
         super().__init__()
         self.controller = ControllerMain(self)
+        # noinspection PyUnresolvedReferences
+        self.setContextMenuPolicy(Qt.NoContextMenu)
         self.set_tool_bar()
 
     def set_tool_bar(self):
         toolbar = QToolBar()
+        # noinspection PyUnresolvedReferences
+        toolbar.setContextMenuPolicy(Qt.NoContextMenu)
         toolbar.setMovable(False)
         toolbar.setMinimumHeight(55)
         toolbar.setMaximumHeight(65)
