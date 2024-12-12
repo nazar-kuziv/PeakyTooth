@@ -5,6 +5,7 @@ from utils.db_connection import DBConnection
 from utils.exceptions.db_unable_to_connect import DBUnableToConnect
 from utils.exceptions.db_unable_to_get_data import DBUnableToGetData
 from utils.user_session import UserSession
+from view.screen_full_patient_info import PatientInfoScreen
 
 
 class PatientSearchController:
@@ -26,15 +27,7 @@ class PatientSearchController:
         msg.exec()
 
     def select_patient(self, patient_id):
-        user_session = UserSession()
-        if user_session.role == "Dentist":
-            self.view.deleteLater()
-            #TODO add view for updating patient
-        elif user_session.role == "Admin":
-            self.view.deleteLater()
-            #TODO add view for deleting patient
-
-
+        self.view.main_screen.setCentralWidget(PatientInfoScreen(self.view.main_screen, patient_id))
 
     def display_patients(self, patients):
         self.view.table.setRowCount(len(patients))
@@ -44,9 +37,18 @@ class PatientSearchController:
             self.view.table.setItem(row, 2, QTableWidgetItem(patient["patient_surname"]))  # First Name
             self.view.table.setItem(row, 3, QTableWidgetItem(patient["date_of_birth"]))  # Last Name
             self.view.table.setItem(row, 4, QTableWidgetItem(patient["telephone"]))
+
             select_button = QPushButton("Select")
-            select_button.clicked.connect(lambda patient_id=patient['id']: self.select_patient(patient_id))
+
+            select_button.clicked.connect(self.make_select_patient_method(patient["id"]))
+
             self.view.table.setCellWidget(row, 5, select_button)
+
+    def make_select_patient_method(self, patient_id):
+
+        def select():
+            self.select_patient(patient_id)
+        return select
 
     def search_patients(self):
         try:

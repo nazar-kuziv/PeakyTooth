@@ -1,3 +1,4 @@
+from view.appointment_form import AppointmentForm
 from view.new_patient_form import NewPatientForm
 from view.patient_search import PatientSearchForm
 
@@ -13,4 +14,8 @@ class DentistMenuController:
 
     def patient_search_button_clicked(self):
         self.view.main_screen.setCentralWidget(PatientSearchForm(self.view.main_screen))
+        self.view.deleteLater()
+
+    def create_appointment_button_clicked(self):
+        self.view.main_screen.setCentralWidget(AppointmentForm(self.view.main_screen))
         self.view.deleteLater()
