@@ -48,6 +48,8 @@ class DentistMenu(QMainWindow):
             border-radius: 10px;
             font-size: 16px;
         """)
+        self.create_appointment_button.clicked.connect(self.controller.create_appointment_button_clicked)
+
 
         self.delete_appointment_button = QPushButton("Delete Appointment")
         self.delete_appointment_button.setFixedSize(175, 200)  # Increased size to fit full text
