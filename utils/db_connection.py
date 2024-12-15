@@ -108,3 +108,11 @@ class DBConnection(metaclass=DBConnectionMeta):
         except Exception as e:
             print(f"An error occurred while retrieving the patient: {str(e)}")
             raise DBUnableToGetData()
+
+    def create_appointment(self, appointment_data):
+        try:
+            self.client.table("appointments").insert(appointment_data).execute()
+            return "Appointment created successfully!"
+        except Exception as e:
+            print(f"An error occurred while adding the appointment: {str(e)}")
+            raise DBUnableToConnect()

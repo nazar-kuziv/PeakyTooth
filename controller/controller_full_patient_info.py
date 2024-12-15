@@ -1,5 +1,6 @@
 from utils.db_connection import DBConnection
 from utils.user_session import UserSession
+from view.appointment_form import AppointmentForm
 from view.screen_edit_patient import ScreenEditPatient
 
 
@@ -28,3 +29,6 @@ class PatientInfoController:
         self.view.main_screen.setCentralWidget(ScreenEditPatient(self.view.main_screen, self.patient_id))
         self.view.deleteLater()
 
+    def create_appointment_button_clicked(self):
+        self.view.main_screen.setCentralWidget(AppointmentForm(self.view.main_screen, self.patient_id))
+        self.view.deleteLater()

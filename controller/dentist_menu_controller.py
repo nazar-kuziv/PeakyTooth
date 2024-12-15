@@ -17,5 +17,4 @@ class DentistMenuController:
         self.view.deleteLater()
 
     def create_appointment_button_clicked(self):
-        self.view.main_screen.setCentralWidget(AppointmentForm(self.view.main_screen))
-        self.view.deleteLater()
+        pass
