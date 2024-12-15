@@ -49,12 +49,13 @@ class PatientInfoScreen(QWidget):
         self.button_layout = QHBoxLayout()
 
         self.edit_button = QPushButton("Edit")
-        self.appointment_button = QPushButton("Add Appointment")
+        self.appointment_button = QPushButton("Create Appointment")
 
         self.edit_button.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Preferred)
         self.appointment_button.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Preferred)
 
         self.edit_button.clicked.connect(self.controller.edit_button_clicked)
+        self.appointment_button.clicked.connect(self.controller.create_appointment_button_clicked)
 
         self.button_layout.addWidget(self.edit_button)
         self.button_layout.addWidget(self.appointment_button)
