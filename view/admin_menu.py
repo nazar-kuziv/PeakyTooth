@@ -26,7 +26,6 @@ class AdminMenu(QMainWindow):
             border-radius: 10px;
             font-size: 16px;
         """)
-        # NOWE PODPIĘCIE PRZYCISKU
         self.doctors_button.clicked.connect(self.controller.doctors_button_click)
 
         self.patients_button = QPushButton("Patients")
