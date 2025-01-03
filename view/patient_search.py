@@ -9,12 +9,12 @@ from controller.patient_search_controller import PatientSearchController
 
 
 class PatientSearchForm(QWidget):
-    def __init__(self, main_screen):
+    def __init__(self, main_screen, controller):
         super().__init__()
         self.main_screen = main_screen
 
         self.setWindowTitle("Patient Search")
-        self.controller = PatientSearchController(self)
+        self.controller = controller(self)
 
         # Set up the form layout
         self.form_layout = QFormLayout()

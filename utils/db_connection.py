@@ -1,4 +1,5 @@
 import os
+from datetime import datetime
 
 from dotenv import load_dotenv
 from supabase import create_client, Client
@@ -116,3 +117,47 @@ class DBConnection(metaclass=DBConnectionMeta):
         except Exception as e:
             print(f"An error occurred while adding the appointment: {str(e)}")
             raise DBUnableToConnect()
+
+    def get_appointments_by_date(self, dentist_id, date):
+        try:
+            # Start query for appointments table
+            query = (
+                self.client.table('appointments')
+                .select(
+                    'id, date, time, dentist_id, type, notes, '
+                    'patients(patient_name, patient_surname)'  # Fetch related fields from patients
+                )
+            )
+
+            query = query.eq('dentist_id', dentist_id)
+
+            query = query.eq('date', date)
+
+            query = query.order('time, date')
+
+            response = query.execute()
+            return response
+        except Exception as e:
+            print ("An error occurred while retrieving the appointments: " + str(e))
+            raise DBUnableToGetData()
+
+    def get_appointment_by_id(self, appointment_id):
+        try:
+            # Correct the foreign key relationship and specify the appropriate fields
+            query = (
+                self.client
+                .table("appointments")
+                .select('id, date, time, dentist_id, type, notes, patient_id, '
+                        'patients(id, patient_name, patient_surname)')
+                .eq('id', appointment_id)
+            )
+            response = query.execute()
+
+
+
+            return response
+
+
+        except Exception as e:
+            print("An error occurred while retrieving the appointments: " + str(e))
+            raise DBUnableToGetData()
