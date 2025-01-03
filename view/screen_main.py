@@ -96,5 +96,7 @@ class ScreenMain(QMainWindow):
         btn.clicked.connect(ControllerMain.logout)
         toolbar.addWidget(btn)
 
+        self.showMaximized()
+
     def setCentralWidget(self, widget):
         super().setCentralWidget(widget)
