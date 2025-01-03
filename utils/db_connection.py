@@ -1,4 +1,5 @@
 import os
+import sys
 from supabase import create_client, Client
 from dotenv import load_dotenv
 
@@ -60,7 +61,7 @@ class DBConnection(metaclass=DBConnectionMeta):
                 .select("*") \
                 .eq("organization_id", organization_id)
 
-            if patient_id :
+            if patient_id:
                 query = query.eq("id", patient_id)
             if name:
                 query = query.eq("patient_name", name)
@@ -68,10 +69,81 @@ class DBConnection(metaclass=DBConnectionMeta):
                 query = query.eq("patient_surname", surname)
 
             response = query.execute()
-
             return response.data
 
         except Exception as e:
             print(f"An error occurred while retrieving patients: {str(e)}")
             raise DBUnableToGetData()
 
+    #
+    # -- NOWE METODY DLA OBSŁUGI KONT DENTYSTÓW --
+    #
+
+    def get_dentists(self, organization_id):
+        """
+        Pobiera listę użytkowników o roli 'Dentist' z danej organizacji
+        """
+        try:
+            response = self.client.table("users") \
+                .select("*") \
+                .eq("organization_id", organization_id) \
+                .eq("role", "Dentist") \
+                .execute()
+            return response.data
+        except Exception as e:
+            print(f"Error in get_dentists: {str(e)}")
+            raise DBUnableToGetData()
+
+    def create_dentist_account(self, login, password, name, surname, role, organization_id):
+        """
+        Tworzy konto dentysty w tabeli 'users'
+        """
+        new_user_data = {
+            "login": login,
+            "password": password,
+            "name": name,
+            "surname": surname,
+            "role": role,
+            "organization_id": organization_id
+        }
+        try:
+            response = self.client.table("users").insert(new_user_data).execute()
+            if response.error:
+                return f"Error creating dentist: {response.error}"
+            return "Dentist account created successfully!"
+        except Exception as e:
+            print(f"Error in create_dentist_account: {str(e)}")
+            return f"Error creating dentist: {str(e)}"
+
+    def update_dentist_account(self, user_id, updated_data: dict):
+        """
+        Aktualizuje dane konta dentysty w tabeli 'users'
+        updated_data np.:
+        {
+            "login": "...",
+            "password": "...",
+            "name": "...",
+            "surname": "..."
+        }
+        """
+        try:
+            response = self.client.table("users").update(updated_data).eq("userid", user_id).execute()
+            if response.error:
+                return f"Error updating dentist: {response.error}"
+            return "Dentist account updated successfully!"
+        except Exception as e:
+            print(f"Error in update_dentist_account: {str(e)}")
+            return f"Error updating dentist: {str(e)}"
+
+    def delete_dentist_account(self, user_id):
+        """
+        Usuwa konto dentysty o podanym user_id
+        """
+        try:
+            response = self.client.table("users").delete().eq("userid", user_id).execute()
+            if response.error:
+                return f"Error deleting dentist: {response.error}"
+            return "Dentist account deleted successfully!"
+        except Exception as e:
+            print(f"Error in delete_dentist_account: {str(e)}")
+            return f"Error deleting dentist: {str(e)}"
