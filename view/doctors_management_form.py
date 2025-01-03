@@ -19,6 +19,12 @@ class DoctorsManagementForm(QWidget):
         self.layout = QVBoxLayout()
         self.setLayout(self.layout)
 
+        # --- PRZYCISK BACK ---
+        self.button_back = QPushButton("Back")
+        self.button_back.clicked.connect(self.go_back)
+        self.layout.addWidget(self.button_back)
+        # ---------------------
+
         # Tabela z listą dentystów
         self.table = QTableWidget()
         self.table.setColumnCount(6)
@@ -54,7 +60,7 @@ class DoctorsManagementForm(QWidget):
         self.edit_group = QGroupBox("Edit Selected Dentist")
         self.edit_layout = QFormLayout()
 
-        self.edit_user_id = None  # przechowuje user_id aktualnie edytowanego dentysty
+        self.edit_user_id = None
         self.edit_login = QLineEdit()
         self.edit_name = QLineEdit()
         self.edit_surname = QLineEdit()
@@ -98,15 +104,12 @@ class DoctorsManagementForm(QWidget):
             delete_button = QPushButton("Delete")
             delete_button.clicked.connect(lambda _, uid=user_id: self.controller.delete_dentist(uid))
 
-            # Rozmieszczenie przycisków w jednej komórce
             actions_layout = QHBoxLayout()
             actions_layout.addWidget(delete_button)
             actions_layout.setContentsMargins(0, 0, 0, 0)
 
-            # Kontener do pokazania w komórce
             actions_widget = QWidget()
             actions_widget.setLayout(actions_layout)
-
             self.table.setCellWidget(row_idx, 5, actions_widget)
 
         self.clear_edit_fields()
@@ -151,3 +154,12 @@ class DoctorsManagementForm(QWidget):
 
     def show_error(self, message):
         QMessageBox.critical(self, 'Error', message)
+
+    def go_back(self):
+        """
+        Obsługa przycisku 'Back' - powrót do AdminMenu
+        """
+        # Importujemy AdminMenu lokalnie (w momencie wywołania tej funkcji)
+        from view.admin_menu import AdminMenu
+        self.main_screen.setCentralWidget(AdminMenu(self.main_screen))
+        self.deleteLater()

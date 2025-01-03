@@ -3,7 +3,6 @@ from PySide6.QtWidgets import (
     QTableWidget, QTableWidgetItem, QLabel, QApplication, QWidget, QFormLayout, QSizePolicy
 )
 from PySide6.QtCore import Qt
-import sys
 
 from controller.patient_search_controller import PatientSearchController
 
@@ -33,10 +32,15 @@ class PatientSearchForm(QWidget):
         self.search_button = QPushButton("Search")
         self.search_button.clicked.connect(self.controller.search_patients)
 
+        # BACK button
+        self.back_button = QPushButton("Back")
+        self.back_button.clicked.connect(self.go_back)
+
         # Add the form layout and search button into the main layout
         self.main_layout = QVBoxLayout()
         self.main_layout.addLayout(self.form_layout)
         self.main_layout.addWidget(self.search_button)
+        self.main_layout.addWidget(self.back_button)  # <--- dodany przycisk Back
 
         # Set up the table to display search results
         self.table = QTableWidget()
@@ -54,6 +58,27 @@ class PatientSearchForm(QWidget):
         self.main_layout.setStretch(2, 1)  # Table will stretch to take remaining space
 
         self.setLayout(self.main_layout)
-
-        # Set size policy to ensure the table expands with the window
         self.table.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
+
+    def show_message(self, message):
+        from PySide6.QtWidgets import QMessageBox
+        if message == '':
+            return
+        msg = QMessageBox(self)
+        msg.setIcon(QMessageBox.Information)
+        msg.setText(message)
+        msg.exec()
+
+    def go_back(self):
+
+        from utils.user_session import UserSession
+        role = UserSession().role
+
+        if role == "Admin":
+            from view.admin_menu import AdminMenu
+            self.main_screen.setCentralWidget(AdminMenu(self.main_screen))
+        else:
+            from view.dentist_menu import DentistMenu
+            self.main_screen.setCentralWidget(DentistMenu(self.main_screen))
+
+        self.deleteLater()

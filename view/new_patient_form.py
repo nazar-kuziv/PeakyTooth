@@ -7,11 +7,9 @@ from PySide6.QtWidgets import (
     QComboBox,
     QDateEdit,
     QCheckBox,
-    QApplication,
-    QWidget, QMessageBox,
+    QWidget, QMessageBox
 )
 from PySide6.QtCore import Qt
-import sys
 
 from controller.new_patient_form_controller import NewPatientFormController
 
@@ -25,11 +23,10 @@ class NewPatientForm(QWidget):
 
         # Initialize the form layout
         self.form_layout = QFormLayout()
-
-        # Add the input fields
         self.setForm()
 
     def setForm(self):
+        # Pola formularza
         self.name_field = QLineEdit()
         self.form_layout.addRow("Name:", self.name_field)
 
@@ -57,18 +54,36 @@ class NewPatientForm(QWidget):
         self.submit_button = QPushButton("Submit")
         self.submit_button.clicked.connect(self.controller.add_new_patient)
 
+        # BACK button
+        self.back_button = QPushButton("Back")
+        self.back_button.clicked.connect(self.go_back)
+
+        # Layout główny
         main_layout = QVBoxLayout()
         main_layout.addLayout(self.form_layout)
         main_layout.addWidget(self.submit_button)
+        main_layout.addWidget(self.back_button)  # <--- przycisk Back
+
         self.setLayout(main_layout)
 
     def show_message(self, message):
         if message == '':
             return
         msg = QMessageBox(self)
-        msg.setIcon(QMessageBox.Information)  # You can use Information, Warning, or Critical
+        msg.setIcon(QMessageBox.Information)
         msg.setText(message)
         msg.exec()
 
+    def go_back(self):
 
+        from utils.user_session import UserSession
+        role = UserSession().role
 
+        if role == "Admin":
+            from view.admin_menu import AdminMenu
+            self.main_screen.setCentralWidget(AdminMenu(self.main_screen))
+        else:
+            from view.dentist_menu import DentistMenu
+            self.main_screen.setCentralWidget(DentistMenu(self.main_screen))
+
+        self.deleteLater()
