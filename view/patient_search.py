@@ -1,6 +1,6 @@
 from PySide6.QtWidgets import (
     QMainWindow, QVBoxLayout, QHBoxLayout, QLineEdit, QPushButton,
-    QTableWidget, QTableWidgetItem, QLabel, QApplication, QWidget, QFormLayout, QSizePolicy
+    QTableWidget, QTableWidgetItem, QLabel, QApplication, QWidget, QGridLayout, QSizePolicy, QHeaderView
 )
 from PySide6.QtCore import Qt
 
@@ -15,47 +15,154 @@ class PatientSearchForm(QWidget):
         self.setWindowTitle("Patient Search")
         self.controller = PatientSearchController(self)
 
-        # Set up the form layout
-        self.form_layout = QFormLayout()
+        self.form_layout = QGridLayout()
+        self.form_layout.setContentsMargins(15, 15, 15, 15)
+        self.form_layout.setSpacing(10)
 
-        # Search fields for patient ID, name, and surname
         self.id_field = QLineEdit()
-        self.form_layout.addRow("Patient ID", self.id_field)
+        self.id_field.setPlaceholderText("Enter Patient ID")
+        self.id_field.setStyleSheet("""
+            QLineEdit {
+                padding: 10px;
+                border: 1px solid #ccc;
+                border-radius: 5px;
+                font-size: 14px;
+            }
+            QLineEdit:focus {
+                border: 1px solid #4CAF50;
+            }
+        """)
+        id_label = QLabel("<b>Patient ID:</b>")
+        id_label.setStyleSheet("""
+            QLabel {
+                font-size: 14px;
+                font-weight: bold;
+            }
+        """)
+        id_label.setAlignment(Qt.AlignRight | Qt.AlignVCenter)
+        self.form_layout.addWidget(id_label, 0, 0)
+        self.form_layout.addWidget(self.id_field, 0, 1)
 
         self.name_field = QLineEdit()
-        self.form_layout.addRow("Name:", self.name_field)
+        self.name_field.setPlaceholderText("Enter Name")
+        self.name_field.setStyleSheet("""
+            QLineEdit {
+                padding: 10px;
+                border: 1px solid #ccc;
+                border-radius: 5px;
+                font-size: 14px;
+            }
+            QLineEdit:focus {
+                border: 1px solid #4CAF50;
+            }
+        """)
+        name_label = QLabel("<b>Name:</b>")
+        name_label.setStyleSheet("""
+            QLabel {
+                font-size: 14px;
+                font-weight: bold;
+            }
+        """)
+        name_label.setAlignment(Qt.AlignRight | Qt.AlignVCenter)
+        self.form_layout.addWidget(name_label, 1, 0)
+        self.form_layout.addWidget(self.name_field, 1, 1)
 
         self.surname_field = QLineEdit()
-        self.form_layout.addRow("Surname:", self.surname_field)
+        self.surname_field.setPlaceholderText("Enter Surname")
+        self.surname_field.setStyleSheet("""
+            QLineEdit {
+                padding: 10px;
+                border: 1px solid #ccc;
+                border-radius: 5px;
+                font-size: 14px;
+            }
+            QLineEdit:focus {
+                border: 1px solid #4CAF50;
+            }
+        """)
+        surname_label = QLabel("<b>Surname:</b>")
+        surname_label.setStyleSheet("""
+            QLabel {
+                font-size: 14px;
+                font-weight: bold;
+            }
+        """)
+        surname_label.setAlignment(Qt.AlignRight | Qt.AlignVCenter)
+        self.form_layout.addWidget(surname_label, 2, 0)
+        self.form_layout.addWidget(self.surname_field, 2, 1)
 
-        # Search button
         self.search_button = QPushButton("Search")
+        self.search_button.setFixedSize(130, 40)
+        self.search_button.setStyleSheet("""
+            QPushButton {
+                background-color: #2196F3;
+                color: white;
+                border: none;
+                border-radius: 5px;
+                font-weight: bold;
+                font-size: 14px;
+            }
+            QPushButton:hover {
+                background-color: #0b7dda;
+            }
+            QPushButton:pressed {
+                background-color: #095a9d;
+            }
+        """)
         self.search_button.clicked.connect(self.controller.search_patients)
 
-        # BACK button
         self.back_button = QPushButton("Back")
+        self.back_button.setFixedSize(130, 40)
+        self.back_button.setStyleSheet("""
+            QPushButton {
+                background-color: #4CAF50;
+                color: white;
+                border: none;
+                border-radius: 5px;
+                font-weight: bold;
+                font-size: 14px;
+            }
+            QPushButton:hover {
+                background-color: #45a049;
+            }
+            QPushButton:pressed {
+                background-color: #3e8e41;
+            }
+        """)
         self.back_button.clicked.connect(self.go_back)
 
-        # Add the form layout and search button into the main layout
+        self.button_layout = QHBoxLayout()
+        self.button_layout.addWidget(self.search_button)
+        self.button_layout.addWidget(self.back_button)
+
         self.main_layout = QVBoxLayout()
         self.main_layout.addLayout(self.form_layout)
-        self.main_layout.addWidget(self.search_button)
-        self.main_layout.addWidget(self.back_button)  # <--- dodany przycisk Back
+        self.main_layout.addLayout(self.button_layout)
 
-        # Set up the table to display search results
         self.table = QTableWidget()
-        self.table.setColumnCount(6)  # Adjust columns as needed
-        self.table.setHorizontalHeaderLabels(["ID", "Name", "Surname", "Date of Birth", "Telephone", ""])
+        self.table.setColumnCount(5)
+        self.table.setHorizontalHeaderLabels(["ID", "Name", "Surname", "Date of Birth", "Telephone"])
         self.table.setSelectionBehavior(QTableWidget.SelectRows)
         self.table.setEditTriggers(QTableWidget.NoEditTriggers)
+        self.table.horizontalHeader().setSectionResizeMode(QHeaderView.Stretch)
+        self.table.setStyleSheet("""
+            QTableWidget {
+                border: 1px solid #ddd;
+                font-size: 14px;
+            }
+            QHeaderView::section {
+                background-color: #f2f2f2;
+                padding: 10px;
+                border: 1px solid #ddd;
+                font-weight: bold;
+            }
+        """)
 
-        # Add the table to the main layout
         self.main_layout.addWidget(self.table)
 
-        # Set the stretch factor for the table to 1 so it fills the remaining space
-        self.main_layout.setStretch(0, 0)  # Form layout won't stretch
-        self.main_layout.setStretch(1, 0)  # Button layout won't stretch
-        self.main_layout.setStretch(2, 1)  # Table will stretch to take remaining space
+        self.main_layout.setStretch(0, 0)
+        self.main_layout.setStretch(1, 0)
+        self.main_layout.setStretch(2, 1)
 
         self.setLayout(self.main_layout)
         self.table.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
@@ -70,7 +177,6 @@ class PatientSearchForm(QWidget):
         msg.exec()
 
     def go_back(self):
-
         from utils.user_session import UserSession
         role = UserSession().role
 

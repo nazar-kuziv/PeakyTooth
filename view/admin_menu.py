@@ -11,35 +11,59 @@ class AdminMenu(QMainWindow):
         self.main_screen = main_screen
         self.controller = AdminMenuController(self)
         self.setWindowTitle("Admin Menu")
-        self.setFixedSize(500, 400)
+        self.setFixedSize(800, 850)  # Increased window size for better layout
 
         central_widget = QWidget()
         self.setCentralWidget(central_widget)
         main_layout = QVBoxLayout()
         button_layout = QHBoxLayout()
-        central_widget.setStyleSheet("background-color: #D3D3D3;")
+        central_widget.setStyleSheet("background-color: #FFFFFF;")  # Modern background color
 
+        # Styled Doctors Button
         self.doctors_button = QPushButton("Doctors")
-        self.doctors_button.setFixedSize(125, 200)
+        self.doctors_button.setFixedSize(250, 400)
         self.doctors_button.setStyleSheet("""
-            background-color: #C0C0C0;
-            border-radius: 10px;
-            font-size: 16px;
+            QPushButton {
+                background-color: #C0C0C0;
+                color: white;
+                border: none;
+                border-radius: 15px;
+                font-size: 28px;
+                font-weight: bold;
+            }
+            QPushButton:hover {
+                background-color: #2980B9;
+            }
+            QPushButton:pressed {
+                background-color: #1F618D;
+            }
         """)
         self.doctors_button.clicked.connect(self.controller.doctors_button_click)
 
+        # Styled Patients Button
         self.patients_button = QPushButton("Patients")
-        self.patients_button.setFixedSize(125, 200)
+        self.patients_button.setFixedSize(250, 400)
         self.patients_button.setStyleSheet("""
-            background-color: #C0C0C0;
-            border-radius: 10px;
-            font-size: 16px;
+            QPushButton {
+                background-color: #C0C0C0;
+                color: white;
+                border: none;
+                border-radius: 15px;
+                font-size: 28px;
+                font-weight: bold;
+            }
+            QPushButton:hover {
+                background-color: #D35400;
+            }
+            QPushButton:pressed {
+                background-color: #BA4A00;
+            }
         """)
         self.patients_button.clicked.connect(self.controller.patients_button_click)
 
         button_layout.addStretch()
         button_layout.addWidget(self.doctors_button)
-        button_layout.addSpacing(20)
+        button_layout.addSpacing(40)  # Increased spacing between buttons
         button_layout.addWidget(self.patients_button)
         button_layout.addStretch()
 
@@ -49,24 +73,6 @@ class AdminMenu(QMainWindow):
 
         central_widget.setLayout(main_layout)
 
-        self.doctors_button.installEventFilter(self)
-        self.patients_button.installEventFilter(self)
 
     def eventFilter(self, source, event):
-        if event.type() == QEvent.Enter:
-            if source in (self.doctors_button, self.patients_button):
-                source.setStyleSheet("""
-                    background-color: #A9A9A9;
-                    border-radius: 10px;
-                    font-size: 16px;
-                    color: white;
-                """)
-        elif event.type() == QEvent.Leave:
-            if source in (self.doctors_button, self.patients_button):
-                source.setStyleSheet("""
-                    background-color: #C0C0C0;
-                    border-radius: 10px;
-                    font-size: 16px;
-                """)
-
         return super().eventFilter(source, event)

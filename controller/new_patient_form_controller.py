@@ -1,5 +1,6 @@
 import re
 import bcrypt
+from PySide6.QtCore import QDate
 from pyexpat.errors import messages
 
 from utils.db_connection import DBConnection
@@ -8,6 +9,7 @@ from utils.user_session import UserSession
 
 
 class NewPatientFormController:
+
     def __init__(self, view):
         self.view = view
 
@@ -15,9 +17,6 @@ class NewPatientFormController:
             self.db = DBConnection()
         except DBUnableToConnect as e:
             self.view.show_error(e)
-
-    import re
-    from utils.user_session import UserSession
 
     def add_new_patient(self):
         # Extract data from UI fields
@@ -50,6 +49,13 @@ class NewPatientFormController:
             name, surname, date_of_birth, sex, email, telephone, analgesics_allergy, user_session.organization_id
         )
 
-        # Show confirmation message
         self.view.show_message(message)
 
+        # Clear all fields after successful addition
+        self.view.name_field.clear()
+        self.view.surname_field.clear()
+        self.view.dob_field.setDate(QDate(2001, 1, 1))
+        self.view.sex_field.setCurrentIndex(0)
+        self.view.email_field.clear()
+        self.view.telephone_field.clear()
+        self.view.allergy_checkbox.setChecked(False)

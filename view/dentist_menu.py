@@ -1,11 +1,8 @@
 from PySide6.QtWidgets import QApplication, QMainWindow, QWidget, QPushButton, QVBoxLayout, QHBoxLayout
-from PySide6.QtCore import Qt, QEvent
+from PySide6.QtCore import Qt
 import sys
 
 from controller.dentist_menu_controller import DentistMenuController
-from view.new_patient_form import NewPatientForm
-from view.patient_search import PatientSearchForm
-
 
 class DentistMenu(QMainWindow):
     def __init__(self, main_screen):
@@ -13,51 +10,105 @@ class DentistMenu(QMainWindow):
         self.controller = DentistMenuController(self)
         self.main_screen = main_screen
         self.setWindowTitle("Dentist Menu")
-        self.setFixedSize(800, 600)  # Increased window size
+        self.setFixedSize(800, 850)
 
-        # Central widget setup
         central_widget = QWidget()
         self.setCentralWidget(central_widget)
         main_layout = QVBoxLayout()
         button_layout = QHBoxLayout()
-        central_widget.setStyleSheet("background-color: #D3D3D3;")
+        central_widget.setStyleSheet("background-color: #FFFFFF;")
 
-        # Buttons for Dentist Menu
+        # Definicje stylów dla poszczególnych przycisków
+        add_patient_style = """
+            QPushButton {
+                background-color: #C0C0C0;
+                color: white;
+                border: none;
+                border-radius: 15px;
+                font-size: 16px;
+                font-weight: bold;
+            }
+            QPushButton:hover {
+                background-color: #4CAF50; /* Zielony przy hover */
+            }
+            QPushButton:pressed {
+                background-color: #388E3C;
+            }
+        """
+
+        find_patient_style = """
+            QPushButton {
+                background-color: #C0C0C0;
+                color: white;
+                border: none;
+                border-radius: 15px;
+                font-size: 16px;
+                font-weight: bold;
+            }
+            QPushButton:hover {
+                background-color: #FF9800; /* Pomarańczowy przy hover */
+            }
+            QPushButton:pressed {
+                background-color: #F57C00;
+            }
+        """
+
+        create_appointment_style = """
+            QPushButton {
+                background-color: #C0C0C0;
+                color: white;
+                border: none;
+                border-radius: 15px;
+                font-size: 16px;
+                font-weight: bold;
+            }
+            QPushButton:hover {
+                background-color: #2196F3; /* Niebieski przy hover */
+            }
+            QPushButton:pressed {
+                background-color: #1976D2;
+            }
+        """
+
+        delete_appointment_style = """
+            QPushButton {
+                background-color: #C0C0C0;
+                color: white;
+                border: none;
+                border-radius: 15px;
+                font-size: 16px;
+                font-weight: bold;
+            }
+            QPushButton:hover {
+                background-color: #F44336; /* Czerwony przy hover */
+            }
+            QPushButton:pressed {
+                background-color: #D32F2F;
+            }
+        """
+
+        # Tworzenie przycisków z indywidualnymi stylami
         self.add_patient_button = QPushButton("Add New Patient")
-        self.add_patient_button.setFixedSize(175, 200)  # Increased size to fit full text
-        self.add_patient_button.setStyleSheet("""
-            background-color: #C0C0C0;
-            border-radius: 10px;
-            font-size: 16px;
-        """)
+        self.add_patient_button.setFixedSize(165, 265)
+        self.add_patient_button.setStyleSheet(add_patient_style)
         self.add_patient_button.clicked.connect(self.controller.patients_button_clicked)
 
         self.find_patient_button = QPushButton("Find Patient")
-        self.find_patient_button.setFixedSize(175, 200)  # Increased size to fit full text
-        self.find_patient_button.setStyleSheet("""
-            background-color: #C0C0C0;
-            border-radius: 10px;
-            font-size: 16px;
-        """)
+        self.find_patient_button.setFixedSize(165, 265)
+        self.find_patient_button.setStyleSheet(find_patient_style)
         self.find_patient_button.clicked.connect(self.controller.patient_search_button_clicked)
 
         self.create_appointment_button = QPushButton("Create Appointment")
-        self.create_appointment_button.setFixedSize(175, 200)  # Increased size to fit full text
-        self.create_appointment_button.setStyleSheet("""
-            background-color: #C0C0C0;
-            border-radius: 10px;
-            font-size: 16px;
-        """)
+        self.create_appointment_button.setFixedSize(165, 265)
+        self.create_appointment_button.setStyleSheet(create_appointment_style)
+        self.create_appointment_button.clicked.connect(self.controller.create_appointment_button_clicked)
 
         self.delete_appointment_button = QPushButton("Delete Appointment")
-        self.delete_appointment_button.setFixedSize(175, 200)  # Increased size to fit full text
-        self.delete_appointment_button.setStyleSheet("""
-            background-color: #C0C0C0;
-            border-radius: 10px;
-            font-size: 16px;
-        """)
+        self.delete_appointment_button.setFixedSize(165, 265)
+        self.delete_appointment_button.setStyleSheet(delete_appointment_style)
+        self.delete_appointment_button.clicked.connect(self.controller.delete_appointment_button_clicked)
 
-        # Adding buttons to layouts
+        # Dodawanie przycisków do layoutu
         button_layout.addStretch()
         button_layout.addWidget(self.add_patient_button)
         button_layout.addSpacing(20)
@@ -74,35 +125,9 @@ class DentistMenu(QMainWindow):
 
         central_widget.setLayout(main_layout)
 
-        # Installing event filters for hover effect
-        self.add_patient_button.installEventFilter(self)
-        self.find_patient_button.installEventFilter(self)
-        self.create_appointment_button.installEventFilter(self)
-        self.delete_appointment_button.installEventFilter(self)
-
-    def eventFilter(self, source, event):
-        # Hover effect for buttons
-        if event.type() == QEvent.Enter:
-            if source in (
-                self.add_patient_button, self.find_patient_button,
-                self.create_appointment_button, self.delete_appointment_button
-            ):
-                source.setStyleSheet("""
-                    background-color: #A9A9A9;
-                    border-radius: 10px;
-                    font-size: 16px;
-                    color: white;
-                """)
-        elif event.type() == QEvent.Leave:
-            if source in (
-                self.add_patient_button, self.find_patient_button,
-                self.create_appointment_button, self.delete_appointment_button
-            ):
-                source.setStyleSheet("""
-                    background-color: #C0C0C0;
-                    border-radius: 10px;
-                    font-size: 16px;
-                """)
-
-        return super().eventFilter(source, event)
-
+if __name__ == "__main__":
+    app = QApplication(sys.argv)
+    main_screen = QWidget()
+    dentist_menu = DentistMenu(main_screen)
+    dentist_menu.show()
+    sys.exit(app.exec())
