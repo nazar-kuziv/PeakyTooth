@@ -108,42 +108,64 @@ class DBConnection(metaclass=DBConnectionMeta):
         }
         try:
             response = self.client.table("users").insert(new_user_data).execute()
-            if response.error:
-                return f"Error creating dentist: {response.error}"
+
+            # Sprawdzenie błędu w odpowiedzi
+            if hasattr(response, 'status_code') and response.status_code not in [200, 201]:
+                return f"Error creating dentist: Status code {response.status_code}"
+            if hasattr(response, 'error_message') and response.error_message:
+                return f"Error creating dentist: {response.error_message}"
+
             return "Dentist account created successfully!"
         except Exception as e:
             print(f"Error in create_dentist_account: {str(e)}")
-            return f"Error creating dentist: {str(e)}"
+            return f"Unexpected error occurred: {str(e)}"
 
     def update_dentist_account(self, user_id, updated_data: dict):
         """
-        Aktualizuje dane konta dentysty w tabeli 'users'
-        updated_data np.:
-        {
-            "login": "...",
-            "password": "...",
-            "name": "...",
-            "surname": "..."
-        }
+        Aktualizuje dane konta dentysty w tabeli 'users', ale nie pozwala na zmianę imienia.
         """
         try:
+            # Pobranie obecnych danych użytkownika z bazy danych
+            current_user_response = self.client.table("users").select("name").eq("userid", user_id).execute()
+            if not current_user_response.data or len(current_user_response.data) == 0:
+                return "Error: Dentist account not found."
+
+            current_name = current_user_response.data[0].get("name", "")
+
+            # Sprawdzenie, czy pole 'name' jest inne od aktualnej wartości
+            if "name" in updated_data and updated_data["name"] != current_name:
+                return "Error: Changing the 'name' field is not allowed."
+
+            # Usunięcie pola 'name', jeśli zostało przekazane, aby nie zostało wysłane do API
+            if "name" in updated_data:
+                del updated_data["name"]
+
+            # Wysłanie zapytania UPDATE
             response = self.client.table("users").update(updated_data).eq("userid", user_id).execute()
-            if response.error:
-                return f"Error updating dentist: {response.error}"
+
+            if hasattr(response, 'status_code') and response.status_code not in [200, 204]:
+                return f"Error updating dentist: Status code {response.status_code}"
+            if hasattr(response, 'error_message') and response.error_message:
+                return f"Error updating dentist: {response.error_message}"
+
             return "Dentist account updated successfully!"
         except Exception as e:
             print(f"Error in update_dentist_account: {str(e)}")
             return f"Error updating dentist: {str(e)}"
 
     def delete_dentist_account(self, user_id):
-        """
-        Usuwa konto dentysty o podanym user_id
-        """
         try:
             response = self.client.table("users").delete().eq("userid", user_id).execute()
-            if response.error:
-                return f"Error deleting dentist: {response.error}"
+
+            if hasattr(response, 'status_code') and response.status_code not in [200, 204]:
+                return f"Error deleting dentist: Status code {response.status_code}"
+            if hasattr(response, 'error_message') and response.error_message:
+                return f"Error deleting dentist: {response.error_message}"
+
             return "Dentist account deleted successfully!"
         except Exception as e:
             print(f"Error in delete_dentist_account: {str(e)}")
-            return f"Error deleting dentist: {str(e)}"
+            return f"Unexpected error occurred: {str(e)}"
+
+
+

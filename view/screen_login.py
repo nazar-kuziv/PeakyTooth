@@ -1,6 +1,6 @@
 from PySide6.QtCore import QRegularExpression
 from PySide6.QtGui import QFont, Qt, QPixmap, QRegularExpressionValidator, QKeySequence, QShortcut
-from PySide6.QtWidgets import QWidget, QLineEdit, QVBoxLayout, QLabel, QMessageBox
+from PySide6.QtWidgets import QWidget, QLineEdit, QVBoxLayout, QLabel, QMessageBox, QSizePolicy
 
 from controller.controller_login import ControllerLogin
 from utils.environment import Environment
@@ -17,97 +17,129 @@ class ScreenLogin(QWidget):
         self.controller = ControllerLogin(self)
 
         self.setWindowTitle('Login')
-        self.setFixedSize(500, 400)
+        self.setFixedSize(550, 600)  # Powiększone wymiary okna dla lepszej widoczności
 
         self.layout = QVBoxLayout()
         self.setLayout(self.layout)
-        # noinspection PyUnresolvedReferences
-        self.layout.setAlignment(Qt.AlignHCenter)
+        self.layout.setAlignment(Qt.AlignCenter)
+        self.layout.setContentsMargins(20, 20, 20, 20)  # Dodanie marginesów
+        self.layout.setSpacing(15)  # Odstępy między elementami
 
-        self.label_font = QFont()
-        self.label_font.setPointSize(17)
-
-        self.error_font = QFont()
-        self.error_font.setPointSize(10)
+        self.label_font = QFont("Segoe UI", 17)  # Nowoczesna czcionka
+        self.error_font = QFont("Segoe UI", 10)
 
         self.set_logo()
-
         self.set_username_label()
-
         self.set_username_input()
-
         self.set_username_error()
-
         self.set_password_label()
-
         self.set_password_input()
-
         self.set_password_error()
-
         self.set_login_button()
-
         self.set_enter_for_login()
 
     def set_logo(self):
         logo_label = QLabel()
         logo = QPixmap(Environment.resource_path('static/images/icon.png'))
-        logo = logo.scaled(150, 150)
+        logo = logo.scaled(150, 150, Qt.KeepAspectRatio, Qt.SmoothTransformation)
         logo_label.setPixmap(logo)
-        # noinspection PyUnresolvedReferences
-        self.layout.addWidget(logo_label, alignment=Qt.AlignHCenter)
+        self.layout.addWidget(logo_label, alignment=Qt.AlignHCenter | Qt.AlignTop)
 
     def set_username_label(self):
         username_label = QLabel('Username')
         username_label.setFont(self.label_font)
-        self.layout.addWidget(username_label)
+        username_label.setStyleSheet("color: #333333;")
+        self.layout.addWidget(username_label, alignment=Qt.AlignLeft | Qt.AlignTop)
 
     def set_username_input(self):
         self.username = QLineEdit()
-        self.username.setFixedSize(300, 30)
+        self.username.setFixedSize(350, 50)  # Powiększenie pola tekstowego
+        self.username.setPlaceholderText("Enter your username")
+        self.username.setStyleSheet("""
+            QLineEdit {
+                border: 2px solid #CCCCCC;
+                border-radius: 10px;
+                padding: 10px;
+                background-color: #F5F5F5;
+                font-size: 16px;
+            }
+            QLineEdit:focus {
+                border: 2px solid #66AFE9;
+                background-color: #FFFFFF;
+            }
+        """)
         non_empty_validator = QRegularExpressionValidator(QRegularExpression(r"^(?!\s*$).+"), self.username)
         self.username.setValidator(non_empty_validator)
-        self.layout.addWidget(self.username)
+        self.layout.addWidget(self.username, alignment=Qt.AlignHCenter)
 
     def set_username_error(self):
         self.username_error = QLabel()
         self.username_error.setStyleSheet('color: red')
         self.username_error.setFont(self.error_font)
         self.username_error.setVisible(False)
-        self.layout.addWidget(self.username_error)
+        self.layout.addWidget(self.username_error, alignment=Qt.AlignHCenter)
+
+    def set_password_label(self):
+        password_label = QLabel('Password')
+        password_label.setFont(self.label_font)
+        password_label.setStyleSheet("color: #333333;")
+        self.layout.addWidget(password_label, alignment=Qt.AlignLeft | Qt.AlignTop)
 
     def set_password_input(self):
         self.password = QLineEdit()
-        # noinspection PyUnresolvedReferences
         self.password.setEchoMode(QLineEdit.Password)
-
-        self.password.setFixedSize(300, 30)
+        self.password.setFixedSize(350, 50)  # Powiększenie pola tekstowego
+        self.password.setPlaceholderText("Enter your password")
+        self.password.setStyleSheet("""
+            QLineEdit {
+                border: 2px solid #CCCCCC;
+                border-radius: 10px;
+                padding: 10px;
+                background-color: #F5F5F5;
+                font-size: 16px;
+            }
+            QLineEdit:focus {
+                border: 2px solid #66AFE9;
+                background-color: #FFFFFF;
+            }
+        """)
         non_empty_validator = QRegularExpressionValidator(QRegularExpression(r"^(?!\s*$).+"), self.password)
         self.password.setValidator(non_empty_validator)
-        self.layout.addWidget(self.password)
+        self.layout.addWidget(self.password, alignment=Qt.AlignHCenter)
 
     def set_password_error(self):
         self.password_error = QLabel()
         self.password_error.setStyleSheet('color: red')
         self.password_error.setFont(self.error_font)
         self.password_error.setVisible(False)
-        self.layout.addWidget(self.password_error)
+        self.layout.addWidget(self.password_error, alignment=Qt.AlignHCenter)
 
     def set_login_button(self):
         login_button = ButtonBase('Login')
-        login_button.setFixedSize(200, 60)
+        login_button.setFixedSize(250, 60)  # Zwiększenie przycisku
+        login_button.setStyleSheet("""
+            QPushButton {
+                background-color: #4CAF50;
+                color: white;
+                border: none;
+                border-radius: 10px;
+                font-size: 18px;
+            }
+            QPushButton:hover {
+                background-color: #45a049;
+            }
+            QPushButton:pressed {
+                background-color: #3e8e41;
+            }
+        """)
         login_button.setDefault(True)
         login_button.clicked.connect(self.login)
-        # noinspection PyUnresolvedReferences
-        self.layout.addWidget(login_button, alignment=Qt.AlignHCenter)
+        self.layout.addWidget(login_button, alignment=Qt.AlignHCenter | Qt.AlignTop)
+        self.layout.addSpacing(20)  # Dodanie odstępu poniżej przycisku
 
     def set_enter_for_login(self):
         enter_for_login = QShortcut(QKeySequence("Return"), self)
         enter_for_login.activated.connect(self.login)
-
-    def set_password_label(self):
-        password_label = QLabel('Password')
-        password_label.setFont(self.label_font)
-        self.layout.addWidget(password_label)
 
     def validate_username(self):
         if not self.username.hasAcceptableInput():
@@ -142,10 +174,10 @@ class ScreenLogin(QWidget):
 
     def show_main_screen(self):
         self.main_screen = ScreenMain()
-        user_sesssion = UserSession()
-        if user_sesssion.get_user_data()['role'] == 'Dentist':
+        user_session = UserSession()
+        if user_session.get_user_data()['role'] == 'Dentist':
             self.main_screen.setCentralWidget(DentistMenu(self.main_screen))
-        elif user_sesssion.get_user_data()['role'] == 'Admin':
+        elif user_session.get_user_data()['role'] == 'Admin':
             self.main_screen.setCentralWidget(AdminMenu(self.main_screen))
         self.main_screen.show()
         self.close()

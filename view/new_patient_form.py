@@ -1,5 +1,4 @@
 from PySide6.QtWidgets import (
-    QMainWindow,
     QPushButton,
     QVBoxLayout,
     QLineEdit,
@@ -7,7 +6,8 @@ from PySide6.QtWidgets import (
     QComboBox,
     QDateEdit,
     QCheckBox,
-    QWidget, QMessageBox
+    QWidget,
+    QMessageBox
 )
 from PySide6.QtCore import Qt
 
@@ -18,15 +18,73 @@ class NewPatientForm(QWidget):
     def __init__(self, main_screen):
         self.main_screen = main_screen
         super().__init__()
-        self.setWindowTitle("New patient form")
+        self.setWindowTitle("New Patient Form")
         self.controller = NewPatientFormController(self)
+        self.setStyleSheet("""
+            QWidget {
+                background-color: #F5F5F5;
+            }
+            QLabel {
+                font-size: 16px;
+            }
+            QLineEdit, QComboBox, QDateEdit {
+                border: 2px solid #C0C0C0;
+                border-radius: 10px;
+                padding: 8px;
+                font-size: 16px;
+            }
+            QCheckBox {
+                font-size: 16px;
+            }
+            QPushButton#submit_button {
+                background-color: #4CAF50;
+                color: white;
+                border: none;
+                border-radius: 10px;
+                padding: 10px 20px;
+                font-size: 18px;
+                font-weight: bold;
+            }
+            QPushButton#submit_button:hover {
+                background-color: #45A049;
+            }
+            QPushButton#submit_button:pressed {
+                background-color: #3E8E41;
+            }
+            QPushButton#back_button {
+                background-color: #2980B9;
+                color: white;
+                border: none;
+                border-radius: 10px;
+                padding: 10px 20px;
+                font-size: 18px;
+                font-weight: bold;
+            }
+            QPushButton#back_button:hover {
+                background-color: #1F618D;
+            }
+            QPushButton#back_button:pressed {
+                background-color: #154360;
+            }
+            QFormLayout {
+                spacing: 20px;
+            }
+        """)
 
-        # Initialize the form layout
         self.form_layout = QFormLayout()
+        self.form_layout.setContentsMargins(50, 50, 50, 50)
+        self.form_layout.setSpacing(20)
         self.setForm()
 
+        main_layout = QVBoxLayout()
+        main_layout.addLayout(self.form_layout)
+        main_layout.addSpacing(30)
+        main_layout.addWidget(self.submit_button)
+        main_layout.addWidget(self.back_button)
+        main_layout.addStretch()
+        self.setLayout(main_layout)
+
     def setForm(self):
-        # Pola formularza
         self.name_field = QLineEdit()
         self.form_layout.addRow("Name:", self.name_field)
 
@@ -52,19 +110,12 @@ class NewPatientForm(QWidget):
         self.form_layout.addRow("Allergic to Analgesics?", self.allergy_checkbox)
 
         self.submit_button = QPushButton("Submit")
+        self.submit_button.setObjectName("submit_button")
         self.submit_button.clicked.connect(self.controller.add_new_patient)
 
-        # BACK button
         self.back_button = QPushButton("Back")
+        self.back_button.setObjectName("back_button")
         self.back_button.clicked.connect(self.go_back)
-
-        # Layout główny
-        main_layout = QVBoxLayout()
-        main_layout.addLayout(self.form_layout)
-        main_layout.addWidget(self.submit_button)
-        main_layout.addWidget(self.back_button)  # <--- przycisk Back
-
-        self.setLayout(main_layout)
 
     def show_message(self, message):
         if message == '':
@@ -75,15 +126,12 @@ class NewPatientForm(QWidget):
         msg.exec()
 
     def go_back(self):
-
         from utils.user_session import UserSession
         role = UserSession().role
-
         if role == "Admin":
             from view.admin_menu import AdminMenu
             self.main_screen.setCentralWidget(AdminMenu(self.main_screen))
         else:
             from view.dentist_menu import DentistMenu
             self.main_screen.setCentralWidget(DentistMenu(self.main_screen))
-
         self.deleteLater()

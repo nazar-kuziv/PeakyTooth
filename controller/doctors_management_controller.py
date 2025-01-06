@@ -56,6 +56,8 @@ class DoctorsManagementController:
         self.view.show_message(message)
         self.load_dentists()  # odświeżenie tabeli
 
+        self.view.clear_add_fields()
+
     def delete_dentist(self, user_id):
         """
         Usuwa użytkownika o wskazanym user_id
