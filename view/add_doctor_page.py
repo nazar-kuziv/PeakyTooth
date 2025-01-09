@@ -36,7 +36,11 @@ class AddDoctorPage(QWidget):
         self.surname_field = QLineEdit()
         self.form_layout.addRow("Surname:", self.surname_field)
 
+        self.login_field = QLineEdit()
+        self.form_layout.addRow("Login:", self.login_field)
+
         self.pass_field = QLineEdit()
+        self.pass_field.setEchoMode(QLineEdit.Password)
         self.form_layout.addRow("Password:", self.pass_field)
 
 
@@ -53,17 +57,18 @@ class AddDoctorPage(QWidget):
         if message == '':
             return
         msg = QMessageBox(self)
-        msg.setIcon(QMessageBox.Information)  # You can use Information, Warning, or Critical
+        msg.setIcon(QMessageBox.Information)
         msg.setText(message)
 
         msg.exec()
 
     def addDoctor(self):
-        hashed_password = hashlib.sha256(self.pass_field.text().encode()).hexdigest()
+        # hashed_password = hashlib.sha256(self.pass_field.text().encode()).hexdigest()
         self.controller.add_doctor(
             self.name_field.text(),
             self.surname_field.text(),
-            hashed_password
+            self.pass_field.text(),
+            self.login_field.text(),
 
             #self.pass_field.text(),#TODO: hash password and UNHASH IT IN CONTROLLER
         )
