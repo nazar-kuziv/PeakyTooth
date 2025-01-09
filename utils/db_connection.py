@@ -1,4 +1,6 @@
+import base64
 import os
+from typing import Optional
 
 from dotenv import load_dotenv
 from supabase import create_client, Client
@@ -107,4 +109,100 @@ class DBConnection(metaclass=DBConnectionMeta):
             return response.data
         except Exception as e:
             print(f"An error occurred while retrieving the patient: {str(e)}")
+            raise DBUnableToGetData()
+
+    def get_appointment_details(self, organization_id: int, appointment_id: int):
+        try:
+            response = self.client.rpc('get_appointment_details', {
+                'organization_id_input': organization_id,
+                'appointment_id_input': appointment_id
+            }).execute()
+            return response.data
+        except Exception as e:
+            print(f"An error occurred while retrieving the appointment details: {str(e)}")
+            raise DBUnableToGetData()
+
+    def is_appointment_exsist(self, organization_id: int, appointment_id: int):
+        try:
+            response = self.client.rpc('is_appointment_exist_by_id', {
+                'organization_id_input': organization_id,
+                'appointment_id_input': appointment_id
+            }).execute()
+            return response.data
+        except Exception as e:
+            print(f"An error occurred while retrieving the appointment: {str(e)}")
+            raise DBUnableToGetData()
+
+    def alter_appointment_dental_diagram(self, appointment_id, dental_diagram):
+        try:
+            dental_diagram_encoded = base64.b64encode(dental_diagram).decode("utf-8")
+
+            response = self.client.table("appointments_details") \
+                .update({
+                "dental_diagram": dental_diagram_encoded
+            }) \
+                .eq("appointment_id", appointment_id) \
+                .execute()
+
+            return response.data
+        except Exception as e:
+            print(f"An error occurred while updating the appointment: {str(e)}")
+            raise DBUnableToGetData()
+
+    def alter_appointment_details_using_id(self, appointment_id: int, services: Optional[str],
+                                           symptoms_description: Optional[str],
+                                           mucous_membrane: Optional[str], periodontium: Optional[str],
+                                           hygiene: Optional[str],
+                                           oral_additional_info: Optional[str], dental_diagram: Optional[bytes],
+                                           additional_info: Optional[str],
+                                           medications: Optional[str]):
+        try:
+            dental_diagram_encoded = base64.b64encode(dental_diagram).decode("utf-8")
+            updates = {
+                "services": services,
+                "symptoms_description": symptoms_description,
+                "mucous_membrane": mucous_membrane,
+                "periodontium": periodontium,
+                "hygiene": hygiene,
+                "oral_additional_info": oral_additional_info,
+                "dental_diagram": dental_diagram_encoded,
+                "additional_info": additional_info,
+                "medications": medications
+            }
+            response = self.client.table("appointments_details").update(updates).eq("appointment_id",
+                                                                                    appointment_id).execute()
+            return response
+        except Exception as e:
+            print(f"An error occurred while updating the appointment: {str(e)}")
+            raise DBUnableToGetData()
+
+    def insert_appointment_details(self, appointment_id: int, services: Optional[str],
+                                   symptoms_description: Optional[str], mucous_membrane: Optional[str],
+                                   periodontium: Optional[str], hygiene: Optional[str],
+                                   oral_additional_info: Optional[str], dental_diagram: Optional[bytes],
+                                   additional_info: Optional[str], medications: Optional[str]):
+        try:
+            dental_diagram_encoded = (
+                base64.b64encode(dental_diagram).decode("utf-8") if dental_diagram else None
+            )
+
+            new_record = {
+                "appointment_id": appointment_id,
+                "services": services,
+                "symptoms_description": symptoms_description,
+                "mucous_membrane": mucous_membrane,
+                "periodontium": periodontium,
+                "hygiene": hygiene,
+                "oral_additional_info": oral_additional_info,
+                "dental_diagram": dental_diagram_encoded,
+                "additional_info": additional_info,
+                "medications": medications
+            }
+
+            response = self.client.table("appointments_details").insert(new_record).execute()
+
+            return response
+        except Exception as e:
+            print(f"An error occurred while inserting the appointment: {str(e)}")
+            # TO-DO Change exceptions
             raise DBUnableToGetData()
