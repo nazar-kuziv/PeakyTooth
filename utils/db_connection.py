@@ -1,4 +1,6 @@
 import os
+
+from select import select
 from supabase import create_client, Client
 from dotenv import load_dotenv
 
@@ -77,11 +79,11 @@ class DBConnection(metaclass=DBConnectionMeta):
 
 
 
-    def addNewDoctor(self, name, surname, password, organisation_id):
+    def addNewDoctor(self, name, surname, login, password, organisation_id):
         new_doctor_data = {
             "name": name,
             "surname": surname,
-            "login": name+surname,
+            "login": login,
             "password": password,
             "role": "Dentist",
             "organization_id": organisation_id
@@ -94,3 +96,45 @@ class DBConnection(metaclass=DBConnectionMeta):
         except Exception as e:
             print(f"An error occurred while adding the doctor: {str(e)}")
             return f"An error occurred while adding the doctor: {str(e)}"
+
+
+    def delete_doctor_by_id(self, doctor_id):
+        try:
+            response = self.client.table('users').delete().eq("userid", doctor_id).execute()
+            print(response)
+            return "deleted"
+        except Exception as e:
+            print(f"error {str(e)}")
+            return f"error {str(e)}"
+
+
+    def search_doctors(self, name, surname):
+        try:
+            query = self.client.table('users') \
+                .select("*") \
+                .eq("role", "Dentist")
+
+            if name:
+                query = query.ilike("name", f"%{name}%")
+            if surname:
+                query = query.ilike("surname", f"%{surname}%")
+
+
+            response = query.execute()
+
+
+            for doctor in response.data:
+               doctor["id"] = doctor.pop("user_id", doctor.get("id"))
+
+            return response.data
+
+        except Exception as e:
+            print(f"An error occurred while retrieving doctors: {str(e)}")
+            raise DBUnableToGetData()
+
+
+
+
+
+
+

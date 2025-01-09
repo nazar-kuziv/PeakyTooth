@@ -15,7 +15,14 @@ class AddDoctorController:
             except DBUnableToConnect as e:
                 self.view.show_error(e)
 
-        def add_doctor(self, name, surname, password):
+        def add_doctor(self, name, surname, password,login):
+
+            try:
+                password.strip()
+                print(f'password before hashing: {password}')
+            except:
+                pass
+
             if name == '' or surname == '':
                 self.view.show_message('Name and surname fields should not be empty')
                 return
@@ -24,7 +31,21 @@ class AddDoctorController:
                 self.view.show_message('Password should be at least 8 characters long')
                 return
 
+            try:
+                password_hash = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt()).decode('utf-8')
+            except Exception as e:
+                self.view.show_error(f"Error hashing password: {str(e)}")
+                return
+
 
             user_session = UserSession()
-            message = self.db.addNewDoctor(name, surname,password, user_session.organization_id)
-            self.view.show_message(message)
+            organization_id = user_session.organization_id
+
+            try:
+                message = self.db.addNewDoctor(name, surname,login, password_hash, organization_id)
+                self.view.show_message(message)
+            except Exception as e:
+                self.view.show_error(f"Error add doctor: {str(e)}")
+
+
+                #TODO error in adding an doctor
