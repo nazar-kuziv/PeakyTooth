@@ -100,7 +100,7 @@ class DBConnection(metaclass=DBConnectionMeta):
 
     def delete_doctor_by_id(self, doctor_id):
         try:
-            response = self.client.table('users').delete().eq("userid", doctor_id).execute()
+            response = self.client.table('users').delete().eq("login", doctor_id).execute()
             print(response)
             return "deleted"
         except Exception as e:
