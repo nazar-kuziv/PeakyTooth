@@ -53,7 +53,7 @@ class ScreenEditPatient(QWidget):
         self.main_layout.addWidget(self.submit_button)
 
     def show_error(self, message):
-        QMessageBox.critical(self, 'Error', message)
+        QMessageBox.critical(self, 'Error', str(message))
 
     def submit(self):
         response = self.controller.alter_patient_data(self.name_field.get_text(), self.surname_field.get_text(),
