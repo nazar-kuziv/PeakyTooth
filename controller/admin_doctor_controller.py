@@ -1,6 +1,8 @@
 # controller/admin_doctor_controller.py
 
 from utils.db_connection import DBConnection
+from view.admin_doctor_page import AdminDoctorPage
+
 
 class DoctorController:
     def __init__(self, view):
@@ -27,6 +29,7 @@ class DoctorController:
           #  us_id = self.view.id_field.text()
             doctors = self.db.search_doctors(name, surname)
             self.view.populate_table(doctors)
+            #self.table.resizeColumnsToContents()
         except Exception as e:
             self.view.show_error(f"Error searching doctors: {str(e)}")
 
@@ -39,3 +42,7 @@ class DoctorController:
             self.view.populate_table(self.get_doctors())  # Refresh the table
         except Exception as e:
             self.view.show_error(f"Error deleting doctors: {str(e)}")
+
+    def doctor_page_click(self):
+        self.view.main_screen.setCentralWidget(AdminDoctorPage(self.view.main_screen))
+        self.view.deleteLater()

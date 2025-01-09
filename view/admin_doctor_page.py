@@ -1,8 +1,6 @@
-# view/admin_doctor_page.py
-
 from PySide6.QtWidgets import (
     QVBoxLayout, QHBoxLayout, QLineEdit, QPushButton,
-    QTableWidget, QTableWidgetItem, QFormLayout, QFrame, QWidget, QApplication, QCheckBox, QMessageBox
+    QTableWidget, QTableWidgetItem, QFormLayout, QFrame, QWidget, QApplication, QCheckBox, QMessageBox, QRadioButton, QButtonGroup
 )
 from PySide6.QtCore import Qt, QEvent
 import sys
@@ -15,7 +13,6 @@ class AdminDoctorPage(QWidget):
         self.setWindowTitle("Doctor Admin Page")
         from controller.admin_doctor_controller import DoctorController  # Local import to avoid circular import
         self.controller = DoctorController(self)
-
 
         self.main_layout = QHBoxLayout()
 
@@ -52,9 +49,10 @@ class AdminDoctorPage(QWidget):
 
         self.table = QTableWidget()
         self.table.setColumnCount(5)
-        self.table.setHorizontalHeaderLabels([ "Name", "Surname", "Login", "Password", "Select"])
+        self.table.setHorizontalHeaderLabels(["Name", "Surname", "Login", "Password", "Select"])
         self.table.setSelectionBehavior(QTableWidget.SelectRows)
         self.table.setEditTriggers(QTableWidget.NoEditTriggers)
+        self.table.setColumnWidth(3, 500)
         self.right_layout.addWidget(self.table)
 
         self.edit_doctor_button = QPushButton("Edit Doctor")
@@ -74,6 +72,9 @@ class AdminDoctorPage(QWidget):
         self.add_doctor_button.installEventFilter(self)
         self.delete_doctor_button.installEventFilter(self)
 
+        self.radio_button_group = QButtonGroup(self)
+        self.radio_button_group.setExclusive(True)
+
     def eventFilter(self, source, event):
         if event.type() == QEvent.Enter:
             if source == self.search_button:
@@ -82,6 +83,8 @@ class AdminDoctorPage(QWidget):
                 source.setStyleSheet("background-color: #006400; color: white;")
             elif source == self.delete_doctor_button:
                 source.setStyleSheet("background-color: #8B0000; color: white;")
+            elif source == self.edit_doctor_button:
+                source.setStyleSheet("background-color: #00008B; color: white;")
         elif event.type() == QEvent.Leave:
             if source == self.search_button:
                 source.setStyleSheet("background-color: #C0C0C0;")
@@ -89,11 +92,11 @@ class AdminDoctorPage(QWidget):
                 source.setStyleSheet("background-color: green; color: white;")
             elif source == self.delete_doctor_button:
                 source.setStyleSheet("background-color: red; color: white;")
+            elif source == self.edit_doctor_button:
+                source.setStyleSheet("background-color: blue; color: white;")
         return super().eventFilter(source, event)
-
     def show_error(self, message):
         QMessageBox.critical(self, "Error", message)
-
 
 
     def populate_table(self, doctors):
@@ -103,25 +106,25 @@ class AdminDoctorPage(QWidget):
             self.table.setItem(row, 1, QTableWidgetItem(doctor["surname"]))
             self.table.setItem(row, 2, QTableWidgetItem(doctor["login"]))
             self.table.setItem(row, 3, QTableWidgetItem(doctor["password"]))
-            checkbox = QCheckBox()
-            checkbox.stateChanged.connect(self.handle_checkbox_state_change)
+
+            radio_button = QRadioButton()
+            radio_button.login = doctor["login"]  # Ensure doctor_id is set correctly
+            self.radio_button_group.addButton(radio_button, row)
+            radio_button.toggled.connect(self.handle_radio_button_toggled)
 
             widget = QWidget()
             layout = QHBoxLayout(widget)
-            layout.addWidget(checkbox)
+            layout.addWidget(radio_button)
             layout.setAlignment(Qt.AlignCenter)
             layout.setContentsMargins(0, 0, 0, 0)
             widget.setLayout(layout)
 
             self.table.setCellWidget(row, 4, widget)
 
-
-
-
-    def handle_checkbox_state_change(self, state):
-        checkbox = self.sender()
-        doctor_id = checkbox.doctor_id
-        if state == Qt.Checked:
+    def handle_radio_button_toggled(self, checked):
+        radio_button = self.sender()
+        doctor_id = radio_button.doctor_id
+        if checked:
             print(f"Doctor {doctor_id} selected")
         else:
             print(f"Doctor {doctor_id} deselected")
@@ -129,9 +132,11 @@ class AdminDoctorPage(QWidget):
     def delete_selected_doctors(self):
         selected_doctor_ids = []
         for row in range(self.table.rowCount()):
-            checkbox = self.table.cellWidget(row, 6)
-            if checkbox and checkbox.isChecked():
-                selected_doctor_ids.append(checkbox.doctor_id)
+            widget = self.table.cellWidget(row, 4)
+            if widget:
+                radio_button = widget.findChild(QRadioButton)
+                if radio_button and radio_button.isChecked():
+                    selected_doctor_ids.append(radio_button.doctor_id)
         if selected_doctor_ids:
             self.controller.delete_selected_doctors(selected_doctor_ids)
         else:
