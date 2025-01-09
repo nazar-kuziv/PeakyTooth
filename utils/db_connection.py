@@ -108,7 +108,7 @@ class DBConnection(metaclass=DBConnectionMeta):
             return f"error {str(e)}"
 
 
-    def search_doctors(self, name, surname):
+    def search_doctors(self, name, surname,patient_id):
         try:
             query = self.client.table('users') \
                 .select("*") \
@@ -116,8 +116,13 @@ class DBConnection(metaclass=DBConnectionMeta):
 
             if name:
                 query = query.ilike("name", f"%{name}%")
+
             if surname:
                 query = query.ilike("surname", f"%{surname}%")
+
+
+
+
 
 
             response = query.execute()

@@ -48,11 +48,11 @@ class AdminDoctorPage(QWidget):
         self.right_layout.addWidget(self.add_doctor_button, alignment=Qt.AlignTop | Qt.AlignRight)
 
         self.table = QTableWidget()
-        self.table.setColumnCount(5)
-        self.table.setHorizontalHeaderLabels(["Name", "Surname", "Login", "Password", "Select"])
+        self.table.setColumnCount(6)
+        self.table.setHorizontalHeaderLabels(["user_id","Name", "Surname", "Login", "Password", "Select"])
         self.table.setSelectionBehavior(QTableWidget.SelectRows)
         self.table.setEditTriggers(QTableWidget.NoEditTriggers)
-        self.table.setColumnWidth(3, 500)
+       # self.table.setColumnWidth(4, 500)
         self.right_layout.addWidget(self.table)
 
         self.edit_doctor_button = QPushButton("Edit Doctor")
@@ -71,6 +71,7 @@ class AdminDoctorPage(QWidget):
         self.search_button.installEventFilter(self)
         self.add_doctor_button.installEventFilter(self)
         self.delete_doctor_button.installEventFilter(self)
+        self.edit_doctor_button.installEventFilter(self)
 
         self.radio_button_group = QButtonGroup(self)
         self.radio_button_group.setExclusive(True)
@@ -102,10 +103,11 @@ class AdminDoctorPage(QWidget):
     def populate_table(self, doctors):
         self.table.setRowCount(len(doctors))
         for row, doctor in enumerate(doctors):
-            self.table.setItem(row, 0, QTableWidgetItem(doctor["name"]))
-            self.table.setItem(row, 1, QTableWidgetItem(doctor["surname"]))
-            self.table.setItem(row, 2, QTableWidgetItem(doctor["login"]))
-            self.table.setItem(row, 3, QTableWidgetItem(doctor["password"]))
+            self.table.setItem(row, 0, QTableWidgetItem(str(doctor["userid"])))
+            self.table.setItem(row, 1, QTableWidgetItem(doctor["name"]))
+            self.table.setItem(row, 2, QTableWidgetItem(doctor["surname"]))
+            self.table.setItem(row, 3, QTableWidgetItem(doctor["login"]))
+            self.table.setItem(row, 4, QTableWidgetItem(doctor["password"]))
 
             radio_button = QRadioButton()
             radio_button.login = doctor["login"]  # Ensure doctor_id is set correctly
@@ -119,20 +121,25 @@ class AdminDoctorPage(QWidget):
             layout.setContentsMargins(0, 0, 0, 0)
             widget.setLayout(layout)
 
-            self.table.setCellWidget(row, 4, widget)
+            self.table.setCellWidget(row, 5, widget)
+        self.table.resizeColumnsToContents()
+        self.table.resizeRowsToContents()
 
     def handle_radio_button_toggled(self, checked):
         radio_button = self.sender()
-        doctor_id = radio_button.doctor_id
-        if checked:
-            print(f"Doctor {doctor_id} selected")
+        doctor_id = getattr(radio_button, 'doctor_id', None)
+        if doctor_id is not None:
+            if checked:
+                print(f"Doctor {doctor_id} selected")
+            else:
+                print(f"Doctor {doctor_id} deselected")
         else:
-            print(f"Doctor {doctor_id} deselected")
+            print("No doctor ID found")
 
     def delete_selected_doctors(self):
         selected_doctor_ids = []
         for row in range(self.table.rowCount()):
-            widget = self.table.cellWidget(row, 4)
+            widget = self.table.cellWidget(row, 5)
             if widget:
                 radio_button = widget.findChild(QRadioButton)
                 if radio_button and radio_button.isChecked():
@@ -141,9 +148,3 @@ class AdminDoctorPage(QWidget):
             self.controller.delete_selected_doctors(selected_doctor_ids)
         else:
             self.show_error("No doctors selected for deletion.")
-
-if __name__ == "__main__":
-    app = QApplication(sys.argv)
-    window = AdminDoctorPage(None)
-    window.show()
-    sys.exit(app.exec())

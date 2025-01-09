@@ -26,10 +26,10 @@ class DoctorController:
         try:
             name = self.view.name_field.text()
             surname = self.view.surname_field.text()
-          #  us_id = self.view.id_field.text()
-            doctors = self.db.search_doctors(name, surname)
+
+            doctors = self.db.search_doctors(name, surname,0)
+            print(doctors)
             self.view.populate_table(doctors)
-            #self.table.resizeColumnsToContents()
         except Exception as e:
             self.view.show_error(f"Error searching doctors: {str(e)}")
 
