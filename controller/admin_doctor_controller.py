@@ -1,8 +1,12 @@
-# controller/admin_doctor_controller.py
+
+
+import secrets
+import string
+import bcrypt
+from PySide6.QtWidgets import QMessageBox
 
 from utils.db_connection import DBConnection
 from view.admin_doctor_page import AdminDoctorPage
-
 
 class DoctorController:
     def __init__(self, view):
@@ -26,23 +30,38 @@ class DoctorController:
         try:
             name = self.view.name_field.text()
             surname = self.view.surname_field.text()
-
-            doctors = self.db.search_doctors(name, surname,0)
-            print(doctors)
+            doctors = self.db.search_doctors(name, surname)
             self.view.populate_table(doctors)
         except Exception as e:
             self.view.show_error(f"Error searching doctors: {str(e)}")
 
 
-    def delete_selected_doctors(self, doctor_ids):
+
+    def update_doctor_password(self, doctor_id):
         try:
-            for doctor_id in doctor_ids:
-                self.db.delete_doctor_by_id(doctor_id)
-            self.view.show_message("Selected doctors deleted successfully.")
-            self.view.populate_table(self.get_doctors())  # Refresh the table
+            #new_password = self.generate_random_password()
+            #hashed_password = bcrypt.hashpw(new_password.encode('utf-8'), bcrypt.gensalt()).decode('utf-8')
+            self.db.update_doctor_password(doctor_id, "NULL")
+
         except Exception as e:
-            self.view.show_error(f"Error deleting doctors: {str(e)}")
+            self.view.show_error(f"Error updating password: {str(e)}")
+
+    def generate_random_password(self, length=12):
+        characters = string.ascii_letters + string.digits + string.punctuation
+        return ''.join(secrets.choice(characters) for i in range(length))
+
+    def delete_doctor_by_id(self, doctor_id):
+        try:
+            response = self.db.delete_doctor_by_id(doctor_id)
+            return response
+        except Exception as e:
+            self.view.show_error(f"Error deleting doctor: {str(e)}")
 
     def doctor_page_click(self):
         self.view.main_screen.setCentralWidget(AdminDoctorPage(self.view.main_screen))
         self.view.deleteLater()
+
+
+
+    def show_message(self, message):
+        QMessageBox.information(self, "Information", message)

@@ -108,11 +108,12 @@ class DBConnection(metaclass=DBConnectionMeta):
             return f"error {str(e)}"
 
 
-    def search_doctors(self, name, surname,patient_id):
+    def search_doctors(self, name, surname):
         try:
             query = self.client.table('users') \
                 .select("*") \
-                .eq("role", "Dentist")
+                .eq("role", "Dentist")\
+                .neq("password", "NULL")
 
             if name:
                 query = query.ilike("name", f"%{name}%")
@@ -142,4 +143,12 @@ class DBConnection(metaclass=DBConnectionMeta):
 
 
 
+
+    def update_doctor_password(self, doctor_id, hashed_password):
+        try:
+            response = self.client.table('users').update({"password": hashed_password}).eq("userid", doctor_id).execute()
+            print(response)
+        except Exception as e:
+            print(f"Error updating doctor password: {str(e)}")
+            raise
 

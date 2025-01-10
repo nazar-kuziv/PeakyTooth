@@ -10,6 +10,7 @@ class AdminDoctorPage(QWidget):
         super().__init__()
         self.main_screen = main_screen
 
+
         self.setWindowTitle("Doctor Admin Page")
         from controller.admin_doctor_controller import DoctorController  # Local import to avoid circular import
         self.controller = DoctorController(self)
@@ -55,6 +56,7 @@ class AdminDoctorPage(QWidget):
        # self.table.setColumnWidth(4, 500)
         self.right_layout.addWidget(self.table)
 
+
         self.edit_doctor_button = QPushButton("Edit Doctor")
         self.edit_doctor_button.setStyleSheet("background-color: blue; color: white;")
         self.right_layout.addWidget(self.edit_doctor_button, alignment=Qt.AlignBottom | Qt.AlignRight)
@@ -75,6 +77,7 @@ class AdminDoctorPage(QWidget):
 
         self.radio_button_group = QButtonGroup(self)
         self.radio_button_group.setExclusive(True)
+        self.controller.search_doctors()
 
     def eventFilter(self, source, event):
         if event.type() == QEvent.Enter:
@@ -99,6 +102,7 @@ class AdminDoctorPage(QWidget):
     def show_error(self, message):
         QMessageBox.critical(self, "Error", message)
 
+    # view/admin_doctor_page.py
 
     def populate_table(self, doctors):
         self.table.setRowCount(len(doctors))
@@ -110,7 +114,7 @@ class AdminDoctorPage(QWidget):
             self.table.setItem(row, 4, QTableWidgetItem(doctor["password"]))
 
             radio_button = QRadioButton()
-            radio_button.login = doctor["login"]  # Ensure doctor_id is set correctly
+            radio_button.doctor_id = doctor["userid"]  # Set doctor_id correctly
             self.radio_button_group.addButton(radio_button, row)
             radio_button.toggled.connect(self.handle_radio_button_toggled)
 
@@ -136,6 +140,11 @@ class AdminDoctorPage(QWidget):
         else:
             print("No doctor ID found")
 
+
+
+    def show_message(self, message):
+        QMessageBox.information(self, "Information", message)
+
     def delete_selected_doctors(self):
         selected_doctor_ids = []
         for row in range(self.table.rowCount()):
@@ -143,8 +152,11 @@ class AdminDoctorPage(QWidget):
             if widget:
                 radio_button = widget.findChild(QRadioButton)
                 if radio_button and radio_button.isChecked():
-                    selected_doctor_ids.append(radio_button.doctor_id)
+                    selected_doctor_ids.append(radio_button.doctor_id)  # Ensure doctor_id is set correctly
         if selected_doctor_ids:
-            self.controller.delete_selected_doctors(selected_doctor_ids)
+            for doctor_id in selected_doctor_ids:
+                self.controller.update_doctor_password(doctor_id)
+            self.controller.view.show_message("Selected doctors' passwords updated successfully.")
+            self.controller.view.populate_table(self.controller.search_doctors())
         else:
-            self.show_error("No doctors selected for deletion.")
+            self.show_error("No doctors selected for password update.")
