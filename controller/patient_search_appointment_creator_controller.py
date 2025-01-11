@@ -1,14 +1,14 @@
 from PySide6.QtWidgets import QMessageBox, QTableWidgetItem, QPushButton
 
-
+from controller.controller_appointment_form import AppointmentFormController
 from utils.db_connection import DBConnection
 from utils.exceptions.db_unable_to_connect import DBUnableToConnect
 from utils.exceptions.db_unable_to_get_data import DBUnableToGetData
 from utils.user_session import UserSession
-from view.screen_full_patient_info import PatientInfoScreen
+from view.appointment_form import AppointmentForm
 
 
-class PatientSearchController:
+class PatientSearchAppointmentCreatorController:
     def __init__(self, view):
         self.view = view
 
@@ -27,7 +27,7 @@ class PatientSearchController:
         msg.exec()
 
     def select_patient(self, patient_id):
-        self.view.main_screen.setCentralWidget(PatientInfoScreen(self.view.main_screen, patient_id))
+        self.view.main_screen.setCentralWidget(AppointmentForm(self.view.main_screen, patient_id, AppointmentFormController))
 
     def display_patients(self, patients):
         self.view.table.setRowCount(len(patients))
@@ -48,6 +48,7 @@ class PatientSearchController:
 
         def select():
             self.select_patient(patient_id)
+
         return select
 
     def search_patients(self):
@@ -56,7 +57,8 @@ class PatientSearchController:
             organization_id = user_session.organization_id
 
             # Query the database for matching patients
-            patients = self.db.find_patients(self.view.id_field.text(), self.view.name_field.text(), self.view.surname_field.text(), organization_id)
+            patients = self.db.find_patients(self.view.id_field.text(), self.view.name_field.text(),
+                                             self.view.surname_field.text(), organization_id)
             if not patients:
                 self.display_patients([])
                 self.show_message("No patients found.")
@@ -65,5 +67,6 @@ class PatientSearchController:
         except DBUnableToGetData as e:
             self.show_message(f"Error retrieving patient data: {str(e)}")
         except Exception as e:
-           self.show_message(f"Unexpected error: {str(e)}")
+            self.show_message(f"Unexpected error: {str(e)}")
+
 

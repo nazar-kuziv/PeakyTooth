@@ -5,7 +5,7 @@ from PySide6.QtGui import QPalette, Qt
 from PySide6.QtWidgets import QApplication
 
 from utils.environment import Environment
-from view.screen_login import ScreenLogin
+from view.screen_pdf import ScreenPdf
 
 app = QApplication(sys.argv)
 app.setWindowIcon(QtGui.QIcon(Environment.resource_path('static/images/icon.png')))
@@ -68,6 +68,10 @@ app.setStyleSheet("""
     }
 """)
 
-login_screen = ScreenLogin()
-login_screen.show()
+# login_screen = ScreenLogin()
+# login_screen.show()
+# app.exec()
+
+obb = ScreenPdf(2)
+obb.show()
 app.exec()
