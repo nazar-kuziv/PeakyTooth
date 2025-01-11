@@ -23,7 +23,7 @@ class DentistMenu(QMainWindow):
         main_layout = QVBoxLayout()
         central_widget.setStyleSheet("background-color: #D3D3D3;")
 
-        # Buttons for Dentist Menu
+
         self.add_patient_button = QPushButton("Add New Patient")
         self.add_patient_button.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
         self.add_patient_button.setStyleSheet("""

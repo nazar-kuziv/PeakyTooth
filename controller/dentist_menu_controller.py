@@ -3,6 +3,7 @@ from controller.patient_search_controller import PatientSearchController
 from view.appointments_menu import AppointmentMenu
 from view.new_patient_form import NewPatientForm
 from view.patient_search import PatientSearchForm
+from view.edit_doctor_page import EditDoctorPage
 
 
 class DentistMenuController:
@@ -21,3 +22,10 @@ class DentistMenuController:
     def appointments_button_clicked(self):
         self.view.main_screen.setCentralWidget(AppointmentMenu(self.view.main_screen))
         self.view.deleteLater()
+
+    def edit_doctor_button_clicked(self):
+        self.view.main_screen.setCentralWidget(EditDoctorPage(self.view.main_screen))
+        self.view.deleteLater()
+
+
+

@@ -20,7 +20,7 @@ class NewPatientFormController:
     from utils.user_session import UserSession
 
     def add_new_patient(self):
-        # Extract data from UI fields
+
         name = self.view.name_field.text()
         surname = self.view.surname_field.text()
         date_of_birth = self.view.dob_field.text()
