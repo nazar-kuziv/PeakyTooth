@@ -9,6 +9,7 @@ class AdminDoctorPage(QWidget):
     def __init__(self, main_screen):
         super().__init__()
         self.main_screen = main_screen
+        self.selected_doctor_id = None
 
 
         self.setWindowTitle("Doctor Admin Page")
@@ -57,9 +58,13 @@ class AdminDoctorPage(QWidget):
         self.right_layout.addWidget(self.table)
 
 
+
         self.edit_doctor_button = QPushButton("Edit Doctor")
         self.edit_doctor_button.setStyleSheet("background-color: blue; color: white;")
+        self.edit_doctor_button.setEnabled(False)  # Initially disable the button
+        self.edit_doctor_button.clicked.connect(self.edit_selected_doctor)
         self.right_layout.addWidget(self.edit_doctor_button, alignment=Qt.AlignBottom | Qt.AlignRight)
+
 
         self.delete_doctor_button = QPushButton("Delete Doctor")
         self.delete_doctor_button.setStyleSheet("background-color: red; color: white;")
@@ -134,11 +139,21 @@ class AdminDoctorPage(QWidget):
         doctor_id = getattr(radio_button, 'doctor_id', None)
         if doctor_id is not None:
             if checked:
+                self.selected_doctor_id = doctor_id
+                self.edit_doctor_button.setEnabled(True)  # Enable the button when a doctor is selected
                 print(f"Doctor {doctor_id} selected")
             else:
+                self.selected_doctor_id = None
+                self.edit_doctor_button.setEnabled(False)  # Disable the button when no doctor is selected
                 print(f"Doctor {doctor_id} deselected")
         else:
             print("No doctor ID found")
+
+    def edit_selected_doctor(self):
+        if self.selected_doctor_id:
+            self.controller.edit_doctor(self.selected_doctor_id)
+        else:
+            self.show_error("No doctor selected for editing.")
 
 
 

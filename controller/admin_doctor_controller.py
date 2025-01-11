@@ -7,6 +7,8 @@ from PySide6.QtWidgets import QMessageBox
 
 from utils.db_connection import DBConnection
 from view.admin_doctor_page import AdminDoctorPage
+from view.edit_doctor_page import EditDoctorPage
+
 
 class DoctorController:
     def __init__(self, view):
@@ -59,6 +61,10 @@ class DoctorController:
 
     def doctor_page_click(self):
         self.view.main_screen.setCentralWidget(AdminDoctorPage(self.view.main_screen))
+        self.view.deleteLater()
+
+    def edit_doctor(self, doctor_id):
+        self.view.main_screen.setCentralWidget(EditDoctorPage(self.view.main_screen, doctor_id))
         self.view.deleteLater()
 
 

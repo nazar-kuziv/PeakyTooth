@@ -16,5 +16,9 @@ class DentistMenuController:
         self.view.main_screen.setCentralWidget(PatientSearchForm(self.view.main_screen))
         self.view.deleteLater()
 
+    def edit_doctor_button_clicked(self):
+        self.view.main_screen.setCentralWidget(EditDoctorPage(self.view.main_screen))
+        self.view.deleteLater()
+
 
 

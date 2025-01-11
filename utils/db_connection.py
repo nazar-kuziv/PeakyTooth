@@ -152,3 +152,26 @@ class DBConnection(metaclass=DBConnectionMeta):
             print(f"Error updating doctor password: {str(e)}")
             raise
 
+    def update_doctor_surname(self, doctor_id, new_surname):
+        try:
+            response = self.client.table('users').update({"surname": new_surname}).eq("userid", doctor_id).execute()
+            print(response)
+        except Exception as e:
+            print(f"Error updating doctor surname: {str(e)}")
+            raise
+
+    def update_dotor_name(self, doctor_id, new_name):
+        try:
+            response = self.client.table('users').update({"name": new_name}).eq("userid", doctor_id).execute()
+            print(response)
+        except Exception as e:
+            print(f"Error updating doctor name: {str(e)}")
+            raise
+
+    def update_doctor_login(self, doctor_id, new_login):
+        try:
+            response = self.client.table('users').update({"login": new_login}).eq("userid", doctor_id).execute()
+            print(response)
+        except Exception as e:
+            print(f"Error updating doctor login: {str(e)}")
+            raise
