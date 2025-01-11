@@ -3,7 +3,7 @@ import base64
 from utils.db_connection import DBConnection
 from utils.exceptions.cant_find_appointment import CantFindAppointment
 from utils.user_session import UserSession
-from view.screen_mouse_visualisation import ScreenMouseVisualisation
+from view.screen_mouthe_visualisation import ScreenMouseVisualisation
 
 
 class ControllerAppointmentDetails:
