@@ -149,7 +149,7 @@ class ScreenLogin(QWidget):
             self.show_main_screen()
 
     def show_error(self, message):
-        QMessageBox.critical(self, 'Error', message)
+        QMessageBox.critical(self, 'Error', str(message))
 
     def show_main_screen(self):
         self.main_screen = ScreenMain()
