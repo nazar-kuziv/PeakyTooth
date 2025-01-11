@@ -1,4 +1,4 @@
-from PySide6.QtWidgets import QApplication, QMainWindow, QWidget, QPushButton, QVBoxLayout, QHBoxLayout
+from PySide6.QtWidgets import QApplication, QMainWindow, QWidget, QPushButton, QVBoxLayout, QHBoxLayout, QSizePolicy
 from PySide6.QtCore import Qt, QEvent
 import sys
 
@@ -13,18 +13,19 @@ class DentistMenu(QMainWindow):
         self.controller = DentistMenuController(self)
         self.main_screen = main_screen
         self.setWindowTitle("Dentist Menu")
-        self.setFixedSize(800, 600)  # Increased window size
+
+        # Start the window maximized
+        self.showMaximized()
 
         # Central widget setup
         central_widget = QWidget()
         self.setCentralWidget(central_widget)
         main_layout = QVBoxLayout()
-        button_layout = QHBoxLayout()
         central_widget.setStyleSheet("background-color: #D3D3D3;")
 
         # Buttons for Dentist Menu
         self.add_patient_button = QPushButton("Add New Patient")
-        self.add_patient_button.setFixedSize(175, 200)  # Increased size to fit full text
+        self.add_patient_button.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
         self.add_patient_button.setStyleSheet("""
             background-color: #C0C0C0;
             border-radius: 10px;
@@ -33,7 +34,7 @@ class DentistMenu(QMainWindow):
         self.add_patient_button.clicked.connect(self.controller.patients_button_clicked)
 
         self.find_patient_button = QPushButton("Find Patient")
-        self.find_patient_button.setFixedSize(175, 200)  # Increased size to fit full text
+        self.find_patient_button.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
         self.find_patient_button.setStyleSheet("""
             background-color: #C0C0C0;
             border-radius: 10px;
@@ -41,33 +42,26 @@ class DentistMenu(QMainWindow):
         """)
         self.find_patient_button.clicked.connect(self.controller.patient_search_button_clicked)
 
-        self.create_appointment_button = QPushButton("Create Appointment")
-        self.create_appointment_button.setFixedSize(175, 200)  # Increased size to fit full text
-        self.create_appointment_button.setStyleSheet("""
+        self.appointments_button = QPushButton("Appointments")
+        self.appointments_button.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
+        self.appointments_button.setStyleSheet("""
             background-color: #C0C0C0;
             border-radius: 10px;
             font-size: 16px;
         """)
+        self.appointments_button.clicked.connect(self.controller.appointments_button_clicked)
 
-        self.delete_appointment_button = QPushButton("Delete Appointment")
-        self.delete_appointment_button.setFixedSize(175, 200)  # Increased size to fit full text
-        self.delete_appointment_button.setStyleSheet("""
-            background-color: #C0C0C0;
-            border-radius: 10px;
-            font-size: 16px;
-        """)
-
-        # Adding buttons to layouts
+        # Layout for buttons
+        button_layout = QHBoxLayout()
         button_layout.addStretch()
         button_layout.addWidget(self.add_patient_button)
         button_layout.addSpacing(20)
         button_layout.addWidget(self.find_patient_button)
         button_layout.addSpacing(20)
-        button_layout.addWidget(self.create_appointment_button)
-        button_layout.addSpacing(20)
-        button_layout.addWidget(self.delete_appointment_button)
+        button_layout.addWidget(self.appointments_button)
         button_layout.addStretch()
 
+        # Adding layouts and spacers to main layout
         main_layout.addStretch()
         main_layout.addLayout(button_layout)
         main_layout.addStretch()
@@ -77,15 +71,14 @@ class DentistMenu(QMainWindow):
         # Installing event filters for hover effect
         self.add_patient_button.installEventFilter(self)
         self.find_patient_button.installEventFilter(self)
-        self.create_appointment_button.installEventFilter(self)
-        self.delete_appointment_button.installEventFilter(self)
+        self.appointments_button.installEventFilter(self)
 
     def eventFilter(self, source, event):
         # Hover effect for buttons
         if event.type() == QEvent.Enter:
             if source in (
                 self.add_patient_button, self.find_patient_button,
-                self.create_appointment_button, self.delete_appointment_button
+                self.appointments_button
             ):
                 source.setStyleSheet("""
                     background-color: #A9A9A9;
@@ -96,7 +89,7 @@ class DentistMenu(QMainWindow):
         elif event.type() == QEvent.Leave:
             if source in (
                 self.add_patient_button, self.find_patient_button,
-                self.create_appointment_button, self.delete_appointment_button
+                self.appointments_button
             ):
                 source.setStyleSheet("""
                     background-color: #C0C0C0;
@@ -105,4 +98,3 @@ class DentistMenu(QMainWindow):
                 """)
 
         return super().eventFilter(source, event)
-
