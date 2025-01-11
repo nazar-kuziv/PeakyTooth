@@ -22,7 +22,7 @@ class ScreenMain(QMainWindow):
         toolbar.setContextMenuPolicy(Qt.NoContextMenu)
         toolbar.setMovable(False)
         toolbar.setMinimumHeight(55)
-        toolbar.setMaximumHeight(65)
+        toolbar.setMaximumHeight(75)
         # noinspection PyUnresolvedReferences
         self.addToolBar(Qt.TopToolBarArea, toolbar)
 
@@ -70,7 +70,11 @@ class ScreenMain(QMainWindow):
         label_username.setAlignment(Qt.AlignCenter)
         # noinspection PyUnresolvedReferences
         label_username.setSizePolicy(QSizePolicy.Minimum, QSizePolicy.Expanding)
+        label_username.setMinimumHeight(30)
+
         layout_username_and_organization.addWidget(label_username)
+
+   #     layout_username_and_organization.addStretch(2)
 
         label_organization = QLabel(self.controller.get_user_organization())
         label_organization.setStyleSheet("""
@@ -95,6 +99,8 @@ class ScreenMain(QMainWindow):
         btn = ButtonBase('Logout && Exit')
         btn.clicked.connect(ControllerMain.logout)
         toolbar.addWidget(btn)
+
+        self.showMaximized()
 
     def setCentralWidget(self, widget):
         super().setCentralWidget(widget)
