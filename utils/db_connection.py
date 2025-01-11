@@ -1,9 +1,9 @@
 import base64
 import os
 
+
 from datetime import datetime
 from typing import Optional
-
 from dotenv import load_dotenv
 from supabase import create_client, Client
 
@@ -79,6 +79,103 @@ class DBConnection(metaclass=DBConnectionMeta):
             print(f"An error occurred while retrieving patients: {str(e)}")
             raise DBUnableToGetData()
 
+    def addNewDoctor(self, name, surname, login, password, organisation_id):
+        new_doctor_data = {
+            "name": name,
+            "surname": surname,
+            "login": login,
+            "password": password,
+            "role": "Dentist",
+            "organization_id": organisation_id
+        }
+
+        try:
+            response = self.client.table('users').insert(new_doctor_data).execute()
+            print(response)
+            return "Doctor added successfully!"
+        except Exception as e:
+            print(f"An error occurred while adding the doctor: {str(e)}")
+            return f"An error occurred while adding the doctor: {str(e)}"
+
+
+    def delete_doctor_by_id(self, doctor_id):
+        try:
+            response = self.client.table('users').delete().eq("login", doctor_id).execute()
+            print(response)
+            return "deleted"
+        except Exception as e:
+            print(f"error {str(e)}")
+            return f"error {str(e)}"
+
+
+    def search_doctors(self, name, surname):
+        try:
+            query = self.client.table('users') \
+                .select("*") \
+                .eq("role", "Dentist")\
+                .neq("password", "NULL")
+
+            if name:
+                query = query.ilike("name", f"%{name}%")
+
+            if surname:
+                query = query.ilike("surname", f"%{surname}%")
+
+
+
+
+
+
+            response = query.execute()
+
+
+            for doctor in response.data:
+               doctor["id"] = doctor.pop("user_id", doctor.get("id"))
+
+            return response.data
+
+        except Exception as e:
+            print(f"An error occurred while retrieving doctors: {str(e)}")
+            raise DBUnableToGetData()
+
+
+
+
+
+
+
+    def update_doctor_password(self, doctor_id, hashed_password):
+        try:
+            response = self.client.table('users').update({"password": hashed_password}).eq("userid", doctor_id).execute()
+            print(response)
+        except Exception as e:
+            print(f"Error updating doctor password: {str(e)}")
+            raise
+
+    def update_doctor_surname(self, doctor_id, new_surname):
+        try:
+            response = self.client.table('users').update({"surname": new_surname}).eq("userid", doctor_id).execute()
+            print(response)
+        except Exception as e:
+            print(f"Error updating doctor surname: {str(e)}")
+            raise
+
+    def update_dotor_name(self, doctor_id, new_name):
+        try:
+            response = self.client.table('users').update({"name": new_name}).eq("userid", doctor_id).execute()
+            print(response)
+        except Exception as e:
+            print(f"Error updating doctor name: {str(e)}")
+            raise
+
+    def update_doctor_login(self, doctor_id, new_login):
+        try:
+            response = self.client.table('users').update({"login": new_login}).eq("userid", doctor_id).execute()
+            print(response)
+        except Exception as e:
+            print(f"Error updating doctor login: {str(e)}")
+            raise
+            
     def alter_patient_data(self, doctor_organization_id, patient_id, name, surname, date_of_birth, analegisics_allergy,
                            telephone, email):
         try:
