@@ -3,6 +3,8 @@ from PySide6.QtCore import QTime
 from controller.controller_appointment_editor import AppointmentEditorController
 from utils.db_connection import DBConnection
 from view.appointment_form import AppointmentForm
+from view.screen_appointment_details import ScreenAppointmentDetails
+from view.screen_pdf import ScreenPdf
 
 
 class AppointmentInfoController:
@@ -27,7 +29,11 @@ class AppointmentInfoController:
         self.view.main_screen.setCentralWidget(AppointmentForm(self.view.main_screen, self.appointment_id, AppointmentEditorController))
         self.view.deleteLater()
 
-    def view_pdf_button_clicked(self):
-        #TODO add rendering appointment details in pdf
-        pass
+    def add_details_button_clicked(self):
+        self.view.main_screen.setCentralWidget(ScreenAppointmentDetails(self.view.main_screen, self.appointment_id))
+        self.view.deleteLater()
+
+    def see_appointment_details_button_clicked(self):
+        self.view.main_screen.setCentralWidget(ScreenPdf(self.appointment_id))
+        self.view.deleteLater()
 
