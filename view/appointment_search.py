@@ -65,9 +65,3 @@ class AppointmentSearchForm(QWidget):
         # Set size policy to ensure the table expands with the window
         self.table.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
 
-
-app = QApplication(sys.argv)
-main_screen = None
-form = AppointmentSearchForm(main_screen)
-form.show()
-sys.exit(app.exec())

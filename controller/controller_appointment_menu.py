@@ -1,9 +1,11 @@
 from PySide6.QtCore import QDate, QTime
 from PySide6.QtWidgets import QTableWidgetItem
 
+from controller.controller_appointment_search import AppointmentSearchController
 from controller.patient_search_appointment_creator_controller import PatientSearchAppointmentCreatorController
 from utils.db_connection import DBConnection
 from utils.user_session import UserSession
+from view.appointment_search import AppointmentSearchForm
 from view.patient_search import PatientSearchForm
 
 
@@ -43,7 +45,7 @@ class AppointmentMenuController:
             self.view.table.setItem(row_position, 3, QTableWidgetItem(appointment_type))
 
             # Add a button in the last column
-            action_button = QPushButton("Action")
+            action_button = QPushButton("Select")
             action_button.clicked.connect(self.make_action_button_method(appointment_id))
             self.view.table.setCellWidget(row_position, 4, action_button)
 
@@ -67,3 +69,6 @@ class AppointmentMenuController:
     def add_appointment_button_clicked(self):
         self.view.main_screen.setCentralWidget(PatientSearchForm(self.view.main_screen, PatientSearchAppointmentCreatorController))
         self.view.deleteLater()
+
+    def find_appointment_button_clicked(self):
+        self.view.main_screen.setCentralWidget(AppointmentSearchForm(self.view.main_screen))

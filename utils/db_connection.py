@@ -163,14 +163,15 @@ class DBConnection(metaclass=DBConnectionMeta):
         try:
             # Begin constructing the query
             query = self.client.table('appointments').select(
-                'id, date, time, type, patients(patient_name, patient_surname)'
+                'id, date, time, type, patients(*)'
             )
             query = query.eq('dentist_id', dentist_id)
 
-            if name:
-                query = query.eq('patients.patient_name', name)
-            if surname:
-                query = query.eq('patients.patient_surname', surname)
+#            if name:
+ #               query = query.eq('patients.patient_name', name)
+   #         if surname:
+  #              query = query.eq('patients.patient_surname', surname)
+
 
             if date_from and not date_to:
                 query = query.gte('date', date_from)
@@ -192,8 +193,15 @@ class DBConnection(metaclass=DBConnectionMeta):
             query = query.order('date, time')
 
             # Execute the query
-            response = query.execute()
-            return response
+            response = query.execute().data
+
+            filtered = [
+                appointment for appointment in response
+                if (name is None or appointment['patients']['patient_name'] == name) and
+                   (surname is None or appointment['patients']['patient_surname'] == surname)
+            ]
+
+            return filtered
 
         except Exception as e:
             print(f"An error occurred while searching for appointments: {str(e)}")

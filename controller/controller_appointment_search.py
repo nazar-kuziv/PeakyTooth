@@ -35,14 +35,9 @@ class AppointmentSearchController:
             visit_type = self.view.type_field.currentText()
         user_session = UserSession()
         appointments = db.get_appointments_with_filter(3, patient_name, patient_surname,
-                                        date_from, date_to, time_from, time_to, visit_type).data
-
-        print(appointments)
+                                        date_from, date_to, time_from, time_to, visit_type)
 
         for appointment in appointments:
-            #TODO find out why there is patients None
-            if(appointment["patients"] == None):
-                continue
             patient_name = appointment["patients"]["patient_name"]
             patient_surname = appointment["patients"]["patient_surname"]
 

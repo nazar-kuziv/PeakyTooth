@@ -63,11 +63,9 @@ class AppointmentForm(QWidget):
 
         # Buttons
         self.create_button = QPushButton("Apply")
-        self.cancel_button = QPushButton("Cancel")
         self.button_layout = QVBoxLayout()
         self.button_layout.setAlignment(Qt.AlignRight)
         self.button_layout.addWidget(self.create_button)
-        self.button_layout.addWidget(self.cancel_button)
         self.create_button.clicked.connect(self.controller.createAppointment)
 
         # Add form and buttons to the main layout
