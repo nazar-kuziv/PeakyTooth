@@ -8,13 +8,12 @@ from controller.controller_appointment_form import AppointmentFormController
 
 
 class AppointmentForm(QWidget):
-    def __init__(self, main_screen, patient_id):
+    def __init__(self, main_screen, patient_appointment_id, controller):
         super().__init__()
 
         self.main_screen = main_screen
-        self.controller = AppointmentFormController(self, patient_id)
+        self.controller = controller(self, patient_appointment_id)
 
-        self.setWindowTitle("Create Appointment")
         self.setMinimumSize(400, 300)
 
         # Create main layout
@@ -63,7 +62,7 @@ class AppointmentForm(QWidget):
         self.form_layout.addRow("Type:", self.type_field)
 
         # Buttons
-        self.create_button = QPushButton("Create Appointment")
+        self.create_button = QPushButton("Apply")
         self.cancel_button = QPushButton("Cancel")
         self.button_layout = QVBoxLayout()
         self.button_layout.setAlignment(Qt.AlignRight)

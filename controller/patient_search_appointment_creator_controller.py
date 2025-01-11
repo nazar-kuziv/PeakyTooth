@@ -1,5 +1,6 @@
 from PySide6.QtWidgets import QMessageBox, QTableWidgetItem, QPushButton
 
+from controller.controller_appointment_form import AppointmentFormController
 from utils.db_connection import DBConnection
 from utils.exceptions.db_unable_to_connect import DBUnableToConnect
 from utils.exceptions.db_unable_to_get_data import DBUnableToGetData
@@ -26,7 +27,7 @@ class PatientSearchAppointmentCreatorController:
         msg.exec()
 
     def select_patient(self, patient_id):
-        self.view.main_screen.setCentralWidget(AppointmentForm(self.view.main_screen, patient_id))
+        self.view.main_screen.setCentralWidget(AppointmentForm(self.view.main_screen, patient_id, AppointmentFormController))
 
     def display_patients(self, patients):
         self.view.table.setRowCount(len(patients))
