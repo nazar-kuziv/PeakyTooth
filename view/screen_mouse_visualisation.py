@@ -1,18 +1,16 @@
-from queue import LifoQueue
-
-import numpy as np
-from PIL import Image
 from PySide6.QtCore import QSize
 from PySide6.QtGui import QImage, QPixmap, QShortcut, QKeySequence, Qt, QIcon
 from PySide6.QtWidgets import QWidget, QLabel, QVBoxLayout, QSizePolicy, QHBoxLayout, QPushButton
 
+from controller.controller_mouse_visualisation import ControllerMouseVisualisation
 from utils.environment import Environment
 
 
-class LayoutMouseVisualisation(QWidget):
-    def __init__(self, save_img_foo, parent=None):
+class ScreenMouseVisualisation(QWidget):
+    def __init__(self, save_img_foo, previous_img=None, parent=None):
         super().__init__(parent)
-        self.controller = ControllerMouseVisualisation(self)
+        self.setWindowTitle('Mouse Visualisation')
+        self.controller = ControllerMouseVisualisation(self, previous_img)
         self.main_layout = QHBoxLayout()
         self.setFixedSize(1041, 650)
         self.setStyleSheet("""
@@ -46,7 +44,7 @@ class LayoutMouseVisualisation(QWidget):
         """)
         self.main_layout.addWidget(self.btn_layout_widget)
 
-        self.save_btn = ButtonSave(save_img_foo)
+        self.save_btn = ButtonSave(lambda: save_img_foo(self.controller.get_img_bytes()))
         self.btn_layout.addWidget(self.save_btn)
 
         self.red_btn = ButtonColor([210, 4, 45], self.controller.set_color, self.btn_layout)
@@ -96,43 +94,6 @@ class LayoutMouseVisualisation(QWidget):
             temp.size[1],
             QImage.Format.Format_RGBA8888
         )
-
-
-class ControllerMouseVisualisation:
-    def __init__(self, view):
-        self.view = view
-        self.teeth_image = Image.open(Environment.resource_path("static/images/teeth.png")).convert("RGBA")
-        self.teeth_mask = Image.open(Environment.resource_path("static/images/teeth_mask.png")).convert("RGBA")
-        self.colored_image = self.teeth_image.copy()
-        self.previous_colored_image_queue = LifoQueue()
-        self.current_color = [210, 4, 45]
-        self.saved_image = None
-
-    def color_teeth(self, x, y, color):
-        teeth_mask_data = np.array(self.teeth_mask)
-        colored_image_data = np.array(self.colored_image)
-        target_color = teeth_mask_data[y, x]
-        if np.array_equal(target_color, np.array([0, 0, 0, 0])):
-            return self.colored_image
-        if (target_color[0] == 20 and target_color[2] == 10) or (target_color[2] == 20):
-            target_color[2] = target_color[0]
-        # noinspection PyUnresolvedReferences
-        mask = (teeth_mask_data == target_color).all(axis=-1)
-        colored_image_data[mask] = color + [255]
-        self.previous_colored_image_queue.put(self.colored_image.copy())
-        self.colored_image = Image.fromarray(colored_image_data, "RGBA")
-        return self.colored_image
-
-    def set_color(self, color):
-        self.current_color = color
-
-    def get_previous_colored_image(self):
-        if not self.previous_colored_image_queue.empty():
-            self.colored_image = self.previous_colored_image_queue.get()
-        return self.colored_image
-
-    def get_teeth_image(self):
-        return self.colored_image
 
 
 class ButtonColor(QPushButton):
