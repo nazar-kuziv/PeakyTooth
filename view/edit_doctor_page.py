@@ -1,8 +1,8 @@
-
 from PySide6.QtWidgets import (
     QWidget, QFormLayout, QLabel, QLineEdit, QPushButton, QVBoxLayout, QMessageBox
 )
 from PySide6.QtCore import QTimer
+
 
 class EditDoctorPage(QWidget):
     def __init__(self, main_screen, doctor_id):
@@ -14,7 +14,6 @@ class EditDoctorPage(QWidget):
 
         self.form_layout = QFormLayout()
         self.setForm()
-        self.load_doctor_data()
 
     def setForm(self):
         self.name_label = QLabel("Name:")
@@ -41,10 +40,6 @@ class EditDoctorPage(QWidget):
         main_layout.addLayout(self.form_layout)
         main_layout.addWidget(self.submit_button)
         self.setLayout(main_layout)
-
-    def load_doctor_data(self):
-        # Load doctor data logic here
-        pass
 
     def update_doctor_info(self):
         from controller.edit_doctor_controller import EditDoctorController
