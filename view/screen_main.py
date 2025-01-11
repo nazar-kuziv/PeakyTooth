@@ -74,8 +74,8 @@ class ScreenMain(QMainWindow):
 
         layout_username_and_organization.addWidget(label_username)
 
-   #     layout_username_and_organization.addStretch(2)
-
+        layout_username_and_organization.addStretch(1)
+  
         label_organization = QLabel(self.controller.get_user_organization())
         label_organization.setStyleSheet("""
                 QLabel {
