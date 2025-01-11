@@ -27,6 +27,7 @@ class AppointmentInfoController:
         self.view.main_screen.setCentralWidget(AppointmentForm(self.view.main_screen, self.appointment_id, AppointmentEditorController))
         self.view.deleteLater()
 
-    def delete_appointment_button_clicked(self):
+    def view_pdf_button_clicked(self):
+        #TODO add rendering appointment details in pdf
         pass
 

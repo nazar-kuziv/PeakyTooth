@@ -44,16 +44,15 @@ class AppointmentInfoScreen(QWidget):
         self.button_layout = QHBoxLayout()
 
         self.edit_button = QPushButton("Edit Appointment")
-        self.reschedule_button = QPushButton("Delete Appointment")
-
         self.edit_button.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Preferred)
-        self.reschedule_button.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Preferred)
-
         self.edit_button.clicked.connect(self.controller.edit_appointment_button_clicked)
-        self.reschedule_button.clicked.connect(self.controller.delete_appointment_button_clicked)
-
         self.button_layout.addWidget(self.edit_button)
-        self.button_layout.addWidget(self.reschedule_button)
+
+        self.view_pdf_button = QPushButton("View PDF")
+        self.view_pdf_button.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Preferred)
+        self.view_pdf_button.clicked.connect(self.controller.view_pdf_button_clicked)
+        self.button_layout.addWidget(self.view_pdf_button)
+
 
         # Adding buttons layout to the main layout
         self.main_layout.addLayout(self.button_layout)

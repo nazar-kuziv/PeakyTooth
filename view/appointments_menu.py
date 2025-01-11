@@ -43,6 +43,7 @@ class AppointmentMenu(QWidget):
         # Find Appointment button
         self.find_button = QPushButton("Find Appointment")
         left_layout.addWidget(self.find_button)
+        self.find_button.clicked.connect(self.controller.find_appointment_button_clicked)
 
         # Right layout for the calendar and add button
         right_layout = QVBoxLayout()
