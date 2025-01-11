@@ -1,6 +1,9 @@
+import os
+
 from PySide6.QtCore import QRegularExpression
 from PySide6.QtGui import QFont, Qt, QPixmap, QRegularExpressionValidator, QKeySequence, QShortcut
 from PySide6.QtWidgets import QWidget, QLineEdit, QVBoxLayout, QLabel, QMessageBox
+from dotenv import load_dotenv
 
 from controller.controller_login import ControllerLogin
 from utils.environment import Environment
@@ -47,6 +50,14 @@ class ScreenLogin(QWidget):
         self.set_login_button()
 
         self.set_enter_for_login()
+
+        self.set_default_login_data()
+
+    # TODO: Delete this method before production
+    def set_default_login_data(self):
+        load_dotenv(Environment.resource_path('.env'))
+        self.username.setText(os.getenv('TEST_ADMIN_USER'))
+        self.password.setText(os.getenv('TEST_ADMIN_PASSWORD'))
 
     def set_logo(self):
         logo_label = QLabel()
@@ -138,7 +149,7 @@ class ScreenLogin(QWidget):
             self.show_main_screen()
 
     def show_error(self, message):
-        QMessageBox.critical(self, 'Error', message)
+        QMessageBox.critical(self, 'Error', str(message))
 
     def show_main_screen(self):
         self.main_screen = ScreenMain()

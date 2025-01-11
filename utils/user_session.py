@@ -10,7 +10,7 @@ class UserSessionMeta(type):
 
 class UserSession(metaclass=UserSessionMeta):
     def set_user_data(self, user_id: int, login: str, name: str, surname: str, role: str, organization_id: int,
-                      organization_name: int):
+                      organization_name: str):
         self.user_id = user_id
         self.login = login if login else ''
         self.name = name if name else ''
@@ -18,7 +18,7 @@ class UserSession(metaclass=UserSessionMeta):
         self.role = role if role else ''
         self.organization_name = organization_name if organization_name else ''
         self.organization_id = organization_id
-        
+
     def logout(self):
         self.user_id = None
         self.login = ''
@@ -27,7 +27,7 @@ class UserSession(metaclass=UserSessionMeta):
         self.role = ''
         self.organization_id = None
         self.organization_name = ''
-        
+
     def get_user_data(self):
         return {
             "user_id": self.user_id,
