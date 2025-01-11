@@ -7,6 +7,7 @@ from PyPDFForm import PdfWrapper
 
 from utils.db_connection import DBConnection
 from utils.environment import Environment
+from utils.smtp_connection import SMTPConnection
 
 DATE_OF_VISIT_FIELD_NAME = 'dhFormfield-5377928304'
 CLINIC_NAME_FIELD_NAME = 'dhFormfield-5377978379'
@@ -35,6 +36,8 @@ class ControllerPdf:
 
     def __init__(self, view, appointment_id):
         self.view = view
+        self.smtp_connection = None
+        self.pdf_path = None
         self.db = DBConnection()
         try:
             # self.appointment_details = self.db.get_appointment_details(UserSession().organization_id, appointment_id)
@@ -42,7 +45,12 @@ class ControllerPdf:
         except Exception as e:
             raise e
 
-    def generate_pdf(self):
+    def get_pdf_path(self):
+        if not self.pdf_path:
+            self.pdf_path = self._generate_pdf()
+        return self.pdf_path
+
+    def _generate_pdf(self):
         temp = PdfWrapper(Environment.resource_path('static/pdf_forms/dental_card.pdf'))
         # Clear all fields
         for key in self.appointment_details[0]:
@@ -112,5 +120,14 @@ class ControllerPdf:
             return ''
 
     def send_pdf_to_patient(self):
-        # TODO: Implement sending pdf to patient
-        print('Send pdf to patient')
+        try:
+            if not self.smtp_connection:
+                self.smtp_connection = SMTPConnection()
+            self.smtp_connection.sent_email_with_file('n.kuziv2005@gmail.com', "Your Dental Card",
+                                                      "I hope this message finds you well!\nAttached to this email, you will find your dental card in PDF format. This card contains important information and can be handy for quick access to your dental details.",
+                                                      self.get_pdf_path())
+            self.view.show_success('Email sent successfully!')
+        except Exception as e:
+            self.view.show_error(str(e))
+            print(f'Exception(send_pdf_to_patient): {e}')
+            return

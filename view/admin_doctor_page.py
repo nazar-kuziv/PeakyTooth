@@ -13,12 +13,11 @@ class AdminDoctorPage(QWidget):
 
 
         self.setWindowTitle("Doctor Admin Page")
-        from controller.admin_doctor_controller import DoctorController  # Local import to avoid circular import
+        from controller.admin_doctor_controller import DoctorController
         self.controller = DoctorController(self)
 
         self.main_layout = QHBoxLayout()
 
-        # Left
         self.form_layout = QFormLayout()
 
         self.name_field = QLineEdit()
@@ -27,7 +26,6 @@ class AdminDoctorPage(QWidget):
         self.surname_field = QLineEdit()
         self.form_layout.addRow("Surname", self.surname_field)
 
-        # Search button
         self.search_button = QPushButton("Search")
         self.search_button.clicked.connect(self.controller.search_doctors)
         self.form_layout.addRow(self.search_button)
@@ -41,7 +39,6 @@ class AdminDoctorPage(QWidget):
         self.vertical_line.setFrameShadow(QFrame.Sunken)
         self.main_layout.addWidget(self.vertical_line)
 
-        # Right Layout
         self.right_layout = QVBoxLayout()
 
         self.add_doctor_button = QPushButton("Add Doctor")
@@ -54,14 +51,13 @@ class AdminDoctorPage(QWidget):
         self.table.setHorizontalHeaderLabels(["user_id","Name", "Surname", "Login", "Password", "Select"])
         self.table.setSelectionBehavior(QTableWidget.SelectRows)
         self.table.setEditTriggers(QTableWidget.NoEditTriggers)
-       # self.table.setColumnWidth(4, 500)
         self.right_layout.addWidget(self.table)
 
 
 
         self.edit_doctor_button = QPushButton("Edit Doctor")
         self.edit_doctor_button.setStyleSheet("background-color: blue; color: white;")
-        self.edit_doctor_button.setEnabled(False)  # Initially disable the button
+        self.edit_doctor_button.setEnabled(False)
         self.edit_doctor_button.clicked.connect(self.edit_selected_doctor)
         self.right_layout.addWidget(self.edit_doctor_button, alignment=Qt.AlignBottom | Qt.AlignRight)
 

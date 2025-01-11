@@ -14,10 +14,8 @@ class DentistMenu(QMainWindow):
         self.main_screen = main_screen
         self.setWindowTitle("Dentist Menu")
 
-        # Start the window maximized
         self.showMaximized()
 
-        # Central widget setup
         central_widget = QWidget()
         self.setCentralWidget(central_widget)
         main_layout = QVBoxLayout()
@@ -51,7 +49,6 @@ class DentistMenu(QMainWindow):
         """)
         self.appointments_button.clicked.connect(self.controller.appointments_button_clicked)
 
-        # Layout for buttons
         button_layout = QHBoxLayout()
         button_layout.addStretch()
         button_layout.addWidget(self.add_patient_button)
@@ -61,20 +58,17 @@ class DentistMenu(QMainWindow):
         button_layout.addWidget(self.appointments_button)
         button_layout.addStretch()
 
-        # Adding layouts and spacers to main layout
         main_layout.addStretch()
         main_layout.addLayout(button_layout)
         main_layout.addStretch()
 
         central_widget.setLayout(main_layout)
 
-        # Installing event filters for hover effect
         self.add_patient_button.installEventFilter(self)
         self.find_patient_button.installEventFilter(self)
         self.appointments_button.installEventFilter(self)
 
     def eventFilter(self, source, event):
-        # Hover effect for buttons
         if event.type() == QEvent.Enter:
             if source in (
                 self.add_patient_button, self.find_patient_button,

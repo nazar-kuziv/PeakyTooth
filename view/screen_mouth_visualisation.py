@@ -2,15 +2,15 @@ from PySide6.QtCore import QSize
 from PySide6.QtGui import QImage, QPixmap, QShortcut, QKeySequence, Qt, QIcon
 from PySide6.QtWidgets import QWidget, QLabel, QVBoxLayout, QSizePolicy, QHBoxLayout, QPushButton
 
-from controller.controller_mouse_visualisation import ControllerMouseVisualisation
+from controller.controller_mouth_visualisation import ControllerMouthVisualisation
 from utils.environment import Environment
 
 
-class ScreenMouseVisualisation(QWidget):
+class ScreenMouthVisualisation(QWidget):
     def __init__(self, save_img_foo, previous_img=None, parent=None):
         super().__init__(parent)
         self.setWindowTitle('Mouse Visualisation')
-        self.controller = ControllerMouseVisualisation(self, previous_img)
+        self.controller = ControllerMouthVisualisation(self, previous_img)
         self.main_layout = QHBoxLayout()
         self.setFixedSize(1041, 650)
         self.setStyleSheet("""
