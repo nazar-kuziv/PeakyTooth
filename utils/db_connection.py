@@ -122,6 +122,17 @@ class DBConnection(metaclass=DBConnectionMeta):
             print(f"An error occurred while retrieving the appointment details: {str(e)}")
             raise DBUnableToGetData()
 
+    def get_appointment_data_for_pdf(self, organization_id: int, appointment_id: int):
+        try:
+            response = self.client.rpc('get_appointment_data_for_pdf', {
+                'organization_id_input': organization_id,
+                'appointment_id_input': appointment_id
+            }).execute()
+            return response.data
+        except Exception as e:
+            print(f"An error occurred while retrieving the appointment details: {str(e)}")
+            raise DBUnableToGetData()
+
     def is_appointment_exsist(self, organization_id: int, appointment_id: int):
         try:
             response = self.client.rpc('is_appointment_exist_by_id', {
