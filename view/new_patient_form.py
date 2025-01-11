@@ -7,7 +7,8 @@ from PySide6.QtWidgets import (
     QDateEdit,
     QCheckBox,
     QWidget,
-    QMessageBox
+    QMessageBox,
+    QSizePolicy
 )
 from PySide6.QtCore import Qt
 
@@ -51,40 +52,17 @@ class NewPatientForm(QWidget):
             QPushButton#submit_button:pressed {
                 background-color: #3E8E41;
             }
-            QPushButton#back_button {
-                background-color: #2980B9;
-                color: white;
-                border: none;
-                border-radius: 10px;
-                padding: 10px 20px;
-                font-size: 18px;
-                font-weight: bold;
-            }
-            QPushButton#back_button:hover {
-                background-color: #1F618D;
-            }
-            QPushButton#back_button:pressed {
-                background-color: #154360;
-            }
-            QFormLayout {
-                spacing: 20px;
-            }
         """)
 
+        # Główny layout: QFormLayout
         self.form_layout = QFormLayout()
         self.form_layout.setContentsMargins(50, 50, 50, 50)
         self.form_layout.setSpacing(20)
-        self.setForm()
 
-        main_layout = QVBoxLayout()
-        main_layout.addLayout(self.form_layout)
-        main_layout.addSpacing(30)
-        main_layout.addWidget(self.submit_button)
-        main_layout.addWidget(self.back_button)
-        main_layout.addStretch()
-        self.setLayout(main_layout)
+        self.setup_form()
+        self.setLayout(self.form_layout)
 
-    def setForm(self):
+    def setup_form(self):
         self.name_field = QLineEdit()
         self.form_layout.addRow("Name:", self.name_field)
 
@@ -109,13 +87,15 @@ class NewPatientForm(QWidget):
         self.allergy_checkbox = QCheckBox("Yes")
         self.form_layout.addRow("Allergic to Analgesics?", self.allergy_checkbox)
 
+        # Tworzymy przycisk Submit
         self.submit_button = QPushButton("Submit")
         self.submit_button.setObjectName("submit_button")
+        # Aby rozciągnął się na całą szerokość:
+        self.submit_button.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Fixed)
         self.submit_button.clicked.connect(self.controller.add_new_patient)
 
-        self.back_button = QPushButton("Back")
-        self.back_button.setObjectName("back_button")
-        self.back_button.clicked.connect(self.go_back)
+        # Dodajemy cały wiersz tylko z przyciskiem (span na całą szerokość)
+        self.form_layout.addRow(self.submit_button)
 
     def show_message(self, message):
         if message == '':

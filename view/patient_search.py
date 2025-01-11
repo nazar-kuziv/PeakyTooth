@@ -92,7 +92,8 @@ class PatientSearchForm(QWidget):
         self.form_layout.addWidget(self.surname_field, 2, 1)
 
         self.search_button = QPushButton("Search")
-        self.search_button.setFixedSize(130, 40)
+        self.search_button.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Fixed)
+        self.search_button.setMinimumHeight(40)
         self.search_button.setStyleSheet("""
             QPushButton {
                 background-color: #2196F3;
@@ -111,29 +112,8 @@ class PatientSearchForm(QWidget):
         """)
         self.search_button.clicked.connect(self.controller.search_patients)
 
-        self.back_button = QPushButton("Back")
-        self.back_button.setFixedSize(130, 40)
-        self.back_button.setStyleSheet("""
-            QPushButton {
-                background-color: #4CAF50;
-                color: white;
-                border: none;
-                border-radius: 5px;
-                font-weight: bold;
-                font-size: 14px;
-            }
-            QPushButton:hover {
-                background-color: #45a049;
-            }
-            QPushButton:pressed {
-                background-color: #3e8e41;
-            }
-        """)
-        self.back_button.clicked.connect(self.go_back)
-
-        self.button_layout = QHBoxLayout()
+        self.button_layout = QVBoxLayout()
         self.button_layout.addWidget(self.search_button)
-        self.button_layout.addWidget(self.back_button)
 
         self.main_layout = QVBoxLayout()
         self.main_layout.addLayout(self.form_layout)

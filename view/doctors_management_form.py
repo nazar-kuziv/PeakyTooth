@@ -23,27 +23,7 @@ class DoctorsManagementForm(QWidget):
         self.layout.setSpacing(15)
         self.setLayout(self.layout)
 
-        # Back Button
-        self.button_back = QPushButton("Back")
-        self.button_back.setFixedSize(100, 40)
-        self.button_back.setStyleSheet("""
-            QPushButton {
-                background-color: #4CAF50;
-                color: white;
-                border: none;
-                border-radius: 5px;
-                font-weight: bold;
-                font-size: 14px;
-            }
-            QPushButton:hover {
-                background-color: #45a049;
-            }
-            QPushButton:pressed {
-                background-color: #3e8e41;
-            }
-        """)
-        self.button_back.clicked.connect(self.go_back)
-        self.layout.addWidget(self.button_back, alignment=Qt.AlignLeft)
+
 
         # Table
         self.table = QTableWidget()
