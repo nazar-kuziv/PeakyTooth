@@ -65,14 +65,13 @@ class ScreenPdf(QWidget):
 
     def show_pdf(self):
         try:
-            self.pdf_file_path = self.controller.generate_pdf()
+            self.pdf_file_path = self.controller.get_pdf_path()
         except Exception as e:
             print(f'An error occurred while showing pdf: {str(e)}')
             self.show_error('Can not create pdf')
             self.deleteLater()
             return None
 
-        # Create the PDF document and set up the view
         self.documentPDF = QPdfDocument()
         self.documentPDF.load(self.pdf_file_path)
         self.viewPDF = QPdfView()
@@ -123,3 +122,6 @@ class ScreenPdf(QWidget):
 
     def show_error(self, error):
         QMessageBox.critical(self, 'Error', error)
+
+    def show_success(self, message):
+        QMessageBox.information(self, 'Success', message)

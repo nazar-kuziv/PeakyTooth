@@ -7,7 +7,7 @@ from PIL import Image
 from utils.environment import Environment
 
 
-class ControllerMouseVisualisation:
+class ControllerMouthVisualisation:
     def __init__(self, view, previous_img=None):
         self.view = view
         self.teeth_mask = Image.open(Environment.resource_path("static/images/teeth_mask.png")).convert("RGBA")

@@ -16,21 +16,17 @@ class AppointmentForm(QWidget):
 
         self.setMinimumSize(400, 300)
 
-        # Create main layout
         self.main_layout = QVBoxLayout()
 
-        # Create patient info layout
         self.patient_info_layout = QHBoxLayout()
 
         self.patient_name_label = QLabel()
 
-        # Optional: Slightly increase the font size for better readability
         self.patient_name_label.setStyleSheet("font-size: 14px;")
 
-        # Add a small horizontal layout for closer alignment
         self.name_surname_layout = QHBoxLayout()
         self.name_surname_layout.addWidget(self.patient_name_label)
-        self.name_surname_layout.setSpacing(5)  # Adjust spacing between labels
+        self.name_surname_layout.setSpacing(5)
 
         self.patient_info_layout.addLayout(self.name_surname_layout)
 

@@ -17,10 +17,8 @@ class AppointmentSearchForm(QWidget):
 
         self.setWindowTitle("Appointment Search")
 
-        # Set up the form layout
         self.form_layout = QFormLayout()
 
-        # Search fields for patient name and surname
         self.name_field = QLineEdit()
         self.form_layout.addRow("Patient Name:", self.name_field)
 
@@ -40,14 +38,12 @@ class AppointmentSearchForm(QWidget):
         self.search_button = QPushButton("Search")
         self.search_button.clicked.connect(self.controller.search_appointments)
 
-        # Add the form layout and search button into the main layout
         self.main_layout = QVBoxLayout()
         self.main_layout.addLayout(self.form_layout)
         self.main_layout.addWidget(self.search_button)
 
-        # Set up the table to display search results
         self.table = QTableWidget()
-        self.table.setColumnCount(6)  # Adjust columns as needed
+        self.table.setColumnCount(6)
         self.table.setHorizontalHeaderLabels(["ID", "Patient", "Date", "Time", "Type", ""])
         self.table.setSelectionBehavior(QTableWidget.SelectRows)
         self.table.setEditTriggers(QTableWidget.NoEditTriggers)
