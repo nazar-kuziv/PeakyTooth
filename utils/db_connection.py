@@ -2,6 +2,7 @@ import base64
 import os
 
 
+from supabase import create_client, Client
 from datetime import datetime
 from typing import Optional
 from dotenv import load_dotenv
