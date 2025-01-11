@@ -40,8 +40,8 @@ class ScreenLogin(QWidget):
 
     def set_logo(self):
         logo_label = QLabel()
-        logo = QPixmap(Environment.resource_path('static/images/icon.png'))
-        logo = logo.scaled(150, 150, Qt.KeepAspectRatio, Qt.SmoothTransformation)
+        logo = QPixmap(Environment.resource_path('static/images/peaky_.png'))
+        logo = logo.scaled(250, 250, Qt.KeepAspectRatio, Qt.SmoothTransformation)
         logo_label.setPixmap(logo)
         self.layout.addWidget(logo_label, alignment=Qt.AlignHCenter | Qt.AlignTop)
 
