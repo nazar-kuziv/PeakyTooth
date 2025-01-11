@@ -12,6 +12,7 @@ class ScreenMain(QMainWindow):
     def __init__(self):
         super().__init__()
         self.setWindowTitle('PeakyTooth')
+        self.setMinimumSize(1024, 576)
         self.controller = ControllerMain(self)
         # noinspection PyUnresolvedReferences
         self.setContextMenuPolicy(Qt.NoContextMenu)
@@ -27,7 +28,6 @@ class ScreenMain(QMainWindow):
         # noinspection PyUnresolvedReferences
         self.addToolBar(Qt.TopToolBarArea, toolbar)
 
-        # Create user info widget
         widget_user_info = QWidget()
 
         widget_user_info.setObjectName('widget_user_info')
@@ -43,8 +43,6 @@ class ScreenMain(QMainWindow):
         widget_user_info.setSizePolicy(QSizePolicy.Minimum, QSizePolicy.Minimum)
 
         layout_user_info = QHBoxLayout()
-        # noinspection PyUnresolvedReferences
-        # layout_user_info.setAlignment(Qt.AlignCenter)
         widget_user_info.setLayout(layout_user_info)
 
         svg_img = QSvgWidget(Environment.resource_path(
@@ -76,7 +74,7 @@ class ScreenMain(QMainWindow):
         layout_username_and_organization.addWidget(label_username)
 
         layout_username_and_organization.addStretch(1)
-  
+
         label_organization = QLabel(self.controller.get_user_organization())
         label_organization.setStyleSheet("""
                 QLabel {

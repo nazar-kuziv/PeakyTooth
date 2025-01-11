@@ -23,10 +23,8 @@ class NewPatientForm(QWidget):
         self.setWindowTitle("New patient form")
         self.controller = NewPatientFormController(self)
 
-        # Initialize the form layout
         self.form_layout = QFormLayout()
 
-        # Add the input fields
         self.setForm()
 
     def setForm(self):
@@ -66,7 +64,7 @@ class NewPatientForm(QWidget):
         if message == '':
             return
         msg = QMessageBox(self)
-        msg.setIcon(QMessageBox.Information)  # You can use Information, Warning, or Critical
+        msg.setIcon(QMessageBox.Information)
         msg.setText(message)
         msg.exec()
 

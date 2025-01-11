@@ -31,14 +31,6 @@ class ControllerLogin:
         user_session.set_user_data(db_user[0]['userid'], db_user[0]['login'], db_user[0]['name'], db_user[0]['surname'],
                                    db_user[0]['role'], db_user[0]['organization_id'],
                                    db_user[0]['organizations']['organization_name'])
-        # TODO: Delete this in future
-        print('Id: ' + str(user_session.user_id))
-        print('Login: ' + user_session.login)
-        print('Name: ' + user_session.name)
-        print('Surname: ' + user_session.surname)
-        print('Role: ' + user_session.role)
-        print('Organization: ' + user_session.organization_name)
-        print('Organization id: ' + str(user_session.organization_id))
         return True
 
     @staticmethod

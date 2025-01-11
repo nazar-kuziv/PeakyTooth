@@ -3,7 +3,7 @@ import base64
 from utils.db_connection import DBConnection
 from utils.exceptions.cant_find_appointment import CantFindAppointment
 from utils.user_session import UserSession
-from view.screen_mouthe_visualisation import ScreenMouseVisualisation
+from view.screen_mouth_visualisation import ScreenMouthVisualisation
 
 
 class ControllerAppointmentDetails:
@@ -82,7 +82,7 @@ class ControllerAppointmentDetails:
 
     def edit_dental_diagram(self):
         if not self.mouse_wisualisation_window or not self.mouse_wisualisation_window.isVisible():
-            self.mouse_wisualisation_window = ScreenMouseVisualisation(self.save_new_dental_diagram_and_change_pixmap,
+            self.mouse_wisualisation_window = ScreenMouthVisualisation(self.save_new_dental_diagram_and_change_pixmap,
                                                                        self.new_dental_diagram if self.new_dental_diagram else self.get_dental_diagram())
             self.mouse_wisualisation_window.show()
         else:

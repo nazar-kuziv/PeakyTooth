@@ -1,13 +1,11 @@
 import base64
 import os
-
-
-from supabase import create_client, Client
-from datetime import datetime
 from typing import Optional
+
 from dotenv import load_dotenv
 from supabase import create_client, Client
 
+from utils.exceptions.db_smth_went_wrong import DBSmthWentWrong
 from utils.exceptions.db_unable_to_connect import DBUnableToConnect
 from utils.exceptions.db_unable_to_get_data import DBUnableToGetData
 
@@ -98,7 +96,6 @@ class DBConnection(metaclass=DBConnectionMeta):
             print(f"An error occurred while adding the doctor: {str(e)}")
             return f"An error occurred while adding the doctor: {str(e)}"
 
-
     def delete_doctor_by_id(self, doctor_id):
         try:
             response = self.client.table('users').delete().eq("login", doctor_id).execute()
@@ -108,12 +105,11 @@ class DBConnection(metaclass=DBConnectionMeta):
             print(f"error {str(e)}")
             return f"error {str(e)}"
 
-
     def search_doctors(self, name, surname):
         try:
             query = self.client.table('users') \
                 .select("*") \
-                .eq("role", "Dentist")\
+                .eq("role", "Dentist") \
                 .neq("password", "NULL")
 
             if name:
@@ -122,16 +118,10 @@ class DBConnection(metaclass=DBConnectionMeta):
             if surname:
                 query = query.ilike("surname", f"%{surname}%")
 
-
-
-
-
-
             response = query.execute()
 
-
             for doctor in response.data:
-               doctor["id"] = doctor.pop("user_id", doctor.get("id"))
+                doctor["id"] = doctor.pop("user_id", doctor.get("id"))
 
             return response.data
 
@@ -139,15 +129,10 @@ class DBConnection(metaclass=DBConnectionMeta):
             print(f"An error occurred while retrieving doctors: {str(e)}")
             raise DBUnableToGetData()
 
-
-
-
-
-
-
     def update_doctor_password(self, doctor_id, hashed_password):
         try:
-            response = self.client.table('users').update({"password": hashed_password}).eq("userid", doctor_id).execute()
+            response = self.client.table('users').update({"password": hashed_password}).eq("userid",
+                                                                                           doctor_id).execute()
             print(response)
         except Exception as e:
             print(f"Error updating doctor password: {str(e)}")
@@ -176,7 +161,7 @@ class DBConnection(metaclass=DBConnectionMeta):
         except Exception as e:
             print(f"Error updating doctor login: {str(e)}")
             raise
-            
+
     def alter_patient_data(self, doctor_organization_id, patient_id, name, surname, date_of_birth, analegisics_allergy,
                            telephone, email):
         try:
@@ -211,7 +196,6 @@ class DBConnection(metaclass=DBConnectionMeta):
             print(f"An error occurred while retrieving the patient: {str(e)}")
             raise DBUnableToGetData()
 
-
     def create_appointment(self, appointment_data):
         try:
             self.client.table("appointments").insert(appointment_data).execute()
@@ -222,12 +206,11 @@ class DBConnection(metaclass=DBConnectionMeta):
 
     def get_appointments_by_date(self, dentist_id, date):
         try:
-            # Start query for appointments table
             query = (
                 self.client.table('appointments')
                 .select(
                     'id, date, time, dentist_id, type, notes, '
-                    'patients(patient_name, patient_surname)'  # Fetch related fields from patients
+                    'patients(patient_name, patient_surname)'
                 )
             )
 
@@ -240,12 +223,11 @@ class DBConnection(metaclass=DBConnectionMeta):
             response = query.execute()
             return response
         except Exception as e:
-            print ("An error occurred while retrieving the appointments: " + str(e))
+            print("An error occurred while retrieving the appointments: " + str(e))
             raise DBUnableToGetData()
 
     def get_appointment_by_id(self, appointment_id):
         try:
-            # Correct the foreign key relationship and specify the appropriate fields
             query = (
                 self.client
                 .table("appointments")
@@ -261,14 +243,13 @@ class DBConnection(metaclass=DBConnectionMeta):
             print("An error occurred while retrieving the appointments: " + str(e))
             raise DBUnableToGetData()
 
-    def get_appointments_with_filter(self, dentist_id, name, surname, date_from, date_to, time_from, time_to, visit_type):
+    def get_appointments_with_filter(self, dentist_id, name, surname, date_from, date_to, time_from, time_to,
+                                     visit_type):
         try:
-            # Begin constructing the query
             query = self.client.table('appointments').select(
                 'id, date, time, type, patients(*)'
             )
             query = query.eq('dentist_id', dentist_id)
-
 
             if date_from and not date_to:
                 query = query.gte('date', date_from)
@@ -286,10 +267,8 @@ class DBConnection(metaclass=DBConnectionMeta):
             if visit_type:
                 query = query.eq('type', visit_type)
 
-            # Sort the results by date and time
             query = query.order('date, time')
 
-            # Execute the query
             response = query.execute().data
 
             filtered = [
@@ -306,7 +285,6 @@ class DBConnection(metaclass=DBConnectionMeta):
 
     def update_appointment(self, appointment_id, date, time, appointment_type, notes):
         try:
-            # Prepare the new data for updating
             update_data = {
                 "date": date,
                 "time": time,
@@ -314,19 +292,17 @@ class DBConnection(metaclass=DBConnectionMeta):
                 "notes": notes
             }
 
-            # Start the update query
             response = self.client.table("appointments") \
                 .update(update_data) \
-                .eq("id", appointment_id)  # Specify the appointment to be updated
+                .eq("id", appointment_id)
 
-            # Execute the query and return the result
             response.execute()
 
             return "Appointment was updated successfully!"
 
         except Exception as e:
             print(f"An error occurred while updating the appointment: {str(e)}")
-            
+
     def get_appointment_details(self, organization_id: int, appointment_id: int):
         try:
             response = self.client.rpc('get_appointment_details', {
@@ -360,22 +336,6 @@ class DBConnection(metaclass=DBConnectionMeta):
             print(f"An error occurred while retrieving the appointment: {str(e)}")
             raise DBUnableToGetData()
 
-    def alter_appointment_dental_diagram(self, appointment_id, dental_diagram):
-        try:
-            dental_diagram_encoded = base64.b64encode(dental_diagram).decode("utf-8")
-
-            response = self.client.table("appointments_details") \
-                .update({
-                "dental_diagram": dental_diagram_encoded
-            }) \
-                .eq("appointment_id", appointment_id) \
-                .execute()
-
-            return response.data
-        except Exception as e:
-            print(f"An error occurred while updating the appointment: {str(e)}")
-            raise DBUnableToGetData()
-
     def alter_appointment_details_using_id(self, appointment_id: int, services: Optional[str],
                                            symptoms_description: Optional[str],
                                            mucous_membrane: Optional[str], periodontium: Optional[str],
@@ -401,7 +361,7 @@ class DBConnection(metaclass=DBConnectionMeta):
             return response
         except Exception as e:
             print(f"An error occurred while updating the appointment: {str(e)}")
-            raise DBUnableToGetData()
+            raise DBSmthWentWrong()
 
     def insert_appointment_details(self, appointment_id: int, services: Optional[str],
                                    symptoms_description: Optional[str], mucous_membrane: Optional[str],
@@ -427,9 +387,7 @@ class DBConnection(metaclass=DBConnectionMeta):
             }
 
             response = self.client.table("appointments_details").insert(new_record).execute()
-
             return response
         except Exception as e:
             print(f"An error occurred while inserting the appointment: {str(e)}")
-            # TO-DO Change exceptions
-            raise DBUnableToGetData()
+            raise DBSmthWentWrong()

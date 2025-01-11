@@ -1,18 +1,10 @@
 from PySide6.QtWidgets import (
-    QMainWindow,
     QPushButton,
     QVBoxLayout,
     QLineEdit,
     QFormLayout,
-    QComboBox,
-    QDateEdit,
-    QCheckBox,
-    QApplication,
     QWidget, QMessageBox,
 )
-import hashlib
-from PySide6.QtCore import Qt
-import sys
 
 from controller.add_doctor_contoller import AddDoctorController
 
@@ -23,9 +15,7 @@ class AddDoctorPage(QWidget):
         self.setWindowTitle("New patient form")
         self.controller = AddDoctorController(self)
 
-
         self.form_layout = QFormLayout()
-
 
         self.setForm()
 
@@ -40,10 +30,9 @@ class AddDoctorPage(QWidget):
         self.form_layout.addRow("Login:", self.login_field)
 
         self.pass_field = QLineEdit()
+        # noinspection PyUnresolvedReferences
         self.pass_field.setEchoMode(QLineEdit.Password)
         self.form_layout.addRow("Password:", self.pass_field)
-
-
 
         self.submit_button = QPushButton("Submit")
         self.submit_button.clicked.connect(self.addDoctor)
@@ -57,22 +46,16 @@ class AddDoctorPage(QWidget):
         if message == '':
             return
         msg = QMessageBox(self)
+        # noinspection PyUnresolvedReferences
         msg.setIcon(QMessageBox.Information)
         msg.setText(message)
 
         msg.exec()
 
     def addDoctor(self):
-        # hashed_password = hashlib.sha256(self.pass_field.text().encode()).hexdigest()
         self.controller.add_doctor(
             self.name_field.text(),
             self.surname_field.text(),
             self.pass_field.text(),
-            self.login_field.text(),
-
-            #self.pass_field.text(),#TODO: hash password and UNHASH IT IN CONTROLLER
+            self.login_field.text()
         )
-
-
-
-
