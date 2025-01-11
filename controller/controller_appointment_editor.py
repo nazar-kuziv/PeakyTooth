@@ -1,34 +1,39 @@
 from PySide6.QtCore import QDate, QTime
 
 from utils.db_connection import DBConnection
+from utils.user_session import UserSession
 
 
 class AppointmentEditorController:
     def __init__(self, view, appointment_id):
         self.view = view
         self.appointment_id = appointment_id
-        self.db = DBConnection()
 
-    def load_appointment_details(self):
-        # Fetch appointment details from the database
-        appointment = self.db.get_appointment_by_id(self.appointment_id).data[0]
-        date = QDate.fromString(appointment['date'], "yyyy-MM-dd")
-        time = QTime.fromString(appointment['time'], "HH:mm:ss")
-        print(time.toString())
-        notes = appointment['notes']
-        appointment_type = appointment['type']
-        patient_name = f"{appointment['patients']['patient_name']} {appointment['patients']['patient_surname']}"
+    def setAppointmentForm(self):
+        db = DBConnection()
+        user_session = UserSession()
+        appointment = db.get_appointment_by_id(self.appointment_id)
+        appointment = appointment.data[0]  # Get the first appointment in the list
+        self.view.patient_name_label.setText(
+            "Patient: " + appointment['patients']['patient_name'] + " " + appointment['patients']['patient_surname'])
 
-        self.populate_fields(date, time, notes, appointment_type, patient_name)
+        self.view.date_field.setDate(QDate.fromString(appointment['date'], "yyyy-MM-dd"))
+        self.view.time_field.setTime(QTime.fromString(appointment['time'], "hh:mm:ss"))
+        self.view.notes_field.setText(appointment['notes'])
+        self.view.type_field.setCurrentText(appointment['type'])
 
+        self.view.date_field.setDate(QDate.currentDate())
+        self.view.time_field.setTime(QTime.currentTime())
 
-    def update_appointment(self, date, time, notes, appointment_type):
-        pass
-
-    def populate_fields(self, date, time, notes, appointment_type, patient_name):
-        self.view.date_field.setDate(date)
-        self.view.time_field.setTime(time)
-        self.view.notes_field.setPlainText(notes)
-        self.view.type_field.setCurrentText(appointment_type)
-        self.view.patient_name_label.setText(f"Patient: {patient_name}")
+    def createAppointment(self):
+        db = DBConnection()
+        date = self.view.date_field.text(),
+        time = self.view.time_field.text(),
+        notes = self.view.notes_field.toPlainText(),
+        type = self.view.type_field.currentText()
+        response = db.update_appointment(self.appointment_id, date, time, type, notes)
+        if (response):
+            self.view.show_message(response)
+        else:
+            self.view.show_message("Error")
 

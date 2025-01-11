@@ -1,7 +1,8 @@
 from PySide6.QtCore import QTime
 
+from controller.controller_appointment_editor import AppointmentEditorController
 from utils.db_connection import DBConnection
-from view.appointment_editor_screen import AppointmentEditorForm
+from view.appointment_form import AppointmentForm
 
 
 class AppointmentInfoController:
@@ -23,10 +24,9 @@ class AppointmentInfoController:
         self.view.label_notes.setText(f"Notes: {appointment['notes']}")
 
     def edit_appointment_button_clicked(self):
-        self.view.main_screen.setCentralWidget(AppointmentEditorForm(self.view.main_screen, self.appointment_id))
+        self.view.main_screen.setCentralWidget(AppointmentForm(self.view.main_screen, self.appointment_id, AppointmentEditorController))
         self.view.deleteLater()
 
     def delete_appointment_button_clicked(self):
-        # Open reschedule appointment form
         pass
 

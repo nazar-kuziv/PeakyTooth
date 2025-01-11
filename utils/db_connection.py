@@ -153,11 +153,72 @@ class DBConnection(metaclass=DBConnectionMeta):
             )
             response = query.execute()
 
-
-
             return response
-
 
         except Exception as e:
             print("An error occurred while retrieving the appointments: " + str(e))
+            raise DBUnableToGetData()
+
+    def get_appointments_with_filter(self, dentist_id, name, surname, date_from, date_to, time_from, time_to, visit_type):
+        try:
+            # Begin constructing the query
+            query = self.client.table('appointments').select(
+                'id, date, time, type, patients(patient_name, patient_surname)'
+            )
+            query = query.eq('dentist_id', dentist_id)
+
+            if name:
+                query = query.eq('patients.patient_name', name)
+            if surname:
+                query = query.eq('patients.patient_surname', surname)
+
+            if date_from and not date_to:
+                query = query.gte('date', date_from)
+            elif date_to and not date_from:
+                query = query.lte('date', date_to)
+            elif date_from and date_to:
+                query = query.gte('date', date_from).lte('date', date_to)
+
+            if time_from and not time_to:
+                query = query.gte('time', time_from)
+            elif time_to and not time_from:
+                query = query.lte('time', time_to)
+            elif time_from and time_to:
+                query = query.gte('time', time_from).lte('time', time_to)
+            if visit_type:
+                query = query.eq('type', visit_type)
+
+            # Sort the results by date and time
+            query = query.order('date, time')
+
+            # Execute the query
+            response = query.execute()
+            return response
+
+        except Exception as e:
+            print(f"An error occurred while searching for appointments: {str(e)}")
+            raise DBUnableToGetData()
+
+    def update_appointment(self, appointment_id, date, time, appointment_type, notes):
+        try:
+            # Prepare the new data for updating
+            update_data = {
+                "date": date,
+                "time": time,
+                "type": appointment_type,
+                "notes": notes
+            }
+
+            # Start the update query
+            response = self.client.table("appointments") \
+                .update(update_data) \
+                .eq("id", appointment_id)  # Specify the appointment to be updated
+
+            # Execute the query and return the result
+            response.execute()
+
+            return "Appointment was updated successfully!"
+
+        except Exception as e:
+            print(f"An error occurred while updating the appointment: {str(e)}")
             raise DBUnableToGetData()
