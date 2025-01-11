@@ -1,6 +1,6 @@
 import os
 
-from select import select
+
 from supabase import create_client, Client
 from dotenv import load_dotenv
 
