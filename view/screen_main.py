@@ -11,6 +11,7 @@ from view.widget.button_base import ButtonBase
 class ScreenMain(QMainWindow):
     def __init__(self):
         super().__init__()
+        self.setWindowTitle('PeakyTooth')
         self.controller = ControllerMain(self)
         # noinspection PyUnresolvedReferences
         self.setContextMenuPolicy(Qt.NoContextMenu)
