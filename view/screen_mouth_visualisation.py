@@ -161,7 +161,7 @@ class ButtonColor(QPushButton):
         for i in range(self.parent_layout.count()):
             widget = self.parent_layout.itemAt(i).widget()
             if isinstance(widget, ButtonColor):
-                widget.set_selected(widget is self)  # Select only this button
+                widget.set_selected(widget is self)
         self.foo_to_set(self.color)
 
 
