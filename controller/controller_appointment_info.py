@@ -16,7 +16,6 @@ class AppointmentInfoController:
         # Fetch appointment info and update the labels
         db = DBConnection()
         appointment = db.get_appointment_by_id(self.appointment_id).data[0]
-        print(appointment)
         self.view.label_appointment_id.setText(f"ID: {appointment['id']}")
         self.view.label_patient_name.setText(f"Patient: {appointment['patients']['patient_name']} {appointment['patients']['patient_surname']}")
         self.view.label_date.setText(f"Date: {appointment['date']}")
@@ -26,14 +25,14 @@ class AppointmentInfoController:
         self.view.label_notes.setText(f"Notes: {appointment['notes']}")
 
     def edit_appointment_button_clicked(self):
-        self.view.main_screen.setCentralWidget(AppointmentForm(self.view.main_screen, self.appointment_id, AppointmentEditorController))
-        self.view.deleteLater()
+        self.view.main_screen.add_screen_to_stack(AppointmentForm(self.view.main_screen, self.appointment_id, AppointmentEditorController))
+        
 
     def add_details_button_clicked(self):
-        self.view.main_screen.setCentralWidget(ScreenAppointmentDetails(self.view.main_screen, self.appointment_id))
-        self.view.deleteLater()
+        self.view.main_screen.add_screen_to_stack(ScreenAppointmentDetails(self.view.main_screen, self.appointment_id))
+        
 
     def see_appointment_details_button_clicked(self):
-        self.view.main_screen.setCentralWidget(ScreenPdf(self.appointment_id))
-        self.view.deleteLater()
+        self.view.main_screen.add_screen_to_stack(ScreenPdf(self.appointment_id))
+        
 

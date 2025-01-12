@@ -61,8 +61,6 @@ class ScreenPdf(QWidget):
             self.deleteLater()
             return
 
-        self.show()
-
     def show_pdf(self):
         try:
             self.pdf_file_path = self.controller.get_pdf_path()
@@ -121,7 +119,7 @@ class ScreenPdf(QWidget):
             self.controller.send_pdf_to_patient()
 
     def show_error(self, error):
-        QMessageBox.critical(self, 'Error', error)
+        QMessageBox.critical(self, 'Error', str(error))
 
     def show_success(self, message):
         QMessageBox.information(self, 'Success', message)

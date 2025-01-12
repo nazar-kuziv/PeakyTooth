@@ -21,13 +21,14 @@ class PatientSearchAppointmentCreatorController:
         if message == '':
             return
         msg = QMessageBox(self.view)
-        msg.setIcon(QMessageBox.Information)  # You can use Information, Warning, or Critical
+        # noinspection PyUnresolvedReferences
+        msg.setIcon(QMessageBox.Information)
         msg.setText(message)
 
         msg.exec()
 
     def select_patient(self, patient_id):
-        self.view.main_screen.setCentralWidget(AppointmentForm(self.view.main_screen, patient_id, AppointmentFormController))
+        self.view.main_screen.add_screen_to_stack(AppointmentForm(self.view.main_screen, patient_id, AppointmentFormController))
 
     def display_patients(self, patients):
         self.view.table.setRowCount(len(patients))
