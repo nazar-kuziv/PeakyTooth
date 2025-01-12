@@ -23,9 +23,6 @@ class DoctorsManagementForm(QWidget):
         self.layout.setSpacing(15)
         self.setLayout(self.layout)
 
-
-
-        # Table
         self.table = QTableWidget()
         self.table.setColumnCount(6)
         self.table.setHorizontalHeaderLabels(["ID", "Login", "Name", "Surname", "Role", "Actions"])
@@ -307,7 +304,4 @@ class DoctorsManagementForm(QWidget):
     def show_error(self, message):
         QMessageBox.critical(self, 'Error', message, QMessageBox.Ok, QMessageBox.Ok)
 
-    def go_back(self):
-        from view.admin_menu import AdminMenu
-        self.main_screen.setCentralWidget(AdminMenu(self.main_screen))
-        self.deleteLater()
+

@@ -18,7 +18,7 @@ class DentistMenu(QMainWindow):
         button_layout = QHBoxLayout()
         central_widget.setStyleSheet("background-color: #FFFFFF;")
 
-        # Definicje stylów dla poszczególnych przycisków
+        # Define styles
         add_patient_style = """
             QPushButton {
                 background-color: #C0C0C0;
@@ -87,7 +87,7 @@ class DentistMenu(QMainWindow):
             }
         """
 
-        # Tworzenie przycisków z indywidualnymi stylami
+        # Initialize buttons
         self.add_patient_button = QPushButton("Add New Patient")
         self.add_patient_button.setFixedSize(165, 265)
         self.add_patient_button.setStyleSheet(add_patient_style)
@@ -108,7 +108,7 @@ class DentistMenu(QMainWindow):
         self.delete_appointment_button.setStyleSheet(delete_appointment_style)
         self.delete_appointment_button.clicked.connect(self.controller.delete_appointment_button_clicked)
 
-        # Dodawanie przycisków do layoutu
+        # Layout setup
         button_layout.addStretch()
         button_layout.addWidget(self.add_patient_button)
         button_layout.addSpacing(20)
@@ -125,9 +125,3 @@ class DentistMenu(QMainWindow):
 
         central_widget.setLayout(main_layout)
 
-if __name__ == "__main__":
-    app = QApplication(sys.argv)
-    main_screen = QWidget()
-    dentist_menu = DentistMenu(main_screen)
-    dentist_menu.show()
-    sys.exit(app.exec())

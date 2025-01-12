@@ -156,15 +156,4 @@ class PatientSearchForm(QWidget):
         msg.setText(message)
         msg.exec()
 
-    def go_back(self):
-        from utils.user_session import UserSession
-        role = UserSession().role
 
-        if role == "Admin":
-            from view.admin_menu import AdminMenu
-            self.main_screen.setCentralWidget(AdminMenu(self.main_screen))
-        else:
-            from view.dentist_menu import DentistMenu
-            self.main_screen.setCentralWidget(DentistMenu(self.main_screen))
-
-        self.deleteLater()
