@@ -48,16 +48,13 @@ class AppointmentSearchForm(QWidget):
         self.table.setSelectionBehavior(QTableWidget.SelectRows)
         self.table.setEditTriggers(QTableWidget.NoEditTriggers)
 
-        # Add the table to the main layout
         self.main_layout.addWidget(self.table)
 
-        # Set the stretch factor for the table to 1 so it fills the remaining space
-        self.main_layout.setStretch(0, 0)  # Form layout won't stretch
-        self.main_layout.setStretch(1, 0)  # Button layout won't stretch
-        self.main_layout.setStretch(2, 1)  # Table will stretch to take remaining space
+        self.main_layout.setStretch(0, 0)
+        self.main_layout.setStretch(1, 0)
+        self.main_layout.setStretch(2, 1)
 
         self.setLayout(self.main_layout)
 
-        # Set size policy to ensure the table expands with the window
         self.table.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
 

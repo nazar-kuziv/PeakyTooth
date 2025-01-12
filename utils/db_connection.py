@@ -51,7 +51,6 @@ class DBConnection(metaclass=DBConnectionMeta):
 
         try:
             response = self.client.table('patients').insert(new_patient_data).execute()
-            print(response)
             return "Patient added successfully!"
         except Exception as e:
             print(f"An error occurred while adding the patient: {str(e)}")
@@ -90,7 +89,6 @@ class DBConnection(metaclass=DBConnectionMeta):
 
         try:
             response = self.client.table('users').insert(new_doctor_data).execute()
-            print(response)
             return "Doctor added successfully!"
         except Exception as e:
             print(f"An error occurred while adding the doctor: {str(e)}")
@@ -99,7 +97,6 @@ class DBConnection(metaclass=DBConnectionMeta):
     def delete_doctor_by_id(self, doctor_id):
         try:
             response = self.client.table('users').delete().eq("login", doctor_id).execute()
-            print(response)
             return "deleted"
         except Exception as e:
             print(f"error {str(e)}")
@@ -133,7 +130,6 @@ class DBConnection(metaclass=DBConnectionMeta):
         try:
             response = self.client.table('users').update({"password": hashed_password}).eq("userid",
                                                                                            doctor_id).execute()
-            print(response)
         except Exception as e:
             print(f"Error updating doctor password: {str(e)}")
             raise
@@ -141,7 +137,6 @@ class DBConnection(metaclass=DBConnectionMeta):
     def update_doctor_surname(self, doctor_id, new_surname):
         try:
             response = self.client.table('users').update({"surname": new_surname}).eq("userid", doctor_id).execute()
-            print(response)
         except Exception as e:
             print(f"Error updating doctor surname: {str(e)}")
             raise
@@ -149,7 +144,6 @@ class DBConnection(metaclass=DBConnectionMeta):
     def update_dotor_name(self, doctor_id, new_name):
         try:
             response = self.client.table('users').update({"name": new_name}).eq("userid", doctor_id).execute()
-            print(response)
         except Exception as e:
             print(f"Error updating doctor name: {str(e)}")
             raise
@@ -157,7 +151,6 @@ class DBConnection(metaclass=DBConnectionMeta):
     def update_doctor_login(self, doctor_id, new_login):
         try:
             response = self.client.table('users').update({"login": new_login}).eq("userid", doctor_id).execute()
-            print(response)
         except Exception as e:
             print(f"Error updating doctor login: {str(e)}")
             raise

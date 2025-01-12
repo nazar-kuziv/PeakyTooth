@@ -18,7 +18,6 @@ class AddDoctorController:
 
         try:
             password.strip()
-            print(f'password before hashing: {password}')
         except:
             pass
 
