@@ -8,6 +8,7 @@ from PyPDFForm import PdfWrapper
 from utils.db_connection import DBConnection
 from utils.environment import Environment
 from utils.smtp_connection import SMTPConnection
+from utils.user_session import UserSession
 
 DATE_OF_VISIT_FIELD_NAME = 'dhFormfield-5377928304'
 CLINIC_NAME_FIELD_NAME = 'dhFormfield-5377978379'
@@ -40,8 +41,8 @@ class ControllerPdf:
         self.pdf_path = None
         self.db = DBConnection()
         try:
-            # self.appointment_details = self.db.get_appointment_details(UserSession().organization_id, appointment_id)
-            self.appointment_details = self.db.get_appointment_data_for_pdf(1, appointment_id)
+            self.appointment_details = self.db.get_appointment_data_for_pdf(UserSession().organization_id,
+                                                                            appointment_id)
         except Exception as e:
             raise e
 
@@ -51,6 +52,8 @@ class ControllerPdf:
         return self.pdf_path
 
     def _generate_pdf(self):
+        if not self.appointment_details:
+            return Environment.resource_path('static/pdf_forms/dental_card.pdf')
         temp = PdfWrapper(Environment.resource_path('static/pdf_forms/dental_card.pdf'))
         # Clear all fields
         for key in self.appointment_details[0]:

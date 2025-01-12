@@ -10,7 +10,6 @@ class ControllerLogin:
     def __init__(self, view):
         self.view = view
 
-        # Create db instance
         try:
             self.db = DBConnection()
         except DBUnableToConnect as e:
@@ -19,7 +18,6 @@ class ControllerLogin:
     def login(self, login, password):
         try:
             db_user = self.db.get_user(login).data
-            print(db_user)
         except DBUnableToGetData as e:
             self.view.show_error(e)
             return False

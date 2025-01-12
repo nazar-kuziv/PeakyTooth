@@ -13,7 +13,6 @@ class PatientInfoScreen(QWidget):
         self.main_layout = QVBoxLayout()
         self.main_layout.setAlignment(Qt.AlignTop)
 
-        # Patient info labels (make them selectable)
         self.label_patient_id = QLabel()
         self.label_patient_name = QLabel()
         self.label_patient_surname = QLabel()
@@ -31,11 +30,10 @@ class PatientInfoScreen(QWidget):
             self.label_patient_dob, self.label_patient_sex, self.label_patient_email,
             self.label_patient_phone, self.label_patient_allergy
         ]:
-            label.setStyleSheet(label_style)  # Apply style to increase font size
-            label.setTextInteractionFlags(Qt.TextSelectableByMouse)  # Enable text selection
-            label.setWordWrap(True)  # Optional: Wrap text if it overflows
+            label.setStyleSheet(label_style)
+            label.setTextInteractionFlags(Qt.TextSelectableByMouse)
+            label.setWordWrap(True)
 
-        # Adding labels to the layout
         self.main_layout.addWidget(self.label_patient_id)
         self.main_layout.addWidget(self.label_patient_name)
         self.main_layout.addWidget(self.label_patient_surname)
@@ -45,7 +43,6 @@ class PatientInfoScreen(QWidget):
         self.main_layout.addWidget(self.label_patient_phone)
         self.main_layout.addWidget(self.label_patient_allergy)
 
-        # Buttons for editing and adding an appointment
         self.button_layout = QHBoxLayout()
 
         self.edit_button = QPushButton("Edit")
@@ -60,9 +57,7 @@ class PatientInfoScreen(QWidget):
         self.button_layout.addWidget(self.edit_button)
         self.button_layout.addWidget(self.appointment_button)
 
-        # Adding buttons layout to the main layout
         self.main_layout.addLayout(self.button_layout)
 
-        # Set main layout
         self.setLayout(self.main_layout)
         self.controller.setPatientInfo()

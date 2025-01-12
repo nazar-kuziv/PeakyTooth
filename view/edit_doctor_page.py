@@ -68,5 +68,5 @@ class EditDoctorPage(QWidget):
     def show_error(self, message):
         msg = QMessageBox(self)
         msg.setIcon(QMessageBox.Critical)
-        msg.setText(message)
+        msg.setText(str(message))
         msg.exec()
