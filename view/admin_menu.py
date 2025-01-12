@@ -59,7 +59,6 @@ class AdminMenu(QMainWindow):
                 background-color: #BA4A00;
             }
         """)
-        self.patients_button.clicked.connect(self.controller.patients_button_click)
 
         button_layout.addStretch()
         button_layout.addWidget(self.doctors_button)
@@ -72,6 +71,8 @@ class AdminMenu(QMainWindow):
         main_layout.addStretch()
 
         central_widget.setLayout(main_layout)
+
+        self.patients_button.clicked.connect(self.controller.patients_button_click)
 
 
     def eventFilter(self, source, event):

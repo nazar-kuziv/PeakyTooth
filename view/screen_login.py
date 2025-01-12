@@ -17,15 +17,15 @@ class ScreenLogin(QWidget):
         self.controller = ControllerLogin(self)
 
         self.setWindowTitle('Login')
-        self.setFixedSize(550, 600)  # Powiększone wymiary okna dla lepszej widoczności
+        self.setFixedSize(550, 600)
 
         self.layout = QVBoxLayout()
         self.setLayout(self.layout)
         self.layout.setAlignment(Qt.AlignCenter)
-        self.layout.setContentsMargins(20, 20, 20, 20)  # Dodanie marginesów
-        self.layout.setSpacing(15)  # Odstępy między elementami
+        self.layout.setContentsMargins(20, 20, 20, 20)
+        self.layout.setSpacing(15)
 
-        self.label_font = QFont("Segoe UI", 17)  # Nowoczesna czcionka
+        self.label_font = QFont("Segoe UI", 17)
         self.error_font = QFont("Segoe UI", 10)
 
         self.set_logo()
@@ -53,7 +53,7 @@ class ScreenLogin(QWidget):
 
     def set_username_input(self):
         self.username = QLineEdit()
-        self.username.setFixedSize(350, 50)  # Powiększenie pola tekstowego
+        self.username.setFixedSize(350, 50)
         self.username.setPlaceholderText("Enter your username")
         self.username.setStyleSheet("""
             QLineEdit {
@@ -88,7 +88,7 @@ class ScreenLogin(QWidget):
     def set_password_input(self):
         self.password = QLineEdit()
         self.password.setEchoMode(QLineEdit.Password)
-        self.password.setFixedSize(350, 50)  # Powiększenie pola tekstowego
+        self.password.setFixedSize(350, 50)
         self.password.setPlaceholderText("Enter your password")
         self.password.setStyleSheet("""
             QLineEdit {
@@ -116,7 +116,7 @@ class ScreenLogin(QWidget):
 
     def set_login_button(self):
         login_button = ButtonBase('Login')
-        login_button.setFixedSize(250, 60)  # Zwiększenie przycisku
+        login_button.setFixedSize(250, 60)
         login_button.setStyleSheet("""
             QPushButton {
                 background-color: #4CAF50;
@@ -135,7 +135,7 @@ class ScreenLogin(QWidget):
         login_button.setDefault(True)
         login_button.clicked.connect(self.login)
         self.layout.addWidget(login_button, alignment=Qt.AlignHCenter | Qt.AlignTop)
-        self.layout.addSpacing(20)  # Dodanie odstępu poniżej przycisku
+        self.layout.addSpacing(20)
 
     def set_enter_for_login(self):
         enter_for_login = QShortcut(QKeySequence("Return"), self)
@@ -176,8 +176,12 @@ class ScreenLogin(QWidget):
         self.main_screen = ScreenMain()
         user_session = UserSession()
         if user_session.get_user_data()['role'] == 'Dentist':
-            self.main_screen.setCentralWidget(DentistMenu(self.main_screen))
+            menu = DentistMenu(self.main_screen)
+            self.main_screen.stacked_widget.addWidget(menu)
+            self.main_screen.stacked_widget.setCurrentWidget(menu)
         elif user_session.get_user_data()['role'] == 'Admin':
-            self.main_screen.setCentralWidget(AdminMenu(self.main_screen))
+            menu = AdminMenu(self.main_screen)
+            self.main_screen.stacked_widget.addWidget(menu)
+            self.main_screen.stacked_widget.setCurrentWidget(menu)
         self.main_screen.show()
         self.close()

@@ -54,7 +54,6 @@ class NewPatientForm(QWidget):
             }
         """)
 
-        # Główny layout: QFormLayout
         self.form_layout = QFormLayout()
         self.form_layout.setContentsMargins(50, 50, 50, 50)
         self.form_layout.setSpacing(20)
@@ -87,14 +86,11 @@ class NewPatientForm(QWidget):
         self.allergy_checkbox = QCheckBox("Yes")
         self.form_layout.addRow("Allergic to Analgesics?", self.allergy_checkbox)
 
-        # Tworzymy przycisk Submit
         self.submit_button = QPushButton("Submit")
         self.submit_button.setObjectName("submit_button")
-        # Aby rozciągnął się na całą szerokość:
         self.submit_button.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Fixed)
         self.submit_button.clicked.connect(self.controller.add_new_patient)
 
-        # Dodajemy cały wiersz tylko z przyciskiem (span na całą szerokość)
         self.form_layout.addRow(self.submit_button)
 
     def show_message(self, message):
@@ -105,13 +101,4 @@ class NewPatientForm(QWidget):
         msg.setText(message)
         msg.exec()
 
-    def go_back(self):
-        from utils.user_session import UserSession
-        role = UserSession().role
-        if role == "Admin":
-            from view.admin_menu import AdminMenu
-            self.main_screen.setCentralWidget(AdminMenu(self.main_screen))
-        else:
-            from view.dentist_menu import DentistMenu
-            self.main_screen.setCentralWidget(DentistMenu(self.main_screen))
-        self.deleteLater()
+
