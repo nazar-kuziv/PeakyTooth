@@ -61,8 +61,6 @@ class ScreenPdf(QWidget):
             self.deleteLater()
             return
 
-        self.show()
-
     def show_pdf(self):
         try:
             self.pdf_file_path = self.controller.get_pdf_path()

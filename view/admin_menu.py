@@ -1,4 +1,4 @@
-from PySide6.QtWidgets import QApplication, QMainWindow, QWidget, QPushButton, QVBoxLayout, QHBoxLayout
+from PySide6.QtWidgets import QApplication, QMainWindow, QWidget, QPushButton, QVBoxLayout, QHBoxLayout, QSizePolicy
 from PySide6.QtCore import Qt, QEvent
 import sys
 from view.admin_patients_page import AdminPatientsPage
@@ -21,7 +21,7 @@ class AdminMenu(QMainWindow):
         central_widget.setStyleSheet("background-color: #D3D3D3;")
 
         self.doctors_button = QPushButton("Doctors")
-        self.doctors_button.setFixedSize(125, 200)
+        self.doctors_button.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
         self.doctors_button.setStyleSheet("""
             background-color: #C0C0C0;
             border-radius: 10px;
@@ -30,7 +30,7 @@ class AdminMenu(QMainWindow):
         self.doctors_button.clicked.connect(self.controller.doctor_page_click)
 
         self.patients_button = QPushButton("Patients")
-        self.patients_button.setFixedSize(125, 200)
+        self.patients_button.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
         self.patients_button.setStyleSheet("""
             background-color: #C0C0C0;
             border-radius: 10px;
@@ -40,7 +40,7 @@ class AdminMenu(QMainWindow):
 
         button_layout.addStretch()
         button_layout.addWidget(self.doctors_button)
-        button_layout.addSpacing(20)
+        button_layout.addSpacing(30)
         button_layout.addWidget(self.patients_button)
         button_layout.addStretch()
 
