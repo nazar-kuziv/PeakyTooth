@@ -21,21 +21,22 @@ class PatientSearchController:
         if message == '':
             return
         msg = QMessageBox(self.view)
-        msg.setIcon(QMessageBox.Information)  # You can use Information, Warning, or Critical
+        # noinspection PyUnresolvedReferences
+        msg.setIcon(QMessageBox.Information)
         msg.setText(message)
 
         msg.exec()
 
     def select_patient(self, patient_id):
-        self.view.main_screen.setCentralWidget(PatientInfoScreen(self.view.main_screen, patient_id))
+        self.view.main_screen.add_screen_to_stack(PatientInfoScreen(self.view.main_screen, patient_id))
 
     def display_patients(self, patients):
         self.view.table.setRowCount(len(patients))
         for row, patient in enumerate(patients):
             self.view.table.setItem(row, 0, QTableWidgetItem(str(patient["id"])))
             self.view.table.setItem(row, 1, QTableWidgetItem(patient["patient_name"]))
-            self.view.table.setItem(row, 2, QTableWidgetItem(patient["patient_surname"]))  # First Name
-            self.view.table.setItem(row, 3, QTableWidgetItem(patient["date_of_birth"]))  # Last Name
+            self.view.table.setItem(row, 2, QTableWidgetItem(patient["patient_surname"]))
+            self.view.table.setItem(row, 3, QTableWidgetItem(patient["date_of_birth"]))
             self.view.table.setItem(row, 4, QTableWidgetItem(patient["telephone"]))
 
             select_button = QPushButton("Select")
@@ -55,7 +56,6 @@ class PatientSearchController:
             user_session = UserSession()
             organization_id = user_session.organization_id
 
-            # Query the database for matching patients
             patients = self.db.find_patients(self.view.id_field.text(), self.view.name_field.text(), self.view.surname_field.text(), organization_id)
             if not patients:
                 self.display_patients([])

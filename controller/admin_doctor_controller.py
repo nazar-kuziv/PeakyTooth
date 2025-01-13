@@ -17,8 +17,8 @@ class DoctorController:
 
     def add_doctor_form(self):
         from view.add_doctor_page import AddDoctorPage
-        self.view.main_screen.setCentralWidget(AddDoctorPage())
-        self.view.deleteLater()
+        self.view.main_screen.add_screen_to_stack(AddDoctorPage())
+        
 
     def get_doctors(self):
         try:
@@ -60,12 +60,12 @@ class DoctorController:
             self.view.show_error(f"Error deleting doctor: {str(e)}")
 
     def doctor_page_click(self):
-        self.view.main_screen.setCentralWidget(AdminDoctorPage(self.view.main_screen))
-        self.view.deleteLater()
+        self.view.main_screen.add_screen_to_stack(AdminDoctorPage(self.view.main_screen))
+        
 
     def edit_doctor(self, doctor_id):
-        self.view.main_screen.setCentralWidget(EditDoctorPage(self.view.main_screen, doctor_id))
-        self.view.deleteLater()
+        self.view.main_screen.add_screen_to_stack(EditDoctorPage(self.view.main_screen, doctor_id))
+        
 
 
 

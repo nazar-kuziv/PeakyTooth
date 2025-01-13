@@ -67,7 +67,7 @@ class AdminDoctorPage(QWidget):
         self.right_layout.addWidget(self.delete_doctor_button, alignment=Qt.AlignBottom | Qt.AlignRight)
         self.delete_doctor_button.clicked.connect(self.delete_selected_doctors)
 
-        self.main_layout.addLayout(self.right_layout, stretch=3)  # Larger stretch factor for the right side
+        self.main_layout.addLayout(self.right_layout, stretch=3)
 
         self.setLayout(self.main_layout)
 
@@ -103,8 +103,6 @@ class AdminDoctorPage(QWidget):
     def show_error(self, message):
         QMessageBox.critical(self, "Error", message)
 
-    # view/admin_doctor_page.py
-
     def populate_table(self, doctors):
         self.table.setRowCount(len(doctors))
         for row, doctor in enumerate(doctors):
@@ -115,7 +113,7 @@ class AdminDoctorPage(QWidget):
             self.table.setItem(row, 4, QTableWidgetItem(doctor["password"]))
 
             radio_button = QRadioButton()
-            radio_button.doctor_id = doctor["userid"]  # Set doctor_id correctly
+            radio_button.doctor_id = doctor["userid"]
             self.radio_button_group.addButton(radio_button, row)
             radio_button.toggled.connect(self.handle_radio_button_toggled)
 
@@ -136,11 +134,11 @@ class AdminDoctorPage(QWidget):
         if doctor_id is not None:
             if checked:
                 self.selected_doctor_id = doctor_id
-                self.edit_doctor_button.setEnabled(True)  # Enable the button when a doctor is selected
+                self.edit_doctor_button.setEnabled(True)
                 print(f"Doctor {doctor_id} selected")
             else:
                 self.selected_doctor_id = None
-                self.edit_doctor_button.setEnabled(False)  # Disable the button when no doctor is selected
+                self.edit_doctor_button.setEnabled(False)
                 print(f"Doctor {doctor_id} deselected")
         else:
             print("No doctor ID found")
@@ -163,7 +161,7 @@ class AdminDoctorPage(QWidget):
             if widget:
                 radio_button = widget.findChild(QRadioButton)
                 if radio_button and radio_button.isChecked():
-                    selected_doctor_ids.append(radio_button.doctor_id)  # Ensure doctor_id is set correctly
+                    selected_doctor_ids.append(radio_button.doctor_id)
         if selected_doctor_ids:
             for doctor_id in selected_doctor_ids:
                 self.controller.update_doctor_password(doctor_id)

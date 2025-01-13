@@ -34,8 +34,8 @@ class AppointmentSearchController:
         else:
             visit_type = self.view.type_field.currentText()
         user_session = UserSession()
-        appointments = db.get_appointments_with_filter(3, patient_name, patient_surname,
-                                        date_from, date_to, time_from, time_to, visit_type)
+        appointments = db.get_appointments_with_filter(user_session.user_id, patient_name, patient_surname,
+                                                       date_from, date_to, time_from, time_to, visit_type)
 
         for appointment in appointments:
             patient_name = appointment["patients"]["patient_name"]
@@ -69,5 +69,4 @@ class AppointmentSearchController:
         return action
 
     def perform_action_for_appointment(self, appointment_id):
-        self.view.main_screen.setCentralWidget(AppointmentInfoScreen(self.view.main_screen, appointment_id))
-        self.view.deleteLater()
+        self.view.main_screen.add_screen_to_stack(AppointmentInfoScreen(self.view.main_screen, appointment_id))
