@@ -7,6 +7,7 @@ from PySide6.QtWidgets import QMainWindow, QToolBar, QWidget, QHBoxLayout, QVBox
 from controller.controller_main import ControllerMain
 from utils.environment import Environment
 from view.screen_appointment_info import AppointmentInfoScreen
+from view.screen_full_patient_info import PatientInfoScreen
 from view.widget.button_base import ButtonBase
 
 
@@ -122,6 +123,8 @@ class ScreenMain(QMainWindow):
         if current_index > 0:
             if isinstance(self.stack_widget.widget(current_index - 1), AppointmentInfoScreen):
                 # noinspection PyUnresolvedReferences
+                self.stack_widget.widget(current_index - 1).refresh()
+            elif isinstance(self.stack_widget.widget(current_index - 1), PatientInfoScreen):
                 self.stack_widget.widget(current_index - 1).refresh()
             self.stack_widget.setCurrentIndex(current_index - 1)
             self.stack_widget.removeWidget(self.stack_widget.widget(current_index))
