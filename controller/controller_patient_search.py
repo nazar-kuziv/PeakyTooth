@@ -5,10 +5,10 @@ from utils.db_connection import DBConnection
 from utils.exceptions.db_unable_to_connect import DBUnableToConnect
 from utils.exceptions.db_unable_to_get_data import DBUnableToGetData
 from utils.user_session import UserSession
-from view.screen_full_patient_info import PatientInfoScreen
+from view.screen_full_patient_info import ScreenPatientInfo
 
 
-class PatientSearchController:
+class ControllerPatientSearch:
     def __init__(self, view):
         self.view = view
 
@@ -28,7 +28,7 @@ class PatientSearchController:
         msg.exec()
 
     def select_patient(self, patient_id):
-        self.view.main_screen.add_screen_to_stack(PatientInfoScreen(self.view.main_screen, patient_id))
+        self.view.main_screen.add_screen_to_stack(ScreenPatientInfo(self.view.main_screen, patient_id))
 
     def display_patients(self, patients):
         self.view.table.setRowCount(len(patients))

@@ -1,20 +1,17 @@
-import sys
-
+from PySide6.QtCore import Qt, QDate
 from PySide6.QtWidgets import (
     QVBoxLayout, QHBoxLayout, QPushButton, QLabel,
-    QCalendarWidget, QTableWidget, QTableWidgetItem,
-    QWidget, QHeaderView, QApplication
+    QCalendarWidget, QTableWidget, QWidget, QHeaderView
 )
-from PySide6.QtCore import Qt, QDate
-from PySide6.QtGui import QIcon
-from controller.controller_appointment_menu import AppointmentMenuController
+
+from controller.controller_appointment_menu import ControllerAppointmentMenu
 
 
-class AppointmentMenu(QWidget):
+class ScreenAppointmentMenu(QWidget):
     def __init__(self, main_screen):
         super().__init__()
         self.main_screen = main_screen
-        self.controller = AppointmentMenuController(self)
+        self.controller = ControllerAppointmentMenu(self)
 
         self.setWindowTitle("Appointments")
         self.setMinimumSize(800, 600)

@@ -1,14 +1,14 @@
 from PySide6.QtWidgets import QMessageBox, QTableWidgetItem, QPushButton
 
-from controller.controller_appointment_form import AppointmentFormController
+from controller.controller_appointment_form import ControllerAppointmentForm
 from utils.db_connection import DBConnection
 from utils.exceptions.db_unable_to_connect import DBUnableToConnect
 from utils.exceptions.db_unable_to_get_data import DBUnableToGetData
 from utils.user_session import UserSession
-from view.appointment_form import AppointmentForm
+from view.screen_appointment_form import ScreenAppointmentForm
 
 
-class PatientSearchAppointmentCreatorController:
+class ControllerPatientSearchAppointmentCreator:
     def __init__(self, view):
         self.view = view
 
@@ -28,7 +28,7 @@ class PatientSearchAppointmentCreatorController:
         msg.exec()
 
     def select_patient(self, patient_id):
-        self.view.main_screen.add_screen_to_stack(AppointmentForm(self.view.main_screen, patient_id, AppointmentFormController))
+        self.view.main_screen.add_screen_to_stack(ScreenAppointmentForm(self.view.main_screen, patient_id, ControllerAppointmentForm))
 
     def display_patients(self, patients):
         self.view.table.setRowCount(len(patients))

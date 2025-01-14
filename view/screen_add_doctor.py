@@ -6,14 +6,14 @@ from PySide6.QtWidgets import (
     QWidget, QMessageBox,
 )
 
-from controller.add_doctor_contoller import AddDoctorController
+from controller.contoller_add_doctor import ControllerAddDoctor
 
 
-class AddDoctorPage(QWidget):
+class ScreenAddDoctor(QWidget):
     def __init__(self):
         super().__init__()
         self.setWindowTitle("New patient form")
-        self.controller = AddDoctorController(self)
+        self.controller = ControllerAddDoctor(self)
 
         self.form_layout = QFormLayout()
 

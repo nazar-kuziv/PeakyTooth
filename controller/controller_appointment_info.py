@@ -1,13 +1,13 @@
 from PySide6.QtCore import QTime
 
-from controller.controller_appointment_editor import AppointmentEditorController
+from controller.controller_appointment_editor import ControllerAppointmentEditor
 from utils.db_connection import DBConnection
-from view.appointment_form import AppointmentForm
+from view.screen_appointment_form import ScreenAppointmentForm
 from view.screen_appointment_details import ScreenAppointmentDetails
 from view.screen_pdf import ScreenPdf
 
 
-class AppointmentInfoController:
+class ControllerAppointmentInfo:
     def __init__(self, view, appointment_id):
         self.view = view
         self.appointment_id = appointment_id
@@ -25,7 +25,7 @@ class AppointmentInfoController:
         self.view.label_notes.setText(f"Notes: {appointment['notes']}")
 
     def edit_appointment_button_clicked(self):
-        self.view.main_screen.add_screen_to_stack(AppointmentForm(self.view.main_screen, self.appointment_id, AppointmentEditorController))
+        self.view.main_screen.add_screen_to_stack(ScreenAppointmentForm(self.view.main_screen, self.appointment_id, ControllerAppointmentEditor))
         
 
     def add_details_button_clicked(self):

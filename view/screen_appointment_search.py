@@ -1,19 +1,17 @@
 from PySide6.QtWidgets import (
-    QMainWindow, QVBoxLayout, QHBoxLayout, QLineEdit, QPushButton,
-    QTableWidget, QTableWidgetItem, QLabel, QApplication, QWidget, QFormLayout, QSizePolicy, QDateEdit, QTimeEdit, QCheckBox, QComboBox
+    QVBoxLayout, QLineEdit, QPushButton,
+    QTableWidget, QWidget, QFormLayout, QSizePolicy, QComboBox
 )
-from PySide6.QtCore import Qt, QDate, QTime
-import sys
 
-from controller.controller_appointment_search import AppointmentSearchController
+from controller.controller_appointment_search import ControllerAppointmentSearch
 from view.widget.date_picker import DatePicker
 
 
-class AppointmentSearchForm(QWidget):
+class ScreenAppointmentSearch(QWidget):
     def __init__(self, main_screen):
         super().__init__()
         self.main_screen = main_screen
-        self.controller = AppointmentSearchController(self)
+        self.controller = ControllerAppointmentSearch(self)
 
         self.setWindowTitle("Appointment Search")
 
@@ -57,4 +55,3 @@ class AppointmentSearchForm(QWidget):
         self.setLayout(self.main_layout)
 
         self.table.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
-

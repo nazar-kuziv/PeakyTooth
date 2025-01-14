@@ -5,7 +5,7 @@ from utils.exceptions.db_unable_to_connect import DBUnableToConnect
 from utils.user_session import UserSession
 
 
-class AddDoctorController:
+class ControllerAddDoctor:
     def __init__(self, view):
         self.view = view
 

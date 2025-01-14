@@ -1,14 +1,10 @@
 from PySide6.QtWidgets import (
-    QMainWindow, QVBoxLayout, QHBoxLayout, QLineEdit, QPushButton,
-    QTableWidget, QTableWidgetItem, QLabel, QApplication, QWidget, QFormLayout, QSizePolicy
+    QVBoxLayout, QLineEdit, QPushButton,
+    QTableWidget, QWidget, QFormLayout, QSizePolicy
 )
-from PySide6.QtCore import Qt
-import sys
-
-from controller.patient_search_controller import PatientSearchController
 
 
-class PatientSearchForm(QWidget):
+class ScreenPatientSearch(QWidget):
     def __init__(self, main_screen, controller):
         super().__init__()
         self.main_screen = main_screen
