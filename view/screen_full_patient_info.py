@@ -61,3 +61,6 @@ class PatientInfoScreen(QWidget):
 
         self.setLayout(self.main_layout)
         self.controller.setPatientInfo()
+
+    def refresh(self):
+        self.controller.setPatientInfo()
