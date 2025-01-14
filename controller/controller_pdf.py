@@ -126,7 +126,12 @@ class ControllerPdf:
         try:
             if not self.smtp_connection:
                 self.smtp_connection = SMTPConnection()
-            self.smtp_connection.sent_email_with_file('n.kuziv2005@gmail.com', "Your Dental Card",
+            reciever = self.db.get_patient_email_by_id(self.appointment_details[0]['patient_id']).data
+            if not reciever:
+                self.view.show_error("Patient's email not found!")
+                return
+            reciever = reciever[0]['email']
+            self.smtp_connection.sent_email_with_file(reciever, "Your Dental Card",
                                                       "I hope this message finds you well!\nAttached to this email, you will find your dental card in PDF format. This card contains important information and can be handy for quick access to your dental details.",
                                                       self.get_pdf_path())
             self.view.show_success('Email sent successfully!')
