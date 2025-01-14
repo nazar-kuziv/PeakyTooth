@@ -1,13 +1,11 @@
+from PySide6.QtCore import Qt
 from PySide6.QtWidgets import (
-    QFormLayout, QLineEdit, QDateEdit, QTimeEdit, QComboBox, QTextEdit,
+    QFormLayout, QDateEdit, QTimeEdit, QComboBox, QTextEdit,
     QPushButton, QVBoxLayout, QWidget, QSizePolicy, QLabel, QHBoxLayout, QMessageBox
 )
-from PySide6.QtCore import Qt
-
-from controller.controller_appointment_form import AppointmentFormController
 
 
-class AppointmentForm(QWidget):
+class ScreenAppointmentForm(QWidget):
     def __init__(self, main_screen, patient_appointment_id, controller):
         super().__init__()
 

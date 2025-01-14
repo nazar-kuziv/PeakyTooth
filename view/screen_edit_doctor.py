@@ -1,10 +1,9 @@
 from PySide6.QtWidgets import (
     QWidget, QFormLayout, QLabel, QLineEdit, QPushButton, QVBoxLayout, QMessageBox
 )
-from PySide6.QtCore import QTimer
 
 
-class EditDoctorPage(QWidget):
+class ScreenEditDoctor(QWidget):
     def __init__(self, main_screen, doctor_id):
         super().__init__()
         self.main_screen = main_screen
@@ -42,8 +41,8 @@ class EditDoctorPage(QWidget):
         self.setLayout(main_layout)
 
     def update_doctor_info(self):
-        from controller.edit_doctor_controller import EditDoctorController
-        self.controller = EditDoctorController(self)
+        from controller.controller_edit_doctor import ControllerEditDoctor
+        self.controller = ControllerEditDoctor(self)
 
         if self.name_field.text():
             self.controller.change_doctor_name(self.doctor_id, self.name_field.text())
