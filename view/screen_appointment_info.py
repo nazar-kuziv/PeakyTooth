@@ -1,14 +1,14 @@
 from PySide6.QtWidgets import QWidget, QVBoxLayout, QLabel, QPushButton, QHBoxLayout, QSizePolicy
 from PySide6.QtCore import Qt
 
-from controller.controller_appointment_info import AppointmentInfoController
+from controller.controller_appointment_info import ControllerAppointmentInfo
 
 
-class AppointmentInfoScreen(QWidget):
+class ScreenAppointmentInfo(QWidget):
     def __init__(self, main_screen, appointment_id):
         super().__init__()
         self.main_screen = main_screen
-        self.controller = AppointmentInfoController(self, appointment_id)
+        self.controller = ControllerAppointmentInfo(self, appointment_id)
 
         self.main_layout = QVBoxLayout()
         self.main_layout.setAlignment(Qt.AlignTop)

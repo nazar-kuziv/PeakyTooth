@@ -1,5 +1,4 @@
 from PySide6.QtWidgets import (
-    QMainWindow,
     QPushButton,
     QVBoxLayout,
     QLineEdit,
@@ -7,21 +6,18 @@ from PySide6.QtWidgets import (
     QComboBox,
     QDateEdit,
     QCheckBox,
-    QApplication,
     QWidget, QMessageBox,
 )
-from PySide6.QtCore import Qt
-import sys
 
-from controller.new_patient_form_controller import NewPatientFormController
+from controller.controller_new_patient import ControllerNewPatient
 
 
-class NewPatientForm(QWidget):
+class ScreenNewPatient(QWidget):
     def __init__(self, main_screen):
         self.main_screen = main_screen
         super().__init__()
         self.setWindowTitle("New patient form")
-        self.controller = NewPatientFormController(self)
+        self.controller = ControllerNewPatient(self)
 
         self.form_layout = QFormLayout()
 

@@ -1,11 +1,11 @@
+from PySide6.QtCore import Qt, QEvent
 from PySide6.QtWidgets import (
     QVBoxLayout, QHBoxLayout, QLineEdit, QPushButton,
-    QTableWidget, QTableWidgetItem, QFormLayout, QFrame, QWidget, QApplication, QCheckBox, QMessageBox, QRadioButton, QButtonGroup
+    QTableWidget, QTableWidgetItem, QFormLayout, QFrame, QWidget, QMessageBox, QRadioButton, QButtonGroup
 )
-from PySide6.QtCore import Qt, QEvent
-import sys
 
-class AdminDoctorPage(QWidget):
+
+class ScreenAdminDoctor(QWidget):
     def __init__(self, main_screen):
         super().__init__()
         self.main_screen = main_screen
@@ -13,8 +13,8 @@ class AdminDoctorPage(QWidget):
 
 
         self.setWindowTitle("Doctor Admin Page")
-        from controller.admin_doctor_controller import DoctorController
-        self.controller = DoctorController(self)
+        from controller.controller_admin_doctor import ControllerAdminDoctor
+        self.controller = ControllerAdminDoctor(self)
 
         self.main_layout = QHBoxLayout()
 

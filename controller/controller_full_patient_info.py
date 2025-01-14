@@ -1,11 +1,11 @@
-from controller.controller_appointment_form import AppointmentFormController
+from controller.controller_appointment_form import ControllerAppointmentForm
 from utils.db_connection import DBConnection
 from utils.user_session import UserSession
-from view.appointment_form import AppointmentForm
+from view.screen_appointment_form import ScreenAppointmentForm
 from view.screen_edit_patient import ScreenEditPatient
 
 
-class PatientInfoController:
+class ControllerPatientInfo:
     def __init__(self, view, patient_id):
         self.view = view
         self.patient_id = patient_id
@@ -33,4 +33,4 @@ class PatientInfoController:
 
     def create_appointment_button_clicked(self):
         self.view.main_screen.add_screen_to_stack(
-            AppointmentForm(self.view.main_screen, self.patient_id, AppointmentFormController))
+            ScreenAppointmentForm(self.view.main_screen, self.patient_id, ControllerAppointmentForm))

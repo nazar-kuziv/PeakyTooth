@@ -1,16 +1,13 @@
-from PySide6.QtWidgets import QApplication, QMainWindow, QWidget, QPushButton, QVBoxLayout, QHBoxLayout, QSizePolicy
-from PySide6.QtCore import Qt, QEvent
-import sys
+from PySide6.QtCore import QEvent
+from PySide6.QtWidgets import QMainWindow, QWidget, QPushButton, QVBoxLayout, QHBoxLayout, QSizePolicy
 
-from controller.dentist_menu_controller import DentistMenuController
-from view.new_patient_form import NewPatientForm
-from view.patient_search import PatientSearchForm
+from controller.controller_dentist_menu import ControllerDentistMenu
 
 
-class DentistMenu(QMainWindow):
+class ScreenDentistMenu(QMainWindow):
     def __init__(self, main_screen):
         super().__init__()
-        self.controller = DentistMenuController(self)
+        self.controller = ControllerDentistMenu(self)
         self.main_screen = main_screen
         self.setWindowTitle("Dentist Menu")
 

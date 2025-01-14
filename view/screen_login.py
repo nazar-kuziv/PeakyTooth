@@ -5,8 +5,8 @@ from PySide6.QtWidgets import QWidget, QLineEdit, QVBoxLayout, QLabel, QMessageB
 from controller.controller_login import ControllerLogin
 from utils.environment import Environment
 from utils.user_session import UserSession
-from view.admin_menu import AdminMenu
-from view.dentist_menu import DentistMenu
+from view.screen_admin_menu import ScreenAdminMenu
+from view.screen_dentist_menu import ScreenDentistMenu
 from view.screen_main import ScreenMain
 from view.widget.button_base import ButtonBase
 
@@ -144,8 +144,8 @@ class ScreenLogin(QWidget):
         self.main_screen = ScreenMain()
         user_sesssion = UserSession()
         if user_sesssion.get_user_data()['role'] == 'Dentist':
-            self.main_screen.add_screen_to_stack(DentistMenu(self.main_screen))
+            self.main_screen.add_screen_to_stack(ScreenDentistMenu(self.main_screen))
         elif user_sesssion.get_user_data()['role'] == 'Admin':
-            self.main_screen.add_screen_to_stack(AdminMenu(self.main_screen))
+            self.main_screen.add_screen_to_stack(ScreenAdminMenu(self.main_screen))
         self.main_screen.show()
         self.close()

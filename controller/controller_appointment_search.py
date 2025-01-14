@@ -3,10 +3,10 @@ from PySide6.QtWidgets import QTableWidgetItem, QPushButton
 
 from utils.db_connection import DBConnection
 from utils.user_session import UserSession
-from view.screen_appointment_info import AppointmentInfoScreen
+from view.screen_appointment_info import ScreenAppointmentInfo
 
 
-class AppointmentSearchController:
+class ControllerAppointmentSearch:
     def __init__(self, view):
         self.view = view
 
@@ -69,4 +69,4 @@ class AppointmentSearchController:
         return action
 
     def perform_action_for_appointment(self, appointment_id):
-        self.view.main_screen.add_screen_to_stack(AppointmentInfoScreen(self.view.main_screen, appointment_id))
+        self.view.main_screen.add_screen_to_stack(ScreenAppointmentInfo(self.view.main_screen, appointment_id))
