@@ -1,14 +1,14 @@
 from PySide6.QtWidgets import QWidget, QVBoxLayout, QLabel, QPushButton, QHBoxLayout, QSizePolicy
 from PySide6.QtCore import Qt
 
-from controller.controller_full_patient_info import PatientInfoController
+from controller.controller_full_patient_info import ControllerPatientInfo
 
 
-class PatientInfoScreen(QWidget):
+class ScreenPatientInfo(QWidget):
     def __init__(self, main_screen, patient_id):
         super().__init__()
         self.main_screen = main_screen
-        self.controller = PatientInfoController(self, patient_id)
+        self.controller = ControllerPatientInfo(self, patient_id)
 
         self.main_layout = QVBoxLayout()
         self.main_layout.setAlignment(Qt.AlignTop)

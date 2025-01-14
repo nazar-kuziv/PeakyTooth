@@ -1,15 +1,15 @@
 from PySide6.QtCore import QTime
 from PySide6.QtWidgets import QPushButton, QTableWidgetItem
 
-from controller.patient_search_appointment_creator_controller import PatientSearchAppointmentCreatorController
+from controller.controller_patient_search_appointment_creator import ControllerPatientSearchAppointmentCreator
 from utils.db_connection import DBConnection
 from utils.user_session import UserSession
-from view.appointment_search import AppointmentSearchForm
-from view.patient_search import PatientSearchForm
-from view.screen_appointment_info import AppointmentInfoScreen
+from view.screen_appointment_search import ScreenAppointmentSearch
+from view.screen_patient_search import ScreenPatientSearch
+from view.screen_appointment_info import ScreenAppointmentInfo
 
 
-class AppointmentMenuController:
+class ControllerAppointmentMenu:
     def __init__(self, view):
         self.view = view
         self.db = DBConnection()
@@ -51,7 +51,7 @@ class AppointmentMenuController:
         return action
 
     def perform_action_for_appointment(self, appointment_id):
-        self.view.main_screen.add_screen_to_stack(AppointmentInfoScreen(self.view.main_screen, appointment_id))
+        self.view.main_screen.add_screen_to_stack(ScreenAppointmentInfo(self.view.main_screen, appointment_id))
 
     def get_selected_date(self):
         return self.view.calendar.selectedDate().toString("yyyy-MM-dd")
@@ -63,7 +63,7 @@ class AppointmentMenuController:
 
     def add_appointment_button_clicked(self):
         self.view.main_screen.add_screen_to_stack(
-            PatientSearchForm(self.view.main_screen, PatientSearchAppointmentCreatorController))
+            ScreenPatientSearch(self.view.main_screen, ControllerPatientSearchAppointmentCreator))
 
     def find_appointment_button_clicked(self):
-        self.view.main_screen.add_screen_to_stack(AppointmentSearchForm(self.view.main_screen))
+        self.view.main_screen.add_screen_to_stack(ScreenAppointmentSearch(self.view.main_screen))

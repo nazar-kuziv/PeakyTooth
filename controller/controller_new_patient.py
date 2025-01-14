@@ -1,13 +1,11 @@
 import re
-import bcrypt
-from pyexpat.errors import messages
 
 from utils.db_connection import DBConnection
 from utils.exceptions.db_unable_to_connect import DBUnableToConnect
 from utils.user_session import UserSession
 
 
-class NewPatientFormController:
+class ControllerNewPatient:
     def __init__(self, view):
         self.view = view
 
@@ -15,9 +13,6 @@ class NewPatientFormController:
             self.db = DBConnection()
         except DBUnableToConnect as e:
             self.view.show_error(e)
-
-    import re
-    from utils.user_session import UserSession
 
     def add_new_patient(self):
 

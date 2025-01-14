@@ -4,7 +4,7 @@ from utils.db_connection import DBConnection
 from utils.user_session import UserSession
 
 
-class AppointmentEditorController:
+class ControllerAppointmentEditor:
     def __init__(self, view, appointment_id):
         self.view = view
         self.appointment_id = appointment_id
