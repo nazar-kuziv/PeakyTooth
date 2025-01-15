@@ -1,8 +1,7 @@
-from PySide6 import QtWidgets
 from PySide6.QtCore import Qt
 from PySide6.QtSvgWidgets import QSvgWidget
-from PySide6.QtWidgets import QMainWindow, QToolBar, QWidget, QHBoxLayout, QVBoxLayout, QLabel, QSizePolicy, \
-    QStackedWidget
+from PySide6.QtWidgets import QMainWindow, QStackedWidget, QToolBar, QWidget, QHBoxLayout, QVBoxLayout, QLabel, \
+    QSizePolicy
 
 from controller.controller_main import ControllerMain
 from utils.environment import Environment
@@ -36,7 +35,6 @@ class ScreenMain(QMainWindow):
         self.addToolBar(Qt.TopToolBarArea, self.toolbar)
 
         widget_user_info = QWidget()
-
         widget_user_info.setObjectName('widget_user_info')
         widget_user_info.setStyleSheet("""
                 #widget_user_info {
@@ -62,7 +60,6 @@ class ScreenMain(QMainWindow):
         layout_user_info.addWidget(svg_img)
 
         layout_username_and_organization = QVBoxLayout()
-
         layout_username_and_organization.addSpacing(5)
 
         label_username = QLabel(self.controller.get_user_name_and_surname())
@@ -79,7 +76,6 @@ class ScreenMain(QMainWindow):
         label_username.setMinimumHeight(30)
 
         layout_username_and_organization.addWidget(label_username)
-
         layout_username_and_organization.addStretch(1)
 
         label_organization = QLabel(self.controller.get_user_organization())
@@ -90,7 +86,6 @@ class ScreenMain(QMainWindow):
                 }
             """)
         layout_username_and_organization.addWidget(label_organization)
-
         layout_username_and_organization.addSpacing(5)
 
         layout_user_info.addLayout(layout_username_and_organization)
@@ -99,17 +94,52 @@ class ScreenMain(QMainWindow):
 
         spacer = QWidget()
         # noinspection PyUnresolvedReferences
-        spacer.setSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Preferred)
+        spacer.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Preferred)
         self.toolbar.addWidget(spacer)
 
         logout_btn = ButtonBase('Logout && Exit')
+        logout_btn.setStyleSheet("""
+            QPushButton {
+                background-color: #C0C0C0;
+                border-radius: 10px;
+                padding: 10px 20px;
+                font-size: 14px;
+                font-weight: bold;
+                color: black;
+            }
+            QPushButton:hover {
+                background-color: #FF6347;
+                color: white;
+            }
+        """)
         logout_btn.clicked.connect(ControllerMain.logout)
-        self.toolbar.addWidget(logout_btn)
 
         self.back_btn = ButtonBase('Back')
+        self.back_btn.setStyleSheet("""
+            QPushButton {
+                background-color: #C0C0C0;
+                border-radius: 10px;
+                padding: 10px 20px;
+                font-size: 14px;
+                font-weight: bold;
+                color: black;
+            }
+            QPushButton:hover {
+                background-color: #87CEFA;
+                color: white;
+            }
+        """)
         self.back_btn.clicked.connect(self.navigate_to_previous_screen)
         self.back_btn.setEnabled(False)
-        self.toolbar.addWidget(self.back_btn)
+
+        button_layout = QHBoxLayout()
+        button_layout.setSpacing(15)
+        button_layout.addWidget(logout_btn)
+        button_layout.addWidget(self.back_btn)
+
+        button_container = QWidget()
+        button_container.setLayout(button_layout)
+        self.toolbar.addWidget(button_container)
 
         self.showMaximized()
 

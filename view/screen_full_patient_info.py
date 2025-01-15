@@ -23,7 +23,9 @@ class ScreenPatientInfo(QWidget):
         self.label_patient_allergy = QLabel()
 
         label_style = """
-            font-size: 15px; 
+            font-size: 16px;
+            padding: 8px 0;
+            color: #2E2E2E;
         """
         for label in [
             self.label_patient_id, self.label_patient_name, self.label_patient_surname,
@@ -50,6 +52,42 @@ class ScreenPatientInfo(QWidget):
 
         self.edit_button.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Preferred)
         self.appointment_button.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Preferred)
+
+        self.edit_button.setStyleSheet("""
+            QPushButton {
+                background-color: #0078D7;
+                color: white;
+                border: none;
+                border-radius: 8px;
+                font-size: 16px;
+                font-weight: bold;
+                padding: 12px;
+            }
+            QPushButton:hover {
+                background-color: #005A9E;
+            }
+            QPushButton:pressed {
+                background-color: #004377;
+            }
+        """)
+
+        self.appointment_button.setStyleSheet("""
+            QPushButton {
+                background-color: #28A745;
+                color: white;
+                border: none;
+                border-radius: 8px;
+                font-size: 16px;
+                font-weight: bold;
+                padding: 12px;
+            }
+            QPushButton:hover {
+                background-color: #218838;
+            }
+            QPushButton:pressed {
+                background-color: #1E7E34;
+            }
+        """)
 
         self.edit_button.clicked.connect(self.controller.edit_button_clicked)
         self.appointment_button.clicked.connect(self.controller.create_appointment_button_clicked)
