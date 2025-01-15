@@ -1,5 +1,4 @@
-from PySide6.QtCore import Qt
-from PySide6.QtGui import QFont
+from PySide6.QtCore import Qt, QEvent
 from PySide6.QtWidgets import (
     QWidget,
     QHBoxLayout,
@@ -14,6 +13,7 @@ from PySide6.QtWidgets import (
     QRadioButton,
     QButtonGroup,
 )
+
 
 class ScreenAdminDoctor(QWidget):
     def __init__(self, main_screen):
@@ -120,7 +120,7 @@ class ScreenAdminDoctor(QWidget):
 
         self.table = QTableWidget()
         self.table.setColumnCount(4)
-        self.table.setHorizontalHeaderLabels([ "Name", "Surname", "Login",  "Select"])
+        self.table.setHorizontalHeaderLabels(["Name", "Surname", "Login", "Select"])
         self.table.horizontalHeader().setStretchLastSection(True)
         self.table.setStyleSheet("""
             QTableWidget {
@@ -137,7 +137,7 @@ class ScreenAdminDoctor(QWidget):
                 padding: 5px;
             }
         """)
-        self.table.setHorizontalHeaderLabels([ "Name", "Surname", "Login",  "Select"])
+        self.table.setHorizontalHeaderLabels(["Name", "Surname", "Login", "Select"])
         self.table.setSelectionBehavior(QTableWidget.SelectRows)
         self.table.setEditTriggers(QTableWidget.NoEditTriggers)
         self.right_layout.addWidget(self.table)
@@ -187,7 +187,7 @@ class ScreenAdminDoctor(QWidget):
                 background-color: #78281F;
             }
         """)
-        self.delete_doctor_button.clicked.connect(self.delete_selected_doctors)
+        self.delete_doctor_button.clicked.connect(self.delete_selected_doctor)
         self.right_layout.addWidget(self.delete_doctor_button, alignment=Qt.AlignRight)
         self.right_layout.addStretch()
         self.main_layout.addLayout(self.right_layout, stretch=3)
@@ -241,10 +241,10 @@ class ScreenAdminDoctor(QWidget):
             layout.setContentsMargins(0, 0, 0, 0)
             widget.setLayout(layout)
 
-            self.table.setCellWidget(row, 3, widget)  # Adjust column index
+            self.table.setCellWidget(row, 3, widget)
         self.table.resizeColumnsToContents()
         self.table.resizeRowsToContents()
-
+        self.table.horizontalHeader().setStretchLastSection(True)
 
     def handle_radio_button_toggled(self, checked):
         radio_button = self.sender()
@@ -269,9 +269,7 @@ class ScreenAdminDoctor(QWidget):
     def show_message(self, message):
         QMessageBox.information(self, "Information", message)
 
-
-
-    def delete_selected_doctors(self):
+    def delete_selected_doctor(self):
         selected_doctor_id = None
         for row in range(self.table.rowCount()):
             widget = self.table.cellWidget(row, 3)
@@ -282,10 +280,11 @@ class ScreenAdminDoctor(QWidget):
                     break
         if selected_doctor_id:
             self.controller.delete_doctor_by_id(selected_doctor_id)
-            self.show_message("Selected doctor's password updated to NULL successfully.")
+            self.show_message("Selected doctor deleted successfully.")
             self.refresh()
         else:
-            self.show_error("No doctor selected for password update.")
+            self.show_error("No doctor selected.")
 
     def refresh(self):
         self.controller.search_doctors()
+        self.table.horizontalHeader().setStretchLastSection(True)

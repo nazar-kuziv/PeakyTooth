@@ -1,15 +1,13 @@
 import base64
-import os
 from typing import Optional
 
-from dotenv import load_dotenv
+from dotenv import dotenv_values
 from supabase import create_client, Client
 
+from utils.environment import Environment
 from utils.exceptions.db_smth_went_wrong import DBSmthWentWrong
 from utils.exceptions.db_unable_to_connect import DBUnableToConnect
 from utils.exceptions.db_unable_to_get_data import DBUnableToGetData
-
-load_dotenv()
 
 
 class DBConnectionMeta(type):
@@ -24,11 +22,13 @@ class DBConnectionMeta(type):
 
 class DBConnection(metaclass=DBConnectionMeta):
     def __init__(self):
-        url = os.getenv("SUPABASE_URL")
-        key = os.getenv("SUPABASE_KEY")
+        env_vars = dotenv_values(Environment.resource_path(".env"))
+        url = env_vars.get("SUPABASE_URL")
+        key = env_vars.get("SUPABASE_KEY")
         try:
             self.client: Client = create_client(url, key)
-        except:
+        except Exception as e:
+            print(e)
             raise DBUnableToConnect()
 
     def get_user(self, login: str):
@@ -315,6 +315,13 @@ class DBConnection(metaclass=DBConnectionMeta):
         except Exception as e:
             print(f"An error occurred while retrieving the appointment details: {str(e)}")
             raise DBUnableToGetData()
+
+    def delete_doctor_by_id(self, doctor_id):
+        try:
+            self.client.table('users').update({"password": "NULL"}).eq("userid", doctor_id).execute()
+        except Exception as e:
+            print(f"error {str(e)}")
+            return f"error {str(e)}"
 
     def is_appointment_exsist(self, organization_id: int, appointment_id: int):
         try:

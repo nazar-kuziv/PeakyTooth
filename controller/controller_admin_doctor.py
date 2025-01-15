@@ -21,9 +21,10 @@ class ControllerAdminDoctor:
         except Exception as e:
             self.view.show_error(f"Error searching doctors: {str(e)}")
 
-    def update_doctor_password(self, doctor_id):
+    def delete_doctor_by_id(self, doctor_id):
         try:
-            self.db.update_doctor_password(doctor_id, "NULL")
+            response = self.db.delete_doctor_by_id(doctor_id)
+            return response
         except Exception as e:
             self.view.show_error(f"Error deleting doctor: {str(e)}")
 

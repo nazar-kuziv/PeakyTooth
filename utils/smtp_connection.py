@@ -1,12 +1,12 @@
-import os
 import smtplib
 from email import encoders
 from email.mime.base import MIMEBase
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 
-from dotenv import load_dotenv
+from dotenv import load_dotenv, dotenv_values
 
+from utils.environment import Environment
 from utils.exceptions.smtp_unable_to_connect import SMTPUnableToConnect
 from utils.exceptions.smtp_unable_to_send import SMTPUnableToSend
 
@@ -25,8 +25,9 @@ class SMTPConnectionMeta(type):
 
 class SMTPConnection(metaclass=SMTPConnectionMeta):
     def __init__(self):
+        env_vars = dotenv_values(Environment.resource_path(".env"))
         self.organizational_email = "peakytooth@gmail.com"
-        app_password = os.getenv("EMAIL_APP_PASSWORD")
+        app_password = env_vars.get("EMAIL_APP_PASSWORD")
         try:
             self.server = smtplib.SMTP('smtp.gmail.com', 587)
             self.server.starttls()
