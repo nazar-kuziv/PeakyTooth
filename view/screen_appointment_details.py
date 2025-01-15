@@ -2,7 +2,7 @@ from PySide6.QtCore import Qt
 from PySide6.QtGui import QPixmap
 from PySide6.QtWidgets import (
     QVBoxLayout, QScrollArea, QWidget, QMessageBox,
-    QLabel, QPushButton, QSizePolicy, QHBoxLayout
+    QPushButton, QSizePolicy
 )
 
 from controller.controller_appointment_details import ControllerAppointmentDetails

@@ -1,3 +1,4 @@
+from PySide6.QtCore import Qt
 from PySide6.QtWidgets import (
     QWidget,
     QVBoxLayout,
@@ -6,8 +7,6 @@ from PySide6.QtWidgets import (
     QPushButton,
     QSizePolicy
 )
-from PySide6.QtCore import Qt
-from PySide6.QtGui import QFont
 
 from controller.controller_appointment_info import ControllerAppointmentInfo
 

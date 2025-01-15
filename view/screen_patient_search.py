@@ -1,5 +1,7 @@
-from PySide6.QtWidgets import QWidget, QVBoxLayout, QGridLayout, QLineEdit, QLabel, QPushButton, QTableWidget, QHeaderView, QSizePolicy, QTableWidgetItem, QMessageBox
 from PySide6.QtCore import Qt
+from PySide6.QtWidgets import QWidget, QVBoxLayout, QGridLayout, QLineEdit, QLabel, QPushButton, QTableWidget, \
+    QHeaderView, QSizePolicy, QMessageBox
+
 
 class ScreenPatientSearch(QWidget):
     def __init__(self, main_screen, controller):

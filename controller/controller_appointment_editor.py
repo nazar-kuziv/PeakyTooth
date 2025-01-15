@@ -1,7 +1,6 @@
 from PySide6.QtCore import QDate, QTime
 
 from utils.db_connection import DBConnection
-from utils.user_session import UserSession
 
 
 class ControllerAppointmentEditor:
@@ -11,7 +10,6 @@ class ControllerAppointmentEditor:
 
     def setAppointmentForm(self):
         db = DBConnection()
-        user_session = UserSession()
         appointment = db.get_appointment_by_id(self.appointment_id)
         appointment = appointment.data[0]
         self.view.patient_name_label.setText(
@@ -30,9 +28,9 @@ class ControllerAppointmentEditor:
         date = self.view.date_field.text()
         time = self.view.time_field.text()
         notes = self.view.notes_field.toPlainText()
-        type = self.view.type_field.currentText()
-        response = db.update_appointment(self.appointment_id, date, time, type, notes)
-        if (response):
+        appointment_type = self.view.type_field.currentText()
+        response = db.update_appointment(self.appointment_id, date, time, appointment_type, notes)
+        if response:
             self.view.show_message(response)
         else:
             self.view.show_message("Error")

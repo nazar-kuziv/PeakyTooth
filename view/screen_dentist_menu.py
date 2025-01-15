@@ -1,6 +1,5 @@
 
-from PySide6.QtCore import Qt, QEvent
-from PySide6.QtGui import QFont
+from PySide6.QtCore import QEvent
 from PySide6.QtWidgets import (
     QMainWindow,
     QWidget,
@@ -8,7 +7,6 @@ from PySide6.QtWidgets import (
     QVBoxLayout,
     QHBoxLayout,
     QSizePolicy,
-    QMessageBox,
 )
 
 from controller.controller_dentist_menu import ControllerDentistMenu

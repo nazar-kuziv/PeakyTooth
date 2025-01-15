@@ -1,8 +1,8 @@
 import os
 import shutil
 
-from PySide6.QtCore import Qt, QSize, QMargins
-from PySide6.QtGui import QPainter
+from PySide6.QtCore import QSize, QMargins
+from PySide6.QtGui import QPainter, QPageLayout
 from PySide6.QtPdf import QPdfDocument, QPdfDocumentRenderOptions
 from PySide6.QtPdfWidgets import QPdfView
 from PySide6.QtPrintSupport import QPrinter, QPrintDialog
@@ -134,14 +134,20 @@ class ScreenPdf(QWidget):
         return True
 
     def print_pdf(self):
+
+        # noinspection PyUnresolvedReferences
         printer = QPrinter(QPrinter.HighResolution)
+
         printer.setFullPage(True)
-        printer.setPageMargins(QMargins(0, 0, 0, 0), QPrinter.Millimeter)
+        # noinspection PyUnresolvedReferences
+        printer.setPageMargins(QMargins(0, 0, 0, 0), QPageLayout.Millimeter)
         prev_dial = QPrintDialog(printer)
 
+        # noinspection PyUnresolvedReferences
         if prev_dial.exec_() == QDialog.Accepted:
             painter = QPainter(printer)
             options = QPdfDocumentRenderOptions()
+            # noinspection PyUnresolvedReferences
             target_rect = printer.pageRect(QPrinter.DevicePixel)
             image_size = QSize(int(target_rect.width()), int(target_rect.height()))
             document_pdf = QPdfDocument()
@@ -161,8 +167,10 @@ class ScreenPdf(QWidget):
                 self.show_error('Can not save pdf')
 
     def ask_patient_again_about_sending(self):
+        # noinspection PyUnresolvedReferences
         reply = QMessageBox.question(self, 'Send PDF', 'Do you want to send the PDF to the patient?',
                                      QMessageBox.Yes | QMessageBox.No, QMessageBox.No)
+        # noinspection PyUnresolvedReferences
         if reply == QMessageBox.Yes:
             self.controller.send_pdf_to_patient()
 
