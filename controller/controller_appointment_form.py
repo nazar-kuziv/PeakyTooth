@@ -30,7 +30,7 @@ class ControllerAppointmentForm:
         }
         db = DBConnection()
         response = db.create_appointment(appointment_data)
-        if(response):
+        if response:
             self.view.show_message(response)
         else:
             self.view.show_message("Error")

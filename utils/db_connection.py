@@ -100,14 +100,6 @@ class DBConnection(metaclass=DBConnectionMeta):
             print(f"An error occurred while adding the doctor: {str(e)}")
             return f"An error occurred while adding the doctor: {str(e)}"
 
-    def delete_doctor_by_id(self, doctor_id):
-        try:
-            self.client.table('users').update({"password": "NULL"}).eq("userid", doctor_id).execute()
-            return "Doctor's password set to NULL successfully."
-        except Exception as e:
-            print(f"Error updating doctor password: {str(e)}")
-            raise
-
     def search_doctors(self, name, surname):
         try:
             query = self.client.table('users') \
