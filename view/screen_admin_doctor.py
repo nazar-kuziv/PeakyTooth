@@ -46,8 +46,8 @@ class ScreenAdminDoctor(QWidget):
         self.right_layout.addWidget(self.add_doctor_button, alignment=Qt.AlignTop | Qt.AlignRight)
 
         self.table = QTableWidget()
-        self.table.setColumnCount(6)
-        self.table.setHorizontalHeaderLabels(["user_id", "Name", "Surname", "Login", "Password", "Select"])
+        self.table.setColumnCount(4)
+        self.table.setHorizontalHeaderLabels([ "Name", "Surname", "Login",  "Select"])
         self.table.setSelectionBehavior(QTableWidget.SelectRows)
         self.table.setEditTriggers(QTableWidget.NoEditTriggers)
         self.right_layout.addWidget(self.table)
@@ -101,13 +101,13 @@ class ScreenAdminDoctor(QWidget):
         QMessageBox.critical(self, "Error", str(message))
 
     def populate_table(self, doctors):
+        self.table.setColumnCount(4)  # Adjust column count
+        self.table.setHorizontalHeaderLabels(["Name", "Surname", "Login", "Select"])  # Adjust headers
         self.table.setRowCount(len(doctors))
         for row, doctor in enumerate(doctors):
-            self.table.setItem(row, 0, QTableWidgetItem(str(doctor["userid"])))
-            self.table.setItem(row, 1, QTableWidgetItem(doctor["name"]))
-            self.table.setItem(row, 2, QTableWidgetItem(doctor["surname"]))
-            self.table.setItem(row, 3, QTableWidgetItem(doctor["login"]))
-            self.table.setItem(row, 4, QTableWidgetItem(doctor["password"]))
+            self.table.setItem(row, 0, QTableWidgetItem(doctor["name"]))
+            self.table.setItem(row, 1, QTableWidgetItem(doctor["surname"]))
+            self.table.setItem(row, 2, QTableWidgetItem(doctor["login"]))
 
             radio_button = QRadioButton()
             radio_button.doctor_id = doctor["userid"]
@@ -121,9 +121,10 @@ class ScreenAdminDoctor(QWidget):
             layout.setContentsMargins(0, 0, 0, 0)
             widget.setLayout(layout)
 
-            self.table.setCellWidget(row, 5, widget)
+            self.table.setCellWidget(row, 3, widget)  # Adjust column index
         self.table.resizeColumnsToContents()
         self.table.resizeRowsToContents()
+
 
     def handle_radio_button_toggled(self, checked):
         radio_button = self.sender()
@@ -149,21 +150,23 @@ class ScreenAdminDoctor(QWidget):
     def show_message(self, message):
         QMessageBox.information(self, "Information", message)
 
+
+
     def delete_selected_doctors(self):
-        selected_doctor_ids = []
+        selected_doctor_id = None
         for row in range(self.table.rowCount()):
-            widget = self.table.cellWidget(row, 5)
+            widget = self.table.cellWidget(row, 3)
             if widget:
                 radio_button = widget.findChild(QRadioButton)
                 if radio_button and radio_button.isChecked():
-                    selected_doctor_ids.append(radio_button.doctor_id)
-        if selected_doctor_ids:
-            for doctor_id in selected_doctor_ids:
-                self.controller.update_doctor_password(doctor_id)
-            self.controller.view.show_message("Selected doctors' passwords updated successfully.")
-            self.controller.view.populate_table(self.controller.search_doctors())
+                    selected_doctor_id = radio_button.doctor_id
+                    break
+        if selected_doctor_id:
+            self.controller.delete_doctor_by_id(selected_doctor_id)
+            self.show_message("Selected doctor's password updated to NULL successfully.")
+            self.refresh()
         else:
-            self.show_error("No doctors selected for password update.")
+            self.show_error("No doctor selected for password update.")
 
     def refresh(self):
         self.controller.search_doctors()
