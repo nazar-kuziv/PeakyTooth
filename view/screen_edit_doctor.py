@@ -1,7 +1,8 @@
+from PySide6.QtCore import Qt
+from PySide6.QtGui import QFont
 from PySide6.QtWidgets import (
     QWidget, QFormLayout, QLabel, QLineEdit, QPushButton, QVBoxLayout, QMessageBox
 )
-
 
 class ScreenEditDoctor(QWidget):
     def __init__(self, main_screen, doctor_id):
@@ -15,30 +16,101 @@ class ScreenEditDoctor(QWidget):
         self.setForm()
 
     def setForm(self):
-        self.name_label = QLabel("Name:")
         self.name_field = QLineEdit()
-        self.form_layout.addRow(self.name_label, self.name_field)
+        self.name_field.setPlaceholderText("Enter doctor's name")
+        self.name_field.setFixedHeight(40)
+        self.name_field.setStyleSheet("""
+            QLineEdit {
+                border: 2px solid #CCCCCC;
+                border-radius: 10px;
+                padding: 4px;
+                font-size: 16px;
+            }
+            QLineEdit:focus {
+                border: 2px solid #66AFE9;
+            }
+        """)
+        self.form_layout.addRow("Name:", self.name_field)
 
-        self.surname_label = QLabel("Surname:")
         self.surname_field = QLineEdit()
-        self.form_layout.addRow(self.surname_label, self.surname_field)
+        self.surname_field.setPlaceholderText("Enter doctor's surname")
+        self.surname_field.setFixedHeight(40)
+        self.surname_field.setStyleSheet("""
+            QLineEdit {
+                border: 2px solid #CCCCCC;
+                border-radius: 10px;
+                padding: 4px;
+                font-size: 16px;
+            }
+            QLineEdit:focus {
+                border: 2px solid #66AFE9;
+            }
+        """)
+        self.form_layout.addRow("Surname:", self.surname_field)
 
-        self.login_label = QLabel("Login:")
         self.login_field = QLineEdit()
-        self.form_layout.addRow(self.login_label, self.login_field)
+        self.login_field.setPlaceholderText("Enter login")
+        self.login_field.setFixedHeight(40)
+        self.login_field.setStyleSheet("""
+            QLineEdit {
+                border: 2px solid #CCCCCC;
+                border-radius: 10px;
+                padding: 4px;
+                font-size: 16px;
+            }
+            QLineEdit:focus {
+                border: 2px solid #66AFE9;
+            }
+        """)
+        self.form_layout.addRow("Login:", self.login_field)
 
-        self.pass_label = QLabel("Password:")
         self.pass_field = QLineEdit()
+        self.pass_field.setPlaceholderText("Enter password")
         self.pass_field.setEchoMode(QLineEdit.Password)
-        self.form_layout.addRow(self.pass_label, self.pass_field)
+        self.pass_field.setFixedHeight(40)
+        self.pass_field.setStyleSheet("""
+            QLineEdit {
+                border: 2px solid #CCCCCC;
+                border-radius: 10px;
+                padding: 4px;
+                font-size: 16px;
+            }
+            QLineEdit:focus {
+                border: 2px solid #66AFE9;
+            }
+        """)
+        self.form_layout.addRow("Password:", self.pass_field)
 
         self.submit_button = QPushButton("Save")
+        self.submit_button.setFixedHeight(40)
+        self.submit_button.setStyleSheet("""
+            QPushButton {
+                background-color: #2980B9;
+                color: white;
+                border: none;
+                border-radius: 10px;
+                font-size: 14px;
+                font-weight: bold;
+                padding: 10px 20px;
+            }
+            QPushButton:hover {
+                background-color: #1F618D; /* Darker blue */
+            }
+            QPushButton:pressed {
+                background-color: #154360;
+            }
+            QPushButton:disabled {
+                background-color: #A9A9A9;
+                color: white;
+            }
+        """)
         self.submit_button.clicked.connect(self.update_doctor_info)
+        self.form_layout.addRow(self.submit_button)
 
-        main_layout = QVBoxLayout()
-        main_layout.addLayout(self.form_layout)
-        main_layout.addWidget(self.submit_button)
-        self.setLayout(main_layout)
+        self.main_layout = QVBoxLayout()
+        self.main_layout.addLayout(self.form_layout)
+        self.main_layout.addStretch()
+        self.setLayout(self.main_layout)
 
     def update_doctor_info(self):
         from controller.controller_edit_doctor import ControllerEditDoctor
@@ -56,7 +128,7 @@ class ScreenEditDoctor(QWidget):
         self.show_message("Changes saved")
 
     def show_message(self, message):
-        if message == '':
+        if not message:
             return
         msg = QMessageBox(self)
         msg.setIcon(QMessageBox.Information)
