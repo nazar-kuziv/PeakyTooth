@@ -11,7 +11,6 @@ class ScreenAdminDoctor(QWidget):
         self.main_screen = main_screen
         self.selected_doctor_id = None
 
-
         self.setWindowTitle("Doctor Admin Page")
         from controller.controller_admin_doctor import ControllerAdminDoctor
         self.controller = ControllerAdminDoctor(self)
@@ -48,19 +47,16 @@ class ScreenAdminDoctor(QWidget):
 
         self.table = QTableWidget()
         self.table.setColumnCount(6)
-        self.table.setHorizontalHeaderLabels(["user_id","Name", "Surname", "Login", "Password", "Select"])
+        self.table.setHorizontalHeaderLabels(["user_id", "Name", "Surname", "Login", "Password", "Select"])
         self.table.setSelectionBehavior(QTableWidget.SelectRows)
         self.table.setEditTriggers(QTableWidget.NoEditTriggers)
         self.right_layout.addWidget(self.table)
-
-
 
         self.edit_doctor_button = QPushButton("Edit Doctor")
         self.edit_doctor_button.setStyleSheet("background-color: blue; color: white;")
         self.edit_doctor_button.setEnabled(False)
         self.edit_doctor_button.clicked.connect(self.edit_selected_doctor)
         self.right_layout.addWidget(self.edit_doctor_button, alignment=Qt.AlignBottom | Qt.AlignRight)
-
 
         self.delete_doctor_button = QPushButton("Delete Doctor")
         self.delete_doctor_button.setStyleSheet("background-color: red; color: white;")
@@ -100,6 +96,7 @@ class ScreenAdminDoctor(QWidget):
             elif source == self.edit_doctor_button:
                 source.setStyleSheet("background-color: blue; color: white;")
         return super().eventFilter(source, event)
+
     def show_error(self, message):
         QMessageBox.critical(self, "Error", str(message))
 
@@ -149,8 +146,6 @@ class ScreenAdminDoctor(QWidget):
         else:
             self.show_error("No doctor selected for editing.")
 
-
-
     def show_message(self, message):
         QMessageBox.information(self, "Information", message)
 
@@ -169,3 +164,6 @@ class ScreenAdminDoctor(QWidget):
             self.controller.view.populate_table(self.controller.search_doctors())
         else:
             self.show_error("No doctors selected for password update.")
+
+    def refresh(self):
+        self.controller.search_doctors()
