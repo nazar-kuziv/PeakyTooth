@@ -1,9 +1,11 @@
 from PySide6.QtCore import Qt
 from PySide6.QtGui import QPixmap
-from PySide6.QtWidgets import QMessageBox, QWidget, QVBoxLayout, QScrollArea
+from PySide6.QtWidgets import (
+    QVBoxLayout, QScrollArea, QWidget, QMessageBox,
+    QLabel, QPushButton, QSizePolicy, QHBoxLayout
+)
 
 from controller.controller_appointment_details import ControllerAppointmentDetails
-from view.widget.button_base import ButtonBase
 from view.widget.image_with_header_label_and_button import ImageWithHeaderLabelAndButton
 from view.widget.text_edit_with_header_label import TextEditWithHeaderLabel
 
@@ -16,13 +18,31 @@ class ScreenAppointmentDetails(QWidget):
         self.controller = ControllerAppointmentDetails(self, appointment_id)
 
         self.main_layout = QVBoxLayout()
+        self.main_layout.setAlignment(Qt.AlignTop)
 
-        self.save_btn = ButtonBase('Save')
+        self.save_btn = QPushButton('Save')
+        self.save_btn.setFixedHeight(50)
+        self.save_btn.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Fixed)
+        self.save_btn.setStyleSheet("""
+            QPushButton {
+                background-color: #4CAF50;
+                color: white;
+                border: none;
+                border-radius: 5px;
+                font-weight: bold;
+                font-size: 16px;
+                padding: 10px 20px;
+            }
+            QPushButton:hover {
+                background-color: #45A049;
+            }
+            QPushButton:pressed {
+                background-color: #3E8E41;
+            }
+        """)
         self.save_btn.clicked.connect(self.controller.save_appointment_details)
-        self.save_btn.setMinimumWidth(100)
 
         top_layout = QVBoxLayout()
-        # noinspection PyUnresolvedReferences
         top_layout.addWidget(self.save_btn, alignment=Qt.AlignRight)
 
         scroll_area = QScrollArea(self)
@@ -85,6 +105,8 @@ class ScreenAppointmentDetails(QWidget):
         scroll_area.setWidget(content_widget)
 
         outer_layout = QVBoxLayout(self)
+        outer_layout.setContentsMargins(20, 20, 20, 20)
+        outer_layout.setSpacing(15)
         outer_layout.addLayout(top_layout)
         outer_layout.addWidget(scroll_area)
         self.setLayout(outer_layout)
