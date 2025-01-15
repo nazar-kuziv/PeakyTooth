@@ -37,6 +37,12 @@ class DBConnection(metaclass=DBConnectionMeta):
         except:
             raise DBUnableToGetData()
 
+    def get_patient_email_by_id(self, user_id: int):
+        try:
+            return self.client.table("patients").select("email").eq("id", user_id).execute()
+        except:
+            raise DBUnableToGetData()
+
     def addNewPatient(self, name, surname, date_of_birth, sex, email, telephone, analgesics_allergy, organisation_id):
         new_patient_data = {
             "patient_name": name,
