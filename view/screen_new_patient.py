@@ -10,7 +10,7 @@ from PySide6.QtWidgets import (
     QMessageBox,
     QSizePolicy,
 )
-from PySide6.QtCore import Qt
+
 from controller.controller_new_patient import ControllerNewPatient
 
 

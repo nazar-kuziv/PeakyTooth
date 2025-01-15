@@ -1,3 +1,4 @@
+from PySide6.QtCore import QEvent
 from PySide6.QtWidgets import (
     QWidget,
     QFormLayout,
@@ -10,11 +11,10 @@ from PySide6.QtWidgets import (
     QHeaderView,
     QMessageBox
 )
-from PySide6.QtCore import Qt, QEvent
-from PySide6.QtGui import QFont
 
 from controller.controller_appointment_search import ControllerAppointmentSearch
 from view.widget.date_picker import DatePicker
+
 
 class ScreenAppointmentSearch(QWidget):
     def __init__(self, main_screen):

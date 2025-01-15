@@ -1,5 +1,5 @@
-from PySide6.QtCore import QRegularExpression, QEvent
-from PySide6.QtWidgets import QWidget, QLineEdit, QVBoxLayout, QHBoxLayout, QFrame, QSizePolicy, QPushButton, \
+from PySide6.QtCore import QEvent
+from PySide6.QtWidgets import QWidget, QVBoxLayout, QHBoxLayout, QSizePolicy, QPushButton, \
     QMainWindow
 
 from controller.controller_admin_menu import ControllerAdminMenu
