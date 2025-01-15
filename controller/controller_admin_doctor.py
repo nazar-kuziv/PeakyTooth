@@ -47,10 +47,9 @@ class ControllerAdminDoctor:
 
     def delete_doctor_by_id(self, doctor_id):
         try:
-            response = self.db.delete_doctor_by_id(doctor_id)
-            return response
+            self.db.delete_doctor_by_id(doctor_id)
         except Exception as e:
-            self.view.show_error(f"Error deleting doctor: {str(e)}")
+            self.view.show_error(f"Error updating doctor password: {str(e)}")
 
     def doctor_page_click(self):
         self.view.main_screen.add_screen_to_stack(ScreenAdminDoctor(self.view.main_screen))
