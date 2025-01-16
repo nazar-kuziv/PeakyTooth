@@ -141,5 +141,6 @@ class ScreenAppointmentForm(QWidget):
         msg = QMessageBox(self)
         msg.setIcon(QMessageBox.Information)
         msg.setText(message)
+        msg.setWindowTitle('PeakyTooth - Message')
         msg.setStyleSheet("font-size: 14px;")
         msg.exec()

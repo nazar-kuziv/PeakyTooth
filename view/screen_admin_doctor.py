@@ -11,7 +11,7 @@ from PySide6.QtWidgets import (
     QFrame,
     QMessageBox,
     QRadioButton,
-    QButtonGroup,
+    QButtonGroup, QSizePolicy,
 )
 
 
@@ -235,9 +235,17 @@ class ScreenAdminDoctor(QWidget):
             radio_button.toggled.connect(self.handle_radio_button_toggled)
 
             widget = QWidget()
+            widget.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
+            widget.setObjectName("radio_button_widget")
+            widget.setStyleSheet("""
+                #radio_button_widget{
+                    background-color: #D3D3D3;
+                }
+            """)
             layout = QHBoxLayout(widget)
             layout.addWidget(radio_button)
             layout.setAlignment(Qt.AlignCenter)
+            layout.setSpacing(0)
             layout.setContentsMargins(0, 0, 0, 0)
             widget.setLayout(layout)
 
