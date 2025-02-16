@@ -181,5 +181,6 @@ class ScreenNewPatient(QWidget):
             return
         msg = QMessageBox(self)
         msg.setIcon(QMessageBox.Information)
+        msg.setWindowTitle('PeakyTooth - Message')
         msg.setText(message)
         msg.exec()

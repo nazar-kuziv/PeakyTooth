@@ -24,11 +24,13 @@ class ControllerPatientSearchAppointmentCreator:
         # noinspection PyUnresolvedReferences
         msg.setIcon(QMessageBox.Information)
         msg.setText(message)
+        msg.setWindowTitle('PeakyTooth - Message')
 
         msg.exec()
 
     def select_patient(self, patient_id):
-        self.view.main_screen.add_screen_to_stack(ScreenAppointmentForm(self.view.main_screen, patient_id, ControllerAppointmentForm))
+        self.view.main_screen.add_screen_to_stack(
+            ScreenAppointmentForm(self.view.main_screen, patient_id, ControllerAppointmentForm))
 
     def display_patients(self, patients):
         self.view.table.setRowCount(len(patients))
@@ -69,5 +71,3 @@ class ControllerPatientSearchAppointmentCreator:
             self.show_message(f"Error retrieving patient data: {str(e)}")
         except Exception as e:
             self.show_message(f"Unexpected error: {str(e)}")
-
-

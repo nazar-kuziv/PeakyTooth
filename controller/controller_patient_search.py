@@ -24,6 +24,7 @@ class ControllerPatientSearch:
         # noinspection PyUnresolvedReferences
         msg.setIcon(QMessageBox.Information)
         msg.setText(message)
+        msg.setWindowTitle('PeakyTooth - Message')
 
         msg.exec()
 
