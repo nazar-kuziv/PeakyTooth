@@ -67,7 +67,6 @@ app.setStyleSheet("""
         color: #000000;
     }
 """)
-
 login_screen = ScreenLogin()
 login_screen.show()
 app.exec()

@@ -1,0 +1,142 @@
+---------- is_appointment_exist_by_id --------------
+
+SELECT EXISTS (
+    SELECT 1
+    FROM appointments
+    JOIN users ON dentist_id = userid
+    WHERE id = appointment_id_input
+    AND organization_id = organization_id_input  
+);
+
+---------- get_user_with_organization_by_login --------------
+
+BEGIN
+    RETURN QUERY
+    SELECT 
+        u.userid, 
+        u.login, 
+        u.name, 
+        u.surname, 
+        u.role, 
+        o.organization_name
+    FROM 
+        users u
+    LEFT JOIN 
+        organizations o
+    ON 
+        u.organization_id = o.id
+    WHERE 
+        u.login = login_param;
+END;
+
+---------- get_data_for_pdf --------------
+
+BEGIN
+    RETURN QUERY
+    SELECT 
+        services, 
+        symptoms_description, 
+        mucous_membrane, 
+        periodontium, 
+        hygiene, 
+        oral_additional_info, 
+        dental_diagram, 
+        additional_info, 
+        treatments, 
+        medications, 
+        date, 
+        time, 
+        type, 
+        patient_name, 
+        patient_surname, 
+        sex, 
+        date_of_birth, 
+        organization_name, 
+        EIN, 
+        organizations.email, 
+        phone_number
+    FROM 
+        appointments_details
+    JOIN 
+        appointments ON appointment_id = appointments.id
+    JOIN 
+        users ON dentist_id = users.userid
+    JOIN 
+        organizations ON users.organization_id = organizations.id
+    JOIN 
+        patients ON patient_id = patients.id
+    WHERE 
+        users.organization_id = org_id 
+        AND appointments.id = app_id;
+END;
+
+---------- get_appointment_details --------------
+
+SELECT 
+    appointment_id AS id, 
+    services, 
+    symptoms_description, 
+    mucous_membrane, 
+    periodontium, 
+    hygiene, 
+    oral_additional_info, 
+    dental_diagram,  
+    additional_info, 
+    medications, 
+    date, 
+    time, 
+    patient_id, 
+    dentist_id, 
+    organization_id, 
+    type
+FROM 
+    appointments_details 
+JOIN 
+    appointments ON appointment_id = appointments.id 
+JOIN 
+    users ON dentist_id = users.userid 
+WHERE 
+    organization_id = organization_id_input
+    AND appointment_id = appointment_id_input;
+
+---------- get_appointment_data_for_pdf --------------
+
+BEGIN
+    RETURN QUERY
+    SELECT 
+        ad.services,  
+        ad.symptoms_description, 
+        ad.mucous_membrane, 
+        ad.periodontium, 
+        ad.hygiene, 
+        ad.oral_additional_info, 
+        ad.dental_diagram, 
+        ad.additional_info, 
+        ad.treatments, 
+        ad.medications, 
+        a.date AS appointment_date,
+        a.time AS appointment_time, 
+        a.type, 
+        p.id, 
+        p.patient_name, 
+        p.patient_surname, 
+        p.sex, 
+        p.date_of_birth, 
+        o.organization_name, 
+        o.ein, 
+        o.email, 
+        o.phone_number
+    FROM 
+        appointments_details AS ad 
+    JOIN 
+        appointments AS a ON ad.appointment_id = a.id
+    JOIN 
+        users AS u ON a.dentist_id = u.userid
+    JOIN 
+        organizations AS o ON u.organization_id = o.id
+    JOIN 
+        patients AS p ON a.patient_id = p.id
+    WHERE 
+        u.organization_id = organization_id_input
+        AND a.id = appointment_id_input;
+END;
