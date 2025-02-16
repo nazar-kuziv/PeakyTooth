@@ -100,11 +100,12 @@ class DBConnection(metaclass=DBConnectionMeta):
             print(f"An error occurred while adding the doctor: {str(e)}")
             return f"An error occurred while adding the doctor: {str(e)}"
 
-    def search_doctors(self, name, surname):
+    def search_doctors(self, organization_id, name, surname):
         try:
             query = self.client.table('users') \
                 .select("*") \
                 .eq("role", "Dentist") \
+                .eq("organization_id", organization_id) \
                 .neq("password", "NULL")
 
             if name:

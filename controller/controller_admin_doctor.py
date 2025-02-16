@@ -1,4 +1,5 @@
 from utils.db_connection import DBConnection
+from utils.user_session import UserSession
 from view.screen_admin_doctor import ScreenAdminDoctor
 from view.screen_edit_doctor import ScreenEditDoctor
 
@@ -14,9 +15,10 @@ class ControllerAdminDoctor:
 
     def search_doctors(self):
         try:
+            current_session = UserSession()
             name = self.view.name_field.text()
             surname = self.view.surname_field.text()
-            doctors = self.db.search_doctors(name, surname)
+            doctors = self.db.search_doctors(current_session.organization_id, name, surname)
             self.view.populate_table(doctors)
         except Exception as e:
             self.view.show_error(f"Error searching doctors: {str(e)}")
